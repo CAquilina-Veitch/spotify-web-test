@@ -1,51 +1,59 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import {
-  ReactFlow,
-  addEdge,
-  useNodesState,
-  useEdgesState,
-  Controls,
-  Background,
-  BackgroundVariant,
-  MiniMap,
-} from '@xyflow/react';
-import '@xyflow/react/dist/style.css';
-import { makeSpotifyRequest, getAudioFeatures, mapAudioFeaturesToGraph } from '../utils/spotify';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
+import { makeSpotifyRequest, getAudioFeatures, mapAudioFeaturesToGraph, createPlaylist, addTrackToPlaylist } from '../utils/spotify';
 
-// Custom node component for songs
-const SongNode = ({ data }) => {
-  return (
-    <div className="song-node">
-      <div className="song-artwork">
-        {data.image ? (
-          <img src={data.image} alt={data.name} />
-        ) : (
-          <div className="placeholder-artwork">🎵</div>
-        )}
-      </div>
-      <div className="song-info">
-        <div className="song-name">{data.name}</div>
-        <div className="song-artist">{data.artist}</div>
-      </div>
-      <div className="song-values">
-        <div className="happiness">♪ {data.happiness}</div>
-        <div className="intensity">⚡ {data.intensity}</div>
-      </div>
-    </div>
-  );
-};
-
-// Node types
-const nodeTypes = {
-  song: SongNode,
+// Playlist zone definitions
+const PLAYLIST_ZONES = {
+  'sad-calm': { 
+    name: 'Chill & Melancholy', 
+    color: '#4A90E2',
+    x: 100, y: 100, width: 200, height: 200,
+    playlistName: 'Sad & Calm Vibes'
+  },
+  'happy-calm': { 
+    name: 'Peaceful & Happy', 
+    color: '#7ED321',
+    x: 900, y: 100, width: 200, height: 200,
+    playlistName: 'Happy & Calm Vibes'
+  },
+  'sad-intense': { 
+    name: 'Emotional & Intense', 
+    color: '#BD10E0',
+    x: 100, y: 570, width: 200, height: 200,
+    playlistName: 'Sad & Intense Vibes'
+  },
+  'happy-intense': { 
+    name: 'Energetic & Upbeat', 
+    color: '#F5A623',
+    x: 900, y: 570, width: 200, height: 200,
+    playlistName: 'Happy & Intense Vibes'
+  }
 };
 
 function MusicGraph() {
-  const [nodes, setNodes, onNodesChange] = useNodesState([]);
-  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const svgRef = useRef(null);
   const [currentTrack, setCurrentTrack] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [dragging, setDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [songPosition, setSongPosition] = useState({ x: 600, y: 400 }); // Center of graph
+  const [hoveredZone, setHoveredZone] = useState(null);
+  const [message, setMessage] = useState('');
 
+
+  // Convert SVG coordinates to happiness/intensity values
+  const svgToValues = (x, y) => {
+    // Graph area is 1000x670 starting at (100, 100)
+    const happiness = Math.round(Math.max(0, Math.min(10, ((x - 100) / 1000) * 10)));
+    const intensity = Math.round(Math.max(0, Math.min(10, 10 - ((y - 100) / 670) * 10)));
+    return { happiness, intensity };
+  };
+
+  // Convert happiness/intensity values to SVG coordinates  
+  const valuesToSvg = (happiness, intensity) => {
+    const x = 100 + (happiness / 10) * 1000;
+    const y = 100 + ((10 - intensity) / 10) * 670;
+    return { x, y };
+  };
 
   // Fetch current track and its audio features
   const fetchCurrentTrack = useCallback(async () => {
@@ -76,68 +84,101 @@ function MusicGraph() {
         name: trackData.item.name,
         artist: trackData.item.artists.map(a => a.name).join(', '),
         image: trackData.item.album.images[0]?.url,
+        uri: trackData.item.uri,
         audioFeatures,
         ...position
       };
 
       setCurrentTrack(track);
-
-      // Add current track as a node
-      const newNode = {
-        id: `current-${track.id}`,
-        type: 'song',
-        position: { x: track.x, y: track.y },
-        data: {
-          name: track.name,
-          artist: track.artist,
-          image: track.image,
-          happiness: track.happiness,
-          intensity: track.intensity,
-          isCurrent: true
-        },
-        className: 'current-track-node'
-      };
-
-      setNodes([newNode]);
+      // Position song based on its audio features
+      setSongPosition({ x: track.x, y: track.y });
       
     } catch (error) {
       console.error('Error fetching current track:', error);
     } finally {
       setLoading(false);
     }
-  }, [setNodes]);
+  }, []);
 
   // Initialize graph with current track
   useEffect(() => {
     fetchCurrentTrack();
   }, [fetchCurrentTrack]);
 
-  // Handle node drag end - this is where we'll add playlist logic later
-  const onNodeDragStop = useCallback((event, node) => {
-    // Calculate new happiness and intensity based on position
-    const happiness = Math.round(Math.max(0, Math.min(10, (node.position.x - 100) / 80)));
-    const intensity = Math.round(Math.max(0, Math.min(10, (900 - node.position.y) / 80)));
-    
-    // Update node data
-    setNodes((nds) =>
-      nds.map((n) => {
-        if (n.id === node.id) {
-          return {
-            ...n,
-            data: {
-              ...n.data,
-              happiness,
-              intensity
-            }
-          };
-        }
-        return n;
-      })
-    );
+  // Check if point is inside a playlist zone
+  const checkPlaylistZone = (x, y) => {
+    for (const [zoneId, zone] of Object.entries(PLAYLIST_ZONES)) {
+      if (x >= zone.x && x <= zone.x + zone.width && 
+          y >= zone.y && y <= zone.y + zone.height) {
+        return zoneId;
+      }
+    }
+    return null;
+  };
 
-    console.log(`Track moved to: Happiness ${happiness}, Intensity ${intensity}`);
-    // TODO: Add to relevant playlists based on position
-  }, [setNodes]);
+  // Handle mouse down on song
+  const handleMouseDown = (e) => {
+    if (!currentTrack) return;
+    
+    setDragging(true);
+    setDragStart({ x: e.clientX, y: e.clientY });
+    
+    // Add mousemove and mouseup listeners to document
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+  };
+
+  // Handle mouse move during drag
+  const handleMouseMove = (e) => {
+    if (!dragging || !currentTrack) return;
+    
+    const rect = svgRef.current.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 1200;
+    const y = ((e.clientY - rect.top) / rect.height) * 800;
+    
+    // Constrain to graph area
+    const constrainedX = Math.max(100, Math.min(1100, x));
+    const constrainedY = Math.max(100, Math.min(770, y));
+    
+    setSongPosition({ x: constrainedX, y: constrainedY });
+    
+    // Check if over playlist zone
+    const zone = checkPlaylistZone(constrainedX, constrainedY);
+    setHoveredZone(zone);
+  };
+
+  // Handle mouse up - end drag
+  const handleMouseUp = async () => {
+    if (!dragging || !currentTrack) return;
+    
+    setDragging(false);
+    
+    // Remove event listeners
+    document.removeEventListener('mousemove', handleMouseMove);
+    document.removeEventListener('mouseup', handleMouseUp);
+    
+    // If dropped in a playlist zone, add to playlist
+    if (hoveredZone) {
+      try {
+        const zone = PLAYLIST_ZONES[hoveredZone];
+        setMessage(`Adding "${currentTrack.name}" to ${zone.playlistName}...`);
+        
+        // Create playlist if it doesn't exist, then add track
+        const playlist = await createPlaylist(zone.playlistName, `Auto-generated playlist for ${zone.name} songs`);
+        await addTrackToPlaylist(playlist.id, currentTrack.uri);
+        
+        setMessage(`✓ Added "${currentTrack.name}" to ${zone.playlistName}!`);
+        setTimeout(() => setMessage(''), 3000);
+        
+      } catch (error) {
+        console.error('Error adding to playlist:', error);
+        setMessage(`❌ Failed to add to playlist: ${error.message}`);
+        setTimeout(() => setMessage(''), 3000);
+      }
+    }
+    
+    setHoveredZone(null);
+  };
 
   // Create grid lines for the graph
   const createGridLines = () => {
@@ -147,10 +188,10 @@ function MusicGraph() {
       lines.push(
         <line
           key={`v-${i}`}
-          x1={100 + i * 80}
+          x1={100 + i * 100}
           y1={100}
-          x2={100 + i * 80}
-          y2={900}
+          x2={100 + i * 100}
+          y2={770}
           stroke="#404040"
           strokeWidth="1"
           opacity="0.5"
@@ -163,9 +204,9 @@ function MusicGraph() {
         <line
           key={`h-${i}`}
           x1={100}
-          y1={100 + i * 80}
-          x2={900}
-          y2={100 + i * 80}
+          y1={100 + i * 67}
+          x2={1100}
+          y2={100 + i * 67}
           stroke="#404040"
           strokeWidth="1"
           opacity="0.5"
@@ -175,72 +216,133 @@ function MusicGraph() {
     return lines;
   };
 
+  // Get current happiness and intensity values
+  const currentValues = svgToValues(songPosition.x, songPosition.y);
+
   return (
     <div className="music-graph">
       <div className="graph-header">
         <h2>🎵 Music Graph</h2>
         <p>Drag songs to categorize by happiness and intensity</p>
-        <button onClick={fetchCurrentTrack} disabled={loading}>
-          {loading ? 'Loading...' : 'Refresh Current Track'}
-        </button>
+        <div className="graph-controls">
+          <button onClick={fetchCurrentTrack} disabled={loading}>
+            {loading ? 'Loading...' : 'Refresh Current Track'}
+          </button>
+          {currentTrack && (
+            <div className="current-values">
+              Happiness: {currentValues.happiness} | Intensity: {currentValues.intensity}
+            </div>
+          )}
+        </div>
+        {message && (
+          <div className="message">{message}</div>
+        )}
       </div>
 
       <div className="graph-container">
-        <div className="graph-wrapper">
-          <ReactFlow
-            nodes={nodes}
-            edges={edges}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
-            onNodeDragStop={onNodeDragStop}
-            nodeTypes={nodeTypes}
-            fitView
-            minZoom={0.5}
-            maxZoom={2}
-            defaultViewport={{ x: 0, y: 0, zoom: 1 }}
-          >
-            <Background 
-              variant={BackgroundVariant.Dots} 
-              gap={80} 
-              size={1} 
-              color="#404040"
-            />
-            <Controls />
-            <MiniMap />
-            
-            {/* Custom SVG overlay for grid and labels */}
-            <svg className="graph-overlay">
-              {createGridLines()}
-              
-              {/* Axis labels */}
-              <text x="500" y="950" textAnchor="middle" fill="#b3b3b3" fontSize="14">
-                Happiness →
+        <svg 
+          ref={svgRef}
+          className="music-scatter-plot"
+          width="1200" 
+          height="800" 
+          viewBox="0 0 1200 800"
+        >
+          {/* Background */}
+          <rect width="1200" height="800" fill="#1a1a1a" />
+          
+          {/* Graph area background */}
+          <rect x="100" y="100" width="1000" height="670" fill="#2a2a2a" stroke="#404040" strokeWidth="2" />
+          
+          {/* Grid lines */}
+          {createGridLines()}
+          
+          {/* Playlist zones */}
+          {Object.entries(PLAYLIST_ZONES).map(([zoneId, zone]) => (
+            <g key={zoneId}>
+              <rect
+                x={zone.x}
+                y={zone.y}
+                width={zone.width}
+                height={zone.height}
+                fill={zone.color}
+                opacity={hoveredZone === zoneId ? 0.3 : 0.1}
+                stroke={zone.color}
+                strokeWidth="2"
+                strokeDasharray="5,5"
+              />
+              <text
+                x={zone.x + zone.width / 2}
+                y={zone.y + zone.height / 2}
+                textAnchor="middle"
+                fill={zone.color}
+                fontSize="14"
+                fontWeight="bold"
+              >
+                {zone.name}
               </text>
-              <text x="50" y="500" textAnchor="middle" fill="#b3b3b3" fontSize="14" transform="rotate(-90 50 500)">
-                Intensity →
+            </g>
+          ))}
+          
+          {/* Axis labels */}
+          <text x="600" y="790" textAnchor="middle" fill="#b3b3b3" fontSize="16" fontWeight="bold">
+            Happiness →
+          </text>
+          <text x="50" y="435" textAnchor="middle" fill="#b3b3b3" fontSize="16" fontWeight="bold" transform="rotate(-90 50 435)">
+            Intensity →
+          </text>
+          
+          {/* Axis numbers */}
+          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(i => (
+            <g key={`axis-${i}`}>
+              <text x={100 + i * 100} y="95" textAnchor="middle" fill="#b3b3b3" fontSize="12">
+                {i}
               </text>
+              <text x="85" y={770 - i * 67 + 5} textAnchor="middle" fill="#b3b3b3" fontSize="12">
+                {i}
+              </text>
+            </g>
+          ))}
+          
+          {/* Current track */}
+          {currentTrack && (
+            <g>
+              {/* Track circle */}
+              <circle
+                cx={songPosition.x}
+                cy={songPosition.y}
+                r="30"
+                fill="#1db954"
+                stroke={dragging ? "#1ed760" : "#1db954"}
+                strokeWidth="3"
+                style={{ cursor: dragging ? 'grabbing' : 'grab' }}
+                onMouseDown={handleMouseDown}
+              />
               
-              {/* Corner labels */}
-              <text x="120" y="130" fill="#1db954" fontSize="12">Sad & Calm</text>
-              <text x="820" y="130" fill="#1db954" fontSize="12">Happy & Calm</text>
-              <text x="120" y="880" fill="#1db954" fontSize="12">Sad & Intense</text>
-              <text x="800" y="880" fill="#1db954" fontSize="12">Happy & Intense</text>
-            </svg>
-          </ReactFlow>
-        </div>
-
-        {/* Graph legend */}
-        <div className="graph-legend">
-          <h3>Legend</h3>
-          <div className="legend-item">
-            <div className="legend-color current-track"></div>
-            <span>Current Track</span>
-          </div>
-          <div className="legend-item">
-            <div className="legend-color playlist-track"></div>
-            <span>Playlist Track</span>
-          </div>
-        </div>
+              {/* Album artwork */}
+              {currentTrack.image && (
+                <image
+                  x={songPosition.x - 25}
+                  y={songPosition.y - 25}
+                  width="50"
+                  height="50"
+                  href={currentTrack.image}
+                  clipPath="url(#circleClip)"
+                  style={{ pointerEvents: 'none' }}
+                />
+              )}
+              
+              {/* Track info on hover */}
+              <title>{`${currentTrack.name} by ${currentTrack.artist}`}</title>
+            </g>
+          )}
+          
+          {/* Clip path for circular album artwork */}
+          <defs>
+            <clipPath id="circleClip">
+              <circle cx="25" cy="25" r="25" />
+            </clipPath>
+          </defs>
+        </svg>
       </div>
     </div>
   );

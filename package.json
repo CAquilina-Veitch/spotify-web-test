@@ -13,7 +13,6 @@
   },
   "homepage": "https://caquilina-veitch.github.io/spotify-web-test",
   "dependencies": {
-    "@xyflow/react": "^12.8.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
