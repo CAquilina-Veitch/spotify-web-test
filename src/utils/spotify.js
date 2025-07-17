@@ -198,6 +198,121 @@ export async function makeSpotifyRequest(endpoint, options = {}) {
   return response;
 }
 
+// Get audio features for a track
+export async function getAudioFeatures(trackId) {
+  try {
+    const response = await makeSpotifyRequest(`/audio-features/${trackId}`);
+    if (!response.ok) {
+      throw new Error('Failed to get audio features');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching audio features:', error);
+    return null;
+  }
+}
+
+// Get audio features for multiple tracks
+export async function getMultipleAudioFeatures(trackIds) {
+  try {
+    const idsString = trackIds.join(',');
+    const response = await makeSpotifyRequest(`/audio-features?ids=${idsString}`);
+    if (!response.ok) {
+      throw new Error('Failed to get audio features');
+    }
+    const data = await response.json();
+    return data.audio_features;
+  } catch (error) {
+    console.error('Error fetching multiple audio features:', error);
+    return [];
+  }
+}
+
+// Convert audio features to graph coordinates
+export function mapAudioFeaturesToGraph(audioFeatures) {
+  if (!audioFeatures) return { x: 500, y: 500, happiness: 5, intensity: 5 };
+  
+  // Map valence (0-1) to happiness (0-10)
+  const happiness = Math.round(audioFeatures.valence * 10);
+  const x = 100 + (happiness * 80); // 80px per unit on 800px wide graph
+  
+  // Map energy (0-1) to intensity (0-10)
+  // Higher energy = higher on graph, so we invert Y
+  const intensity = Math.round(audioFeatures.energy * 10);
+  const y = 900 - (intensity * 80); // Invert Y axis
+  
+  return { x, y, happiness, intensity };
+}
+
+// Add track to playlist
+export async function addTrackToPlaylist(playlistId, trackUri) {
+  try {
+    const response = await makeSpotifyRequest(`/playlists/${playlistId}/tracks`, {
+      method: 'POST',
+      body: JSON.stringify({
+        uris: [trackUri]
+      })
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to add track to playlist');
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Error adding track to playlist:', error);
+    throw error;
+  }
+}
+
+// Remove track from playlist
+export async function removeTrackFromPlaylist(playlistId, trackUri) {
+  try {
+    const response = await makeSpotifyRequest(`/playlists/${playlistId}/tracks`, {
+      method: 'DELETE',
+      body: JSON.stringify({
+        tracks: [{ uri: trackUri }]
+      })
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to remove track from playlist');
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Error removing track from playlist:', error);
+    throw error;
+  }
+}
+
+// Create a new playlist
+export async function createPlaylist(name, description = '') {
+  try {
+    // First get current user ID
+    const userResponse = await makeSpotifyRequest('/me');
+    const userData = await userResponse.json();
+    
+    const response = await makeSpotifyRequest(`/users/${userData.id}/playlists`, {
+      method: 'POST',
+      body: JSON.stringify({
+        name,
+        description,
+        public: false
+      })
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to create playlist');
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Error creating playlist:', error);
+    throw error;
+  }
+}
+
 // Logout function
 export function logout() {
   localStorage.removeItem('access_token');

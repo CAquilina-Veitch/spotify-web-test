@@ -1,0 +1,286 @@
+.music-graph {
+  background-color: #282828;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 1200px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.graph-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.graph-header h2 {
+  color: white;
+  margin: 0 0 10px 0;
+  font-size: 24px;
+}
+
+.graph-header p {
+  color: #b3b3b3;
+  margin: 0 0 15px 0;
+  font-size: 14px;
+}
+
+.graph-header button {
+  background-color: #1db954;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.graph-header button:hover:not(:disabled) {
+  background-color: #1ed760;
+}
+
+.graph-header button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.graph-container {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.graph-wrapper {
+  flex: 1;
+  height: 600px;
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* React Flow overrides */
+.react-flow {
+  background-color: #1a1a1a;
+}
+
+.react-flow__controls {
+  background-color: #2a2a2a;
+  border: 1px solid #404040;
+}
+
+.react-flow__controls button {
+  background-color: #2a2a2a;
+  border: none;
+  color: #b3b3b3;
+  border-bottom: 1px solid #404040;
+}
+
+.react-flow__controls button:hover {
+  background-color: #3a3a3a;
+  color: white;
+}
+
+.react-flow__minimap {
+  background-color: #2a2a2a;
+  border: 1px solid #404040;
+}
+
+.react-flow__minimap-mask {
+  fill: rgba(29, 185, 84, 0.2);
+}
+
+/* Custom overlay styles */
+.graph-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Song node styles */
+.song-node {
+  background-color: #2a2a2a;
+  border: 2px solid #404040;
+  border-radius: 8px;
+  padding: 8px;
+  width: 120px;
+  font-size: 11px;
+  cursor: grab;
+  transition: all 0.3s;
+}
+
+.song-node:hover {
+  border-color: #1db954;
+  transform: scale(1.05);
+}
+
+.song-artwork {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  background-color: #404040;
+}
+
+.song-artwork img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.placeholder-artwork {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #666;
+}
+
+.song-info {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.song-name {
+  color: white;
+  font-weight: 600;
+  margin-bottom: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.song-artist {
+  color: #b3b3b3;
+  font-size: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.song-values {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: #1db954;
+}
+
+.song-values .happiness,
+.song-values .intensity {
+  background-color: rgba(29, 185, 84, 0.1);
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+/* Current track highlighting */
+.current-track-node .song-node {
+  border-color: #1db954;
+  background-color: rgba(29, 185, 84, 0.1);
+  box-shadow: 0 0 10px rgba(29, 185, 84, 0.3);
+}
+
+.current-track-node .song-node:hover {
+  border-color: #1ed760;
+  transform: scale(1.1);
+}
+
+/* Legend styles */
+.graph-legend {
+  width: 200px;
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  padding: 15px;
+}
+
+.graph-legend h3 {
+  color: white;
+  margin: 0 0 15px 0;
+  font-size: 16px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 12px;
+  color: #b3b3b3;
+}
+
+.legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  margin-right: 8px;
+}
+
+.legend-color.current-track {
+  background-color: #1db954;
+  border: 2px solid #1db954;
+}
+
+.legend-color.playlist-track {
+  background-color: #2a2a2a;
+  border: 2px solid #404040;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .music-graph {
+    margin: 20px 10px;
+    padding: 15px;
+  }
+
+  .graph-container {
+    flex-direction: column;
+  }
+
+  .graph-wrapper {
+    height: 400px;
+  }
+
+  .graph-legend {
+    width: 100%;
+  }
+
+  .song-node {
+    width: 100px;
+    font-size: 10px;
+  }
+
+  .song-artwork {
+    width: 30px;
+    height: 30px;
+  }
+
+  .graph-header h2 {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .graph-wrapper {
+    height: 300px;
+  }
+
+  .song-node {
+    width: 80px;
+    font-size: 9px;
+    padding: 6px;
+  }
+
+  .song-artwork {
+    width: 25px;
+    height: 25px;
+  }
+
+  .graph-header h2 {
+    font-size: 18px;
+  }
+}
