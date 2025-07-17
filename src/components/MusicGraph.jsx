@@ -129,26 +129,29 @@ function MusicGraph() {
   };
 
   // Handle mouse move during drag
-  const handleMouseMove = (e) => {
+  const handleMouseMove = useCallback((e) => {
     if (!dragging || !currentTrack) return;
     
     const rect = svgRef.current.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 1200;
-    const y = ((e.clientY - rect.top) / rect.height) * 800;
+    const scaleX = 1200 / rect.width;
+    const scaleY = 800 / rect.height;
     
-    // Constrain to graph area
-    const constrainedX = Math.max(100, Math.min(1100, x));
-    const constrainedY = Math.max(100, Math.min(770, y));
+    const x = (e.clientX - rect.left) * scaleX;
+    const y = (e.clientY - rect.top) * scaleY;
+    
+    // Constrain to graph area (account for circle radius of 30)
+    const constrainedX = Math.max(130, Math.min(1070, x));
+    const constrainedY = Math.max(130, Math.min(670, y));
     
     setSongPosition({ x: constrainedX, y: constrainedY });
     
     // Check if over playlist zone
     const zone = checkPlaylistZone(constrainedX, constrainedY);
     setHoveredZone(zone);
-  };
+  }, [dragging, currentTrack]);
 
   // Handle mouse up - end drag
-  const handleMouseUp = async () => {
+  const handleMouseUp = useCallback(async () => {
     if (!dragging || !currentTrack) return;
     
     setDragging(false);
@@ -178,7 +181,7 @@ function MusicGraph() {
     }
     
     setHoveredZone(null);
-  };
+  }, [dragging, currentTrack, hoveredZone, handleMouseMove]);
 
   // Create grid lines for the graph
   const createGridLines = () => {

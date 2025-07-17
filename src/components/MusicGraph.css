@@ -92,6 +92,7 @@
 /* Drag interaction styles */
 .music-scatter-plot circle {
   transition: all 0.3s ease;
+  transform-origin: center;
 }
 
 .music-scatter-plot circle:hover {
