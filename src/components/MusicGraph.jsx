@@ -34,11 +34,78 @@ function MusicGraph() {
   const [currentTrack, setCurrentTrack] = useState(null);
   const [loading, setLoading] = useState(false);
   const [dragging, setDragging] = useState(false);
-  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const dragStartRef = useRef({ x: 0, y: 0 });
   const [songPosition, setSongPosition] = useState({ x: 600, y: 400 }); // Center of graph
   const [hoveredZone, setHoveredZone] = useState(null);
   const [message, setMessage] = useState('');
+  const [isHovered, setIsHovered] = useState(false);
+  const animationFrameRef = useRef(null);
+  const [savedPositions, setSavedPositions] = useState({});
 
+
+  // Load saved positions from localStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem('spotifyTrackPositions');
+    if (saved) {
+      setSavedPositions(JSON.parse(saved));
+    }
+  }, []);
+
+  // Save position to localStorage
+  const saveTrackPosition = (trackId, happiness, intensity) => {
+    const newPositions = {
+      ...savedPositions,
+      [trackId]: {
+        happiness,
+        intensity,
+        lastUpdated: new Date().toISOString()
+      }
+    };
+    setSavedPositions(newPositions);
+    localStorage.setItem('spotifyTrackPositions', JSON.stringify(newPositions));
+  };
+
+  // Export positions as JSON
+  const exportPositions = () => {
+    const dataStr = JSON.stringify(savedPositions, null, 2);
+    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+    const exportFileDefaultName = 'spotify-track-positions.json';
+    const linkElement = document.createElement('a');
+    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.click();
+  };
+
+  // Import positions from JSON file
+  const importPositions = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const imported = JSON.parse(e.target.result);
+          setSavedPositions(imported);
+          localStorage.setItem('spotifyTrackPositions', JSON.stringify(imported));
+          setMessage('✓ Positions imported successfully!');
+          setTimeout(() => setMessage(''), 3000);
+        } catch {
+          setMessage('❌ Invalid JSON file');
+          setTimeout(() => setMessage(''), 3000);
+        }
+      };
+      reader.readAsText(file);
+    }
+  };
+
+  // Clear all saved positions
+  const clearPositions = () => {
+    if (confirm('Are you sure you want to clear all saved positions?')) {
+      setSavedPositions({});
+      localStorage.removeItem('spotifyTrackPositions');
+      setMessage('✓ All saved positions cleared');
+      setTimeout(() => setMessage(''), 3000);
+    }
+  };
 
   // Convert SVG coordinates to happiness/intensity values
   const svgToValues = (x, y) => {
@@ -90,8 +157,16 @@ function MusicGraph() {
       };
 
       setCurrentTrack(track);
-      // Position song based on its audio features
-      setSongPosition({ x: track.x, y: track.y });
+      
+      // Check if we have a saved position for this track
+      const savedPosition = savedPositions[track.id];
+      if (savedPosition) {
+        const { x, y } = valuesToSvg(savedPosition.happiness, savedPosition.intensity);
+        setSongPosition({ x, y });
+      } else {
+        // Position song based on its audio features
+        setSongPosition({ x: track.x, y: track.y });
+      }
       
     } catch (error) {
       console.error('Error fetching current track:', error);
@@ -119,36 +194,41 @@ function MusicGraph() {
   // Handle mouse down on song
   const handleMouseDown = (e) => {
     if (!currentTrack) return;
+    e.preventDefault();
     
     setDragging(true);
-    setDragStart({ x: e.clientX, y: e.clientY });
-    
-    // Add mousemove and mouseup listeners to document
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
+    const rect = svgRef.current.getBoundingClientRect();
+    dragStartRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
   };
 
   // Handle mouse move during drag
   const handleMouseMove = useCallback((e) => {
-    if (!dragging || !currentTrack) return;
+    if (!dragging || !currentTrack || !svgRef.current) return;
     
-    const rect = svgRef.current.getBoundingClientRect();
-    const scaleX = 1200 / rect.width;
-    const scaleY = 800 / rect.height;
+    // Cancel any pending animation frame
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current);
+    }
     
-    const x = (e.clientX - rect.left) * scaleX;
-    const y = (e.clientY - rect.top) * scaleY;
-    
-    // Constrain to graph area (account for circle radius of 30)
-    const constrainedX = Math.max(130, Math.min(1070, x));
-    const constrainedY = Math.max(130, Math.min(670, y));
-    
-    setSongPosition({ x: constrainedX, y: constrainedY });
-    
-    // Check if over playlist zone
-    const zone = checkPlaylistZone(constrainedX, constrainedY);
-    setHoveredZone(zone);
-  }, [dragging, currentTrack]);
+    animationFrameRef.current = requestAnimationFrame(() => {
+      const rect = svgRef.current.getBoundingClientRect();
+      const scaleX = 1200 / rect.width;
+      const scaleY = 800 / rect.height;
+      
+      const x = (e.clientX - rect.left) * scaleX;
+      const y = (e.clientY - rect.top) * scaleY;
+      
+      // Constrain to graph area (account for circle radius of 40)
+      const constrainedX = Math.max(140, Math.min(1060, x));
+      const constrainedY = Math.max(140, Math.min(730, y));
+      
+      setSongPosition({ x: constrainedX, y: constrainedY });
+      
+      // Check if over playlist zone
+      const zone = checkPlaylistZone(constrainedX, constrainedY);
+      setHoveredZone(zone);
+    });
+  }, [dragging, currentTrack, savedPositions]);
 
   // Handle mouse up - end drag
   const handleMouseUp = useCallback(async () => {
@@ -156,9 +236,14 @@ function MusicGraph() {
     
     setDragging(false);
     
-    // Remove event listeners
-    document.removeEventListener('mousemove', handleMouseMove);
-    document.removeEventListener('mouseup', handleMouseUp);
+    // Cancel any pending animation frame
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current);
+    }
+    
+    // Save the final position
+    const { happiness, intensity } = svgToValues(songPosition.x, songPosition.y);
+    saveTrackPosition(currentTrack.id, happiness, intensity);
     
     // If dropped in a playlist zone, add to playlist
     if (hoveredZone) {
@@ -181,7 +266,19 @@ function MusicGraph() {
     }
     
     setHoveredZone(null);
-  }, [dragging, currentTrack, hoveredZone, handleMouseMove]);
+  }, [dragging, currentTrack, hoveredZone, songPosition, saveTrackPosition]);
+
+  // Add global mouse event listeners when dragging
+  useEffect(() => {
+    if (dragging) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+      return () => {
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
+      };
+    }
+  }, [dragging, handleMouseMove, handleMouseUp]);
 
   // Create grid lines for the graph
   const createGridLines = () => {
@@ -234,8 +331,24 @@ function MusicGraph() {
           {currentTrack && (
             <div className="current-values">
               Happiness: {currentValues.happiness} | Intensity: {currentValues.intensity}
+              {savedPositions[currentTrack.id] && ' (saved)'}
             </div>
           )}
+          <button onClick={exportPositions} disabled={Object.keys(savedPositions).length === 0}>
+            Export Positions
+          </button>
+          <label className="import-button">
+            Import Positions
+            <input
+              type="file"
+              accept=".json"
+              onChange={importPositions}
+              style={{ display: 'none' }}
+            />
+          </label>
+          <button onClick={clearPositions} disabled={Object.keys(savedPositions).length === 0}>
+            Clear All
+          </button>
         </div>
         {message && (
           <div className="message">{message}</div>
@@ -309,42 +422,57 @@ function MusicGraph() {
           {/* Current track */}
           {currentTrack && (
             <g>
-              {/* Track circle */}
-              <circle
-                cx={songPosition.x}
-                cy={songPosition.y}
-                r="30"
-                fill="#1db954"
-                stroke={dragging ? "#1ed760" : "#1db954"}
-                strokeWidth="3"
+              {/* Track with album artwork */}
+              <g
                 style={{ cursor: dragging ? 'grabbing' : 'grab' }}
                 onMouseDown={handleMouseDown}
-              />
-              
-              {/* Album artwork */}
-              {currentTrack.image && (
-                <image
-                  x={songPosition.x - 25}
-                  y={songPosition.y - 25}
-                  width="50"
-                  height="50"
-                  href={currentTrack.image}
-                  clipPath="url(#circleClip)"
-                  style={{ pointerEvents: 'none' }}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+              >
+                {/* Outer glow/border */}
+                <circle
+                  cx={songPosition.x}
+                  cy={songPosition.y}
+                  r={isHovered ? 42 : 40}
+                  fill="none"
+                  stroke={dragging ? "#1ed760" : "#1db954"}
+                  strokeWidth="3"
+                  opacity={0.8}
                 />
-              )}
+                
+                {/* Album artwork circle */}
+                {currentTrack.image ? (
+                  <>
+                    <defs>
+                      <clipPath id="albumClip">
+                        <circle cx={songPosition.x} cy={songPosition.y} r="37" />
+                      </clipPath>
+                    </defs>
+                    <image
+                      x={songPosition.x - 37}
+                      y={songPosition.y - 37}
+                      width="74"
+                      height="74"
+                      href={currentTrack.image}
+                      clipPath="url(#albumClip)"
+                      style={{ pointerEvents: 'none' }}
+                    />
+                  </>
+                ) : (
+                  <circle
+                    cx={songPosition.x}
+                    cy={songPosition.y}
+                    r="37"
+                    fill="#1db954"
+                  />
+                )}
+              </g>
               
               {/* Track info on hover */}
               <title>{`${currentTrack.name} by ${currentTrack.artist}`}</title>
             </g>
           )}
           
-          {/* Clip path for circular album artwork */}
-          <defs>
-            <clipPath id="circleClip">
-              <circle cx="25" cy="25" r="25" />
-            </clipPath>
-          </defs>
         </svg>
       </div>
     </div>

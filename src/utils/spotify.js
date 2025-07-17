@@ -163,7 +163,7 @@ export async function makeSpotifyRequest(endpoint, options = {}) {
   if (!token) {
     try {
       token = await refreshAccessToken();
-    } catch (error) {
+    } catch {
       throw new Error('Authentication required');
     }
   }
@@ -190,7 +190,7 @@ export async function makeSpotifyRequest(endpoint, options = {}) {
           ...options.headers,
         },
       });
-    } catch (error) {
+    } catch {
       throw new Error('Authentication required');
     }
   }
