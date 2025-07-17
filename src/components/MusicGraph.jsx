@@ -39,8 +39,8 @@ function MusicGraph() {
   const [hoveredZone, setHoveredZone] = useState(null);
   const [message, setMessage] = useState('');
   const [isHovered, setIsHovered] = useState(false);
-  const animationFrameRef = useRef(null);
   const [savedPositions, setSavedPositions] = useState({});
+  const pollIntervalRef = useRef(null);
 
 
   // Load saved positions from localStorage on mount
@@ -65,47 +65,6 @@ function MusicGraph() {
     localStorage.setItem('spotifyTrackPositions', JSON.stringify(newPositions));
   };
 
-  // Export positions as JSON
-  const exportPositions = () => {
-    const dataStr = JSON.stringify(savedPositions, null, 2);
-    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-    const exportFileDefaultName = 'spotify-track-positions.json';
-    const linkElement = document.createElement('a');
-    linkElement.setAttribute('href', dataUri);
-    linkElement.setAttribute('download', exportFileDefaultName);
-    linkElement.click();
-  };
-
-  // Import positions from JSON file
-  const importPositions = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        try {
-          const imported = JSON.parse(e.target.result);
-          setSavedPositions(imported);
-          localStorage.setItem('spotifyTrackPositions', JSON.stringify(imported));
-          setMessage('✓ Positions imported successfully!');
-          setTimeout(() => setMessage(''), 3000);
-        } catch {
-          setMessage('❌ Invalid JSON file');
-          setTimeout(() => setMessage(''), 3000);
-        }
-      };
-      reader.readAsText(file);
-    }
-  };
-
-  // Clear all saved positions
-  const clearPositions = () => {
-    if (confirm('Are you sure you want to clear all saved positions?')) {
-      setSavedPositions({});
-      localStorage.removeItem('spotifyTrackPositions');
-      setMessage('✓ All saved positions cleared');
-      setTimeout(() => setMessage(''), 3000);
-    }
-  };
 
   // Convert SVG coordinates to happiness/intensity values
   const svgToValues = (x, y) => {
@@ -175,9 +134,20 @@ function MusicGraph() {
     }
   }, []);
 
-  // Initialize graph with current track
+  // Initialize graph with current track and start polling
   useEffect(() => {
     fetchCurrentTrack();
+    
+    // Poll for track changes every 5 seconds
+    pollIntervalRef.current = setInterval(() => {
+      fetchCurrentTrack();
+    }, 5000);
+    
+    return () => {
+      if (pollIntervalRef.current) {
+        clearInterval(pollIntervalRef.current);
+      }
+    };
   }, [fetchCurrentTrack]);
 
   // Check if point is inside a playlist zone
@@ -205,41 +175,29 @@ function MusicGraph() {
   const handleMouseMove = useCallback((e) => {
     if (!dragging || !currentTrack || !svgRef.current) return;
     
-    // Cancel any pending animation frame
-    if (animationFrameRef.current) {
-      cancelAnimationFrame(animationFrameRef.current);
-    }
+    const rect = svgRef.current.getBoundingClientRect();
+    const scaleX = 1200 / rect.width;
+    const scaleY = 800 / rect.height;
     
-    animationFrameRef.current = requestAnimationFrame(() => {
-      const rect = svgRef.current.getBoundingClientRect();
-      const scaleX = 1200 / rect.width;
-      const scaleY = 800 / rect.height;
-      
-      const x = (e.clientX - rect.left) * scaleX;
-      const y = (e.clientY - rect.top) * scaleY;
-      
-      // Constrain to graph area (account for circle radius of 40)
-      const constrainedX = Math.max(140, Math.min(1060, x));
-      const constrainedY = Math.max(140, Math.min(730, y));
-      
-      setSongPosition({ x: constrainedX, y: constrainedY });
-      
-      // Check if over playlist zone
-      const zone = checkPlaylistZone(constrainedX, constrainedY);
-      setHoveredZone(zone);
-    });
-  }, [dragging, currentTrack, savedPositions]);
+    const x = (e.clientX - rect.left) * scaleX;
+    const y = (e.clientY - rect.top) * scaleY;
+    
+    // Constrain to graph area (account for circle radius of 40)
+    const constrainedX = Math.max(140, Math.min(1060, x));
+    const constrainedY = Math.max(140, Math.min(730, y));
+    
+    setSongPosition({ x: constrainedX, y: constrainedY });
+    
+    // Check if over playlist zone
+    const zone = checkPlaylistZone(constrainedX, constrainedY);
+    setHoveredZone(zone);
+  }, [dragging, currentTrack]);
 
   // Handle mouse up - end drag
   const handleMouseUp = useCallback(async () => {
     if (!dragging || !currentTrack) return;
     
     setDragging(false);
-    
-    // Cancel any pending animation frame
-    if (animationFrameRef.current) {
-      cancelAnimationFrame(animationFrameRef.current);
-    }
     
     // Save the final position
     const { happiness, intensity } = svgToValues(songPosition.x, songPosition.y);
@@ -334,21 +292,6 @@ function MusicGraph() {
               {savedPositions[currentTrack.id] && ' (saved)'}
             </div>
           )}
-          <button onClick={exportPositions} disabled={Object.keys(savedPositions).length === 0}>
-            Export Positions
-          </button>
-          <label className="import-button">
-            Import Positions
-            <input
-              type="file"
-              accept=".json"
-              onChange={importPositions}
-              style={{ display: 'none' }}
-            />
-          </label>
-          <button onClick={clearPositions} disabled={Object.keys(savedPositions).length === 0}>
-            Clear All
-          </button>
         </div>
         {message && (
           <div className="message">{message}</div>

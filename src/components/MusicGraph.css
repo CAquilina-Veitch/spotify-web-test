@@ -53,21 +53,6 @@
   cursor: not-allowed;
 }
 
-.import-button {
-  background-color: #1db954;
-  border: none;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 25px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s;
-  display: inline-block;
-}
-
-.import-button:hover {
-  background-color: #1ed760;
-}
 
 .current-values {
   color: #1db954;
@@ -107,7 +92,7 @@
 
 /* Drag interaction styles */
 .music-scatter-plot circle {
-  transition: all 0.3s ease;
+  /* No transition for instant movement */
 }
 
 .music-scatter-plot circle:hover {

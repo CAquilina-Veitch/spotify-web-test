@@ -230,16 +230,16 @@ export async function getMultipleAudioFeatures(trackIds) {
 
 // Convert audio features to graph coordinates
 export function mapAudioFeaturesToGraph(audioFeatures) {
-  if (!audioFeatures) return { x: 500, y: 500, happiness: 5, intensity: 5 };
+  if (!audioFeatures) return { x: 600, y: 435, happiness: 5, intensity: 5 };
   
   // Map valence (0-1) to happiness (0-10)
   const happiness = Math.round(audioFeatures.valence * 10);
-  const x = 100 + (happiness * 80); // 80px per unit on 800px wide graph
+  const x = 100 + (happiness * 100); // 100px per unit on 1000px wide graph
   
   // Map energy (0-1) to intensity (0-10)
   // Higher energy = higher on graph, so we invert Y
   const intensity = Math.round(audioFeatures.energy * 10);
-  const y = 900 - (intensity * 80); // Invert Y axis
+  const y = 100 + ((10 - intensity) * 67); // 67px per unit on 670px high graph
   
   return { x, y, happiness, intensity };
 }
