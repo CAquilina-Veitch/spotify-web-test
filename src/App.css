@@ -1,0 +1,116 @@
+.App {
+  text-align: center;
+  background-color: #191414;
+  min-height: 100vh;
+  color: white;
+}
+
+.App-header {
+  background-color: #191414;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+}
+
+.App-header h1 {
+  margin: 0 0 10px 0;
+  color: #1db954;
+}
+
+.App-header p {
+  margin: 0 0 30px 0;
+  color: #b3b3b3;
+  font-size: 18px;
+}
+
+.login-button {
+  background-color: #1db954;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 50px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.login-button:hover {
+  background-color: #1ed760;
+}
+
+@media (max-width: 768px) {
+  .App-header {
+    padding: 20px;
+    font-size: calc(8px + 2vmin);
+  }
+  
+  .login-button {
+    padding: 12px 24px;
+    font-size: 14px;
+  }
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  color: #1db954;
+  font-size: 18px;
+}
+
+.authenticated-content {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.header-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 0 20px;
+}
+
+.header-controls h2 {
+  margin: 0;
+  color: white;
+  font-size: 24px;
+}
+
+.logout-button {
+  background-color: transparent;
+  border: 2px solid #1db954;
+  color: #1db954;
+  padding: 8px 16px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.logout-button:hover {
+  background-color: #1db954;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .header-controls {
+    flex-direction: column;
+    gap: 15px;
+    padding: 0 10px;
+  }
+  
+  .header-controls h2 {
+    font-size: 20px;
+  }
+}

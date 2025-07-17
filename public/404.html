@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Spotify Controller</title>
+    <script>
+        // GitHub Pages SPA redirect
+        // This script takes the current URL and redirects to the main page
+        // while preserving the path and query parameters
+        (function() {
+            var redirect = sessionStorage.redirect;
+            delete sessionStorage.redirect;
+            if (redirect && redirect !== location.href) {
+                history.replaceState(null, null, redirect);
+            }
+        })();
+        
+        // For callback handling, redirect to main page with query params
+        if (window.location.search.includes('code=')) {
+            window.location.href = '/spotify-web-test/' + window.location.search;
+        }
+    </script>
+</head>
+<body>
+    <div id="root"></div>
+    <script>
+        // If no redirect happened, load the main page
+        if (!sessionStorage.redirect) {
+            window.location.href = '/spotify-web-test/';
+        }
+    </script>
+</body>
+</html>
