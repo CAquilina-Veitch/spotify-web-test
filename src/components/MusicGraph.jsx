@@ -735,7 +735,7 @@ function MusicGraph() {
 
         {/* Right Panel */}
         <div className="right-panel">
-          <h3>{selectedObject.name}</h3>
+          <h3>{selectedObject ? selectedObject.name : 'Select an Object'}</h3>
           {selectedObject ? (
             <div className="object-details">
               {selectedObject.type === 'song' ? (
