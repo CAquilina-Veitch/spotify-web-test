@@ -11,7 +11,6 @@ function MusicGraph() {
   const [dragOver, setDragOver] = useState(false);
   const [deleteZoneActive, setDeleteZoneActive] = useState(false);
   const [circleRadius, setCircleRadius] = useState(2); // Default 2 units radius
-  const [affectedPlaylists, setAffectedPlaylists] = useState([]);
   const dragStartRef = useRef({ x: 0, y: 0 });
   const nextIdRef = useRef(1);
 
@@ -268,26 +267,6 @@ function MusicGraph() {
     }
   }, [selectedObject, handleWheel]);
 
-  // Calculate affected playlists when selection or radius changes
-  useEffect(() => {
-    if (!selectedObject || selectedObject.type !== 'song') {
-      setAffectedPlaylists([]);
-      return;
-    }
-
-    const radiusInPixels = circleRadius * 100; // Convert to SVG pixels
-    const playlists = objects.filter(obj => obj.type === 'playlist');
-    
-    const playlistsInRange = playlists.filter(playlist => {
-      const distance = Math.sqrt(
-        Math.pow(playlist.x - selectedObject.x, 2) + 
-        Math.pow(playlist.y - selectedObject.y, 2)
-      );
-      return distance <= radiusInPixels;
-    });
-
-    setAffectedPlaylists(playlistsInRange);
-  }, [selectedObject, circleRadius, objects]);
 
   // Create grid lines for the graph
   const createGridLines = () => {
@@ -404,12 +383,26 @@ function MusicGraph() {
               );
             })()}
 
-            {/* Connection lines to affected playlists - use live object position */}
+            {/* Connection lines to affected playlists - calculated in real-time */}
             {(() => {
               // Get current selected object with live position from objects array
               const currentSelectedObject = selectedObject ? objects.find(obj => obj.id === selectedObject.id) : null;
               
-              return currentSelectedObject && currentSelectedObject.type === 'song' && affectedPlaylists.map(playlist => (
+              if (!currentSelectedObject || currentSelectedObject.type !== 'song') return null;
+              
+              // Calculate affected playlists in real-time using live position
+              const radiusInPixels = circleRadius * 100;
+              const playlists = objects.filter(obj => obj.type === 'playlist');
+              
+              const playlistsInRange = playlists.filter(playlist => {
+                const distance = Math.sqrt(
+                  Math.pow(playlist.x - currentSelectedObject.x, 2) + 
+                  Math.pow(playlist.y - currentSelectedObject.y, 2)
+                );
+                return distance <= radiusInPixels;
+              });
+              
+              return playlistsInRange.map(playlist => (
                 <line
                   key={`connection-${playlist.id}`}
                   x1={currentSelectedObject.x}
@@ -576,18 +569,40 @@ function MusicGraph() {
                 </>
               )}
               
-              {/* Add to Playlists button - only show for songs with affected playlists */}
-              {selectedObject.type === 'song' && affectedPlaylists.length > 0 && (
-                <button 
-                  className="add-to-playlists-btn"
-                  onClick={() => {
-                    // TODO: Implement actual playlist addition
-                    console.log(`Adding "${selectedObject.name}" to ${affectedPlaylists.length} playlists:`, affectedPlaylists.map(p => p.name));
-                  }}
-                >
-                  Add to {affectedPlaylists.length} Playlist{affectedPlaylists.length !== 1 ? 's' : ''}
-                </button>
-              )}
+              {/* Add to Playlists button - calculate affected playlists in real-time */}
+              {(() => {
+                if (selectedObject.type !== 'song') return null;
+                
+                // Get current selected object with live position
+                const currentSelectedObject = objects.find(obj => obj.id === selectedObject.id);
+                if (!currentSelectedObject) return null;
+                
+                // Calculate affected playlists in real-time
+                const radiusInPixels = circleRadius * 100;
+                const playlists = objects.filter(obj => obj.type === 'playlist');
+                
+                const playlistsInRange = playlists.filter(playlist => {
+                  const distance = Math.sqrt(
+                    Math.pow(playlist.x - currentSelectedObject.x, 2) + 
+                    Math.pow(playlist.y - currentSelectedObject.y, 2)
+                  );
+                  return distance <= radiusInPixels;
+                });
+                
+                if (playlistsInRange.length === 0) return null;
+                
+                return (
+                  <button 
+                    className="add-to-playlists-btn"
+                    onClick={() => {
+                      // TODO: Implement actual playlist addition
+                      console.log(`Adding "${selectedObject.name}" to ${playlistsInRange.length} playlists:`, playlistsInRange.map(p => p.name));
+                    }}
+                  >
+                    Add to {playlistsInRange.length} Playlist{playlistsInRange.length !== 1 ? 's' : ''}
+                  </button>
+                );
+              })()}
             </div>
           ) : (
             <p className="no-selection">No object selected</p>
