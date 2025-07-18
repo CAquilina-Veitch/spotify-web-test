@@ -313,6 +313,58 @@ export async function createPlaylist(name, description = '') {
   }
 }
 
+// Check if track is already in playlist
+export async function isTrackInPlaylist(playlistId, trackId) {
+  try {
+    let offset = 0;
+    const limit = 50;
+    
+    while (true) {
+      const response = await makeSpotifyRequest(`/playlists/${playlistId}/tracks?limit=${limit}&offset=${offset}&fields=items(track(id))`);
+      
+      if (!response.ok) {
+        throw new Error('Failed to get playlist tracks');
+      }
+      
+      const data = await response.json();
+      
+      // Check if track is in this batch
+      const found = data.items.some(item => item.track && item.track.id === trackId);
+      if (found) {
+        return true;
+      }
+      
+      // If we've checked all tracks, break
+      if (data.items.length < limit) {
+        break;
+      }
+      
+      offset += limit;
+    }
+    
+    return false;
+  } catch (error) {
+    console.error('Error checking if track is in playlist:', error);
+    return false; // Assume not in playlist if error occurs
+  }
+}
+
+// Check which playlists contain a specific track
+export async function getPlaylistsContainingTrack(playlistIds, trackId) {
+  try {
+    const results = await Promise.allSettled(
+      playlistIds.map(playlistId => isTrackInPlaylist(playlistId, trackId))
+    );
+    
+    return playlistIds.filter((playlistId, index) => 
+      results[index].status === 'fulfilled' && results[index].value === true
+    );
+  } catch (error) {
+    console.error('Error checking playlists for track:', error);
+    return [];
+  }
+}
+
 // Logout function
 export function logout() {
   localStorage.removeItem('access_token');

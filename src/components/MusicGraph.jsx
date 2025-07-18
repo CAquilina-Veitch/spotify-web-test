@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { addTrackToPlaylist } from '../utils/spotify';
+import { addTrackToPlaylist, getPlaylistsContainingTrack } from '../utils/spotify';
 
 function MusicGraph() {
   const svgRef = useRef(null);
@@ -14,6 +14,7 @@ function MusicGraph() {
   const [circleRadius, setCircleRadius] = useState(2); // Default 2 units radius
   const [notification, setNotification] = useState(null);
   const [isAddingToPlaylists, setIsAddingToPlaylists] = useState(false);
+  const [playlistsContainingTrack, setPlaylistsContainingTrack] = useState([]);
   const dragStartRef = useRef({ x: 0, y: 0 });
   const nextIdRef = useRef(1);
 
@@ -326,6 +327,35 @@ function MusicGraph() {
     }
   }, [selectedObject, handleWheel]);
 
+  // Check which playlists contain the selected track
+  useEffect(() => {
+    const checkPlaylistsContainingTrack = async () => {
+      if (!selectedObject || selectedObject.type !== 'song' || !selectedObject.trackId) {
+        setPlaylistsContainingTrack([]);
+        return;
+      }
+
+      try {
+        const allPlaylistIds = objects
+          .filter(obj => obj.type === 'playlist' && obj.playlistId)
+          .map(obj => obj.playlistId);
+
+        if (allPlaylistIds.length === 0) {
+          setPlaylistsContainingTrack([]);
+          return;
+        }
+
+        const containingPlaylistIds = await getPlaylistsContainingTrack(allPlaylistIds, selectedObject.trackId);
+        setPlaylistsContainingTrack(containingPlaylistIds);
+      } catch (error) {
+        console.error('Error checking playlists:', error);
+        setPlaylistsContainingTrack([]);
+      }
+    };
+
+    checkPlaylistsContainingTrack();
+  }, [selectedObject, objects]);
+
   // Show notification and auto-hide after 5 seconds
   const showNotification = useCallback((message, type = 'info') => {
     setNotification({ message, type });
@@ -336,11 +366,23 @@ function MusicGraph() {
   const handleAddToPlaylists = async (selectedObject, playlistsInRange) => {
     if (!selectedObject || !selectedObject.uri || playlistsInRange.length === 0) return;
     
+    // Filter out playlists that already contain the track
+    const playlistsToAddTo = playlistsInRange.filter(playlist => 
+      !playlistsContainingTrack.includes(playlist.playlistId)
+    );
+    
+    const alreadyInCount = playlistsInRange.length - playlistsToAddTo.length;
+    
+    if (playlistsToAddTo.length === 0) {
+      showNotification(`📋 "${selectedObject.name}" is already in all ${alreadyInCount} playlist${alreadyInCount !== 1 ? 's' : ''}!`, 'info');
+      return;
+    }
+    
     setIsAddingToPlaylists(true);
     
     try {
       const results = await Promise.allSettled(
-        playlistsInRange.map(async (playlist) => {
+        playlistsToAddTo.map(async (playlist) => {
           if (!playlist.playlistId) {
             throw new Error(`Invalid playlist: ${playlist.name}`);
           }
@@ -351,10 +393,19 @@ function MusicGraph() {
       const successful = results.filter(r => r.status === 'fulfilled').length;
       const failed = results.filter(r => r.status === 'rejected').length;
       
+      let message = '';
       if (successful > 0 && failed === 0) {
-        showNotification(`✅ Added "${selectedObject.name}" to ${successful} playlist${successful !== 1 ? 's' : ''}!`, 'success');
+        message = `✅ Added "${selectedObject.name}" to ${successful} playlist${successful !== 1 ? 's' : ''}!`;
+        if (alreadyInCount > 0) {
+          message += ` (Already in ${alreadyInCount} other${alreadyInCount !== 1 ? 's' : ''})`;
+        }
+        showNotification(message, 'success');
       } else if (successful > 0 && failed > 0) {
-        showNotification(`⚠️ Added "${selectedObject.name}" to ${successful} playlist${successful !== 1 ? 's' : ''}, but ${failed} failed.`, 'warning');
+        message = `⚠️ Added to ${successful} playlist${successful !== 1 ? 's' : ''}, but ${failed} failed.`;
+        if (alreadyInCount > 0) {
+          message += ` (Already in ${alreadyInCount} other${alreadyInCount !== 1 ? 's' : ''})`;
+        }
+        showNotification(message, 'warning');
       } else {
         showNotification(`❌ Failed to add "${selectedObject.name}" to any playlists.`, 'error');
       }
@@ -514,6 +565,35 @@ function MusicGraph() {
                   strokeWidth="2"
                   strokeDasharray="5,5"
                   opacity="0.7"
+                  style={{ pointerEvents: 'none' }}
+                />
+              ));
+            })()}
+
+            {/* Red lines to playlists that already contain the selected track */}
+            {(() => {
+              const currentSelectedObject = selectedObject ? objects.find(obj => obj.id === selectedObject.id) : null;
+              
+              if (!currentSelectedObject || currentSelectedObject.type !== 'song' || !objects || objects.length === 0) return null;
+              
+              const playlists = objects.filter(obj => obj && obj.type === 'playlist');
+              
+              // Filter playlists that already contain this track
+              const playlistsContainingThisTrack = playlists.filter(playlist => 
+                playlist.playlistId && playlistsContainingTrack.includes(playlist.playlistId)
+              );
+              
+              return playlistsContainingThisTrack.map(playlist => (
+                <line
+                  key={`existing-${playlist.id}`}
+                  x1={currentSelectedObject.x}
+                  y1={currentSelectedObject.y}
+                  x2={playlist.x}
+                  y2={playlist.y}
+                  stroke="#f44336"
+                  strokeWidth="2"
+                  strokeDasharray="3,3"
+                  opacity="0.8"
                   style={{ pointerEvents: 'none' }}
                 />
               ));
@@ -697,7 +777,12 @@ function MusicGraph() {
                   return distance <= radiusInPixels;
                 });
                 
-                if (playlistsInRange.length === 0) return null;
+                // Filter out playlists that already contain the track
+                const playlistsToAddTo = playlistsInRange.filter(playlist => 
+                  !playlistsContainingTrack.includes(playlist.playlistId)
+                );
+                
+                if (playlistsToAddTo.length === 0) return null;
                 
                 return (
                   <button 
@@ -711,7 +796,7 @@ function MusicGraph() {
                         Adding...
                       </>
                     ) : (
-                      `Add to ${playlistsInRange.length} Playlist${playlistsInRange.length !== 1 ? 's' : ''}`
+                      `Add to ${playlistsToAddTo.length} Playlist${playlistsToAddTo.length !== 1 ? 's' : ''}`
                     )}
                   </button>
                 );
