@@ -87,27 +87,46 @@ function PlaylistPanel() {
             {searchFilter ? 'No playlists found' : 'No playlists available'}
           </div>
         ) : (
-          filteredPlaylists.map((playlist) => (
-            <div key={playlist.id} className="playlist-item">
-              <div className="playlist-image-container">
-                {playlist.images[0] ? (
-                  <img 
-                    src={playlist.images[0].url} 
-                    alt={playlist.name}
-                    className="playlist-image"
-                  />
-                ) : (
-                  <div className="placeholder-image">🎵</div>
-                )}
-              </div>
-              <div className="playlist-info">
-                <div className="playlist-name">{playlist.name}</div>
-                <div className="playlist-details">
-                  {playlist.tracks.total} tracks
+          filteredPlaylists.map((playlist) => {
+            const handleDragStart = (e) => {
+              const playlistData = {
+                id: playlist.id,
+                name: playlist.name,
+                image: playlist.images[0]?.url || null,
+                trackCount: playlist.tracks.total,
+                description: playlist.description
+              };
+              e.dataTransfer.setData('application/json', JSON.stringify(playlistData));
+              e.dataTransfer.effectAllowed = 'copy';
+            };
+
+            return (
+              <div 
+                key={playlist.id} 
+                className="playlist-item"
+                draggable={true}
+                onDragStart={handleDragStart}
+              >
+                <div className="playlist-image-container">
+                  {playlist.images[0] ? (
+                    <img 
+                      src={playlist.images[0].url} 
+                      alt={playlist.name}
+                      className="playlist-image"
+                    />
+                  ) : (
+                    <div className="placeholder-image">🎵</div>
+                  )}
+                </div>
+                <div className="playlist-info">
+                  <div className="playlist-name">{playlist.name}</div>
+                  <div className="playlist-details">
+                    {playlist.tracks.total} tracks
+                  </div>
                 </div>
               </div>
-            </div>
-          ))
+            );
+          })
         )}
       </div>
     </div>

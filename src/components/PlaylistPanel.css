@@ -55,12 +55,17 @@
   margin-bottom: 8px;
   background-color: #2a2a2a;
   border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.2s;
+  cursor: grab;
+  transition: all 0.2s;
 }
 
 .playlist-item:hover {
   background-color: #333;
+  transform: scale(1.02);
+}
+
+.playlist-item:active {
+  cursor: grabbing;
 }
 
 .playlist-image-container {

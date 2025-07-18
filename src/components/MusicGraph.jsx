@@ -8,6 +8,7 @@ function MusicGraph() {
   const [draggedObject, setDraggedObject] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const [dragOver, setDragOver] = useState(false);
+  const [deleteZoneActive, setDeleteZoneActive] = useState(false);
   const dragStartRef = useRef({ x: 0, y: 0 });
   const nextIdRef = useRef(1);
 
@@ -33,14 +34,14 @@ function MusicGraph() {
   // Convert SVG coordinates to happiness/intensity values
   const svgToValues = (x, y) => {
     const happiness = Math.round(Math.max(0, Math.min(10, ((x - 100) / 1000) * 10)));
-    const intensity = Math.round(Math.max(0, Math.min(10, 10 - ((y - 100) / 670) * 10)));
+    const intensity = Math.round(Math.max(0, Math.min(10, 10 - ((y - 100) / 620) * 10)));
     return { happiness, intensity };
   };
 
   // Convert happiness/intensity values to SVG coordinates  
   const valuesToSvg = (happiness, intensity) => {
     const x = 100 + (happiness / 10) * 1000;
-    const y = 100 + ((10 - intensity) / 10) * 670;
+    const y = 100 + ((10 - intensity) / 10) * 620;
     return { x, y };
   };
 
@@ -60,6 +61,24 @@ function MusicGraph() {
     };
     setObjects([...objects, newSong]);
     setSelectedObject(newSong);
+  };
+
+  // Add a new playlist from drop
+  const addPlaylistFromDrop = (playlistData, x, y) => {
+    const newPlaylist = {
+      id: `playlist-${nextIdRef.current++}`,
+      type: 'playlist',
+      playlistId: playlistData.id,
+      name: playlistData.name,
+      image: playlistData.image,
+      trackCount: playlistData.trackCount,
+      description: playlistData.description,
+      x: x,
+      y: y,
+      ...svgToValues(x, y)
+    };
+    setObjects([...objects, newPlaylist]);
+    setSelectedObject(newPlaylist);
   };
 
   // Add a new playlist square
@@ -100,6 +119,11 @@ function MusicGraph() {
     dragStartRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
   };
 
+  // Check if point is in delete zone (bottom area of SVG)
+  const isInDeleteZone = (x, y) => {
+    return y > 720; // Bottom 80px of the 800px height SVG
+  };
+
   // Handle mouse move during drag
   const handleMouseMove = useCallback((e) => {
     if (!dragging || !draggedObject || !svgRef.current) return;
@@ -111,9 +135,13 @@ function MusicGraph() {
     const x = (e.clientX - rect.left) * scaleX;
     const y = (e.clientY - rect.top) * scaleY;
     
-    // Constrain to graph area
+    // Check if in delete zone
+    const inDeleteZone = isInDeleteZone(x, y);
+    setDeleteZoneActive(inDeleteZone);
+    
+    // Constrain to graph area (but allow delete zone)
     const constrainedX = Math.max(140, Math.min(1060, x));
-    const constrainedY = Math.max(140, Math.min(730, y));
+    const constrainedY = Math.max(140, Math.min(780, y)); // Allow dragging to delete zone
     
     // Update object position
     setObjects(prevObjects => 
@@ -127,9 +155,18 @@ function MusicGraph() {
 
   // Handle mouse up - end drag
   const handleMouseUp = useCallback(() => {
+    if (dragging && draggedObject && deleteZoneActive) {
+      // Delete the object if dropped in delete zone
+      setObjects(prevObjects => 
+        prevObjects.filter(obj => obj.id !== draggedObject.id)
+      );
+      setSelectedObject(null);
+    }
+    
     setDragging(false);
     setDraggedObject(null);
-  }, []);
+    setDeleteZoneActive(false);
+  }, [dragging, draggedObject, deleteZoneActive]);
 
   // Handle drag and drop events
   const handleDragOver = (e) => {
@@ -150,7 +187,7 @@ function MusicGraph() {
     setDragOver(false);
     
     try {
-      const songData = JSON.parse(e.dataTransfer.getData('application/json'));
+      const droppedData = JSON.parse(e.dataTransfer.getData('application/json'));
       
       // Get drop position relative to SVG
       const rect = svgRef.current.getBoundingClientRect();
@@ -160,13 +197,25 @@ function MusicGraph() {
       const x = (e.clientX - rect.left) * scaleX;
       const y = (e.clientY - rect.top) * scaleY;
       
+      // Don't allow drops in delete zone
+      if (isInDeleteZone(x, y)) {
+        return;
+      }
+      
       // Constrain to graph area
       const constrainedX = Math.max(140, Math.min(1060, x));
-      const constrainedY = Math.max(140, Math.min(730, y));
+      const constrainedY = Math.max(140, Math.min(680, y));
       
-      addSongFromDrop(songData, constrainedX, constrainedY);
+      // Determine if it's a song or playlist based on the data structure
+      if (droppedData.artist !== undefined) {
+        // It's a song (has artist property)
+        addSongFromDrop(droppedData, constrainedX, constrainedY);
+      } else if (droppedData.trackCount !== undefined) {
+        // It's a playlist (has trackCount property)
+        addPlaylistFromDrop(droppedData, constrainedX, constrainedY);
+      }
     } catch (error) {
-      console.error('Failed to parse dropped song data:', error);
+      console.error('Failed to parse dropped data:', error);
     }
   };
 
@@ -193,7 +242,7 @@ function MusicGraph() {
           x1={100 + i * 100}
           y1={100}
           x2={100 + i * 100}
-          y2={770}
+          y2={720}
           stroke="#404040"
           strokeWidth="1"
           opacity="0.5"
@@ -206,9 +255,9 @@ function MusicGraph() {
         <line
           key={`h-${i}`}
           x1={100}
-          y1={100 + i * 67}
+          y1={100 + i * 62}
           x2={1100}
-          y2={100 + i * 67}
+          y2={100 + i * 62}
           stroke="#404040"
           strokeWidth="1"
           opacity="0.5"
@@ -252,16 +301,38 @@ function MusicGraph() {
             <rect width="1200" height="800" fill="#1a1a1a" />
             
             {/* Graph area background */}
-            <rect x="100" y="100" width="1000" height="670" fill="#2a2a2a" stroke="#404040" strokeWidth="2" />
+            <rect x="100" y="100" width="1000" height="620" fill="#2a2a2a" stroke="#404040" strokeWidth="2" />
+            
+            {/* Delete zone */}
+            <rect 
+              x="100" 
+              y="720" 
+              width="1000" 
+              height="50" 
+              fill={deleteZoneActive ? "#8B0000" : "#3a1a1a"}
+              stroke={deleteZoneActive ? "#ff4444" : "#555"}
+              strokeWidth="2"
+              opacity="0.8"
+            />
+            <text
+              x="600"
+              y="745"
+              textAnchor="middle"
+              fill={deleteZoneActive ? "#fff" : "#888"}
+              fontSize="14"
+              fontWeight="bold"
+            >
+              🗑️ Drop here to delete
+            </text>
             
             {/* Grid lines */}
             {createGridLines()}
             
             {/* Axis labels */}
-            <text x="600" y="790" textAnchor="middle" fill="#b3b3b3" fontSize="16" fontWeight="bold">
+            <text x="600" y="710" textAnchor="middle" fill="#b3b3b3" fontSize="16" fontWeight="bold">
               Happiness →
             </text>
-            <text x="50" y="435" textAnchor="middle" fill="#b3b3b3" fontSize="16" fontWeight="bold" transform="rotate(-90 50 435)">
+            <text x="50" y="410" textAnchor="middle" fill="#b3b3b3" fontSize="16" fontWeight="bold" transform="rotate(-90 50 410)">
               Intensity →
             </text>
             
@@ -271,7 +342,7 @@ function MusicGraph() {
                 <text x={100 + i * 100} y="95" textAnchor="middle" fill="#b3b3b3" fontSize="12">
                   {i}
                 </text>
-                <text x="85" y={770 - i * 67 + 5} textAnchor="middle" fill="#b3b3b3" fontSize="12">
+                <text x="85" y={720 - i * 62 + 5} textAnchor="middle" fill="#b3b3b3" fontSize="12">
                   {i}
                 </text>
               </g>
@@ -280,6 +351,9 @@ function MusicGraph() {
             {/* Render all objects */}
             {objects.map(obj => {
               if (obj.type === 'song') {
+                // Truncate song name if too long
+                const displayName = obj.name.length > 15 ? obj.name.substring(0, 15) + '...' : obj.name;
+                
                 return (
                   <g key={obj.id}>
                     {/* Song with album artwork */}
@@ -319,24 +393,81 @@ function MusicGraph() {
                       strokeWidth="3"
                       style={{ pointerEvents: 'none' }}
                     />
+                    {/* Song name label */}
+                    <text
+                      x={obj.x}
+                      y={obj.y + 45}
+                      textAnchor="middle"
+                      fill="#b3b3b3"
+                      fontSize="11"
+                      fontFamily="Arial, sans-serif"
+                      style={{ pointerEvents: 'none', userSelect: 'none' }}
+                    >
+                      {displayName}
+                    </text>
                   </g>
                 );
               } else if (obj.type === 'playlist') {
+                // Truncate playlist name if too long
+                const displayName = obj.name.length > 15 ? obj.name.substring(0, 15) + '...' : obj.name;
+                
                 return (
                   <g key={obj.id}>
+                    {/* Playlist with cover art or solid color */}
+                    <defs>
+                      <clipPath id={`playlist-clip-${obj.id}`}>
+                        <rect x={obj.x - 30} y={obj.y - 30} width="60" height="60" rx="10" />
+                      </clipPath>
+                    </defs>
+                    {obj.image ? (
+                      <image
+                        x={obj.x - 30}
+                        y={obj.y - 30}
+                        width="60"
+                        height="60"
+                        href={obj.image}
+                        clipPath={`url(#playlist-clip-${obj.id})`}
+                        opacity={editMode ? 1 : 0.6}
+                        style={{ cursor: editMode ? 'grab' : 'pointer' }}
+                        onMouseDown={(e) => handleMouseDown(e, obj)}
+                      />
+                    ) : (
+                      <rect
+                        x={obj.x - 30}
+                        y={obj.y - 30}
+                        width="60"
+                        height="60"
+                        rx="10"
+                        fill="#e74c3c"
+                        opacity={editMode ? 1 : 0.6}
+                        style={{ cursor: editMode ? 'grab' : 'pointer' }}
+                        onMouseDown={(e) => handleMouseDown(e, obj)}
+                      />
+                    )}
+                    {/* Selection border */}
                     <rect
                       x={obj.x - 30}
                       y={obj.y - 30}
                       width="60"
                       height="60"
                       rx="10"
-                      fill="#e74c3c"
-                      opacity={editMode ? 1 : 0.6}
+                      fill="none"
                       stroke={selectedObject?.id === obj.id ? "#fff" : "none"}
                       strokeWidth="3"
-                      style={{ cursor: editMode ? 'grab' : 'pointer' }}
-                      onMouseDown={(e) => handleMouseDown(e, obj)}
+                      style={{ pointerEvents: 'none' }}
                     />
+                    {/* Playlist name label */}
+                    <text
+                      x={obj.x}
+                      y={obj.y + 45}
+                      textAnchor="middle"
+                      fill="#b3b3b3"
+                      fontSize="11"
+                      fontFamily="Arial, sans-serif"
+                      style={{ pointerEvents: 'none', userSelect: 'none' }}
+                    >
+                      {displayName}
+                    </text>
                   </g>
                 );
               }
@@ -362,6 +493,7 @@ function MusicGraph() {
                 <>
                   <p><strong>Type:</strong> Playlist</p>
                   <p><strong>Name:</strong> {selectedObject.name}</p>
+                  <p><strong>Tracks:</strong> {selectedObject.trackCount}</p>
                   <p><strong>Happiness:</strong> {selectedObject.happiness}</p>
                   <p><strong>Intensity:</strong> {selectedObject.intensity}</p>
                 </>
