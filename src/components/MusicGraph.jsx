@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect, useRef } from 'react';
 
 function MusicGraph() {
   const svgRef = useRef(null);
+  const deleteZoneRef = useRef(null);
   const [objects, setObjects] = useState([]);
   const [selectedObject, setSelectedObject] = useState(null);
   const [dragging, setDragging] = useState(false);
@@ -51,6 +52,14 @@ function MusicGraph() {
 
   // Add a new song from drop
   const addSongFromDrop = (songData, x, y) => {
+    // Check if song already exists
+    const existingSong = objects.find(obj => obj.type === 'song' && obj.trackId === songData.id);
+    if (existingSong) {
+      // Select existing song instead of adding duplicate
+      setSelectedObject(existingSong);
+      return;
+    }
+
     const newSong = {
       id: `song-${nextIdRef.current++}`,
       type: 'song',
@@ -85,19 +94,6 @@ function MusicGraph() {
     setSelectedObject(newPlaylist);
   };
 
-  // Add a new playlist square
-  const addPlaylist = () => {
-    const newPlaylist = {
-      id: `playlist-${nextIdRef.current++}`,
-      type: 'playlist',
-      name: `Playlist ${nextIdRef.current - 1}`,
-      x: 600,
-      y: 435,
-      ...svgToValues(600, 435)
-    };
-    setObjects([...objects, newPlaylist]);
-    setSelectedObject(newPlaylist);
-  };
 
   // Handle object click
   const handleObjectClick = (object) => {
@@ -123,38 +119,44 @@ function MusicGraph() {
     dragStartRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
   };
 
-  // Check if point is in delete zone (bottom area of SVG)
-  const isInDeleteZone = (x, y) => {
-    return y > 720; // Bottom 80px of the 800px height SVG
+  // Check if mouse is over the delete zone in right panel
+  const isInDeleteZone = (clientX, clientY) => {
+    if (!deleteZoneRef.current) return false;
+    const rect = deleteZoneRef.current.getBoundingClientRect();
+    return clientX >= rect.left && clientX <= rect.right && 
+           clientY >= rect.top && clientY <= rect.bottom;
   };
 
   // Handle mouse move during drag
   const handleMouseMove = useCallback((e) => {
     if (!dragging || !draggedObject || !svgRef.current) return;
     
-    const rect = svgRef.current.getBoundingClientRect();
-    const scaleX = 1200 / rect.width;
-    const scaleY = 800 / rect.height;
-    
-    const x = (e.clientX - rect.left) * scaleX;
-    const y = (e.clientY - rect.top) * scaleY;
-    
-    // Check if in delete zone
-    const inDeleteZone = isInDeleteZone(x, y);
+    // Check if over delete zone
+    const inDeleteZone = isInDeleteZone(e.clientX, e.clientY);
     setDeleteZoneActive(inDeleteZone);
     
-    // Constrain to graph area (but allow delete zone)
-    const constrainedX = Math.max(140, Math.min(1060, x));
-    const constrainedY = Math.max(140, Math.min(780, y)); // Allow dragging to delete zone
-    
-    // Update object position
-    setObjects(prevObjects => 
-      prevObjects.map(obj => 
-        obj.id === draggedObject.id 
-          ? { ...obj, x: constrainedX, y: constrainedY, ...svgToValues(constrainedX, constrainedY) }
-          : obj
-      )
-    );
+    // Only update position if not over delete zone
+    if (!inDeleteZone) {
+      const rect = svgRef.current.getBoundingClientRect();
+      const scaleX = 1200 / rect.width;
+      const scaleY = 800 / rect.height;
+      
+      const x = (e.clientX - rect.left) * scaleX;
+      const y = (e.clientY - rect.top) * scaleY;
+      
+      // Constrain to graph area
+      const constrainedX = Math.max(140, Math.min(1060, x));
+      const constrainedY = Math.max(140, Math.min(680, y));
+      
+      // Update object position
+      setObjects(prevObjects => 
+        prevObjects.map(obj => 
+          obj.id === draggedObject.id 
+            ? { ...obj, x: constrainedX, y: constrainedY, ...svgToValues(constrainedX, constrainedY) }
+            : obj
+        )
+      );
+    }
   }, [dragging, draggedObject]);
 
   // Handle mouse up - end drag
@@ -200,11 +202,6 @@ function MusicGraph() {
       
       const x = (e.clientX - rect.left) * scaleX;
       const y = (e.clientY - rect.top) * scaleY;
-      
-      // Don't allow drops in delete zone
-      if (isInDeleteZone(x, y)) {
-        return;
-      }
       
       // Constrain to graph area
       const constrainedX = Math.max(140, Math.min(1060, x));
@@ -276,7 +273,6 @@ function MusicGraph() {
       <div className="graph-header">
         <h2>🎵 Interactive Positioning Tool</h2>
         <div className="graph-controls">
-          <button onClick={addPlaylist}>Add Playlist</button>
           <button 
             onClick={() => setEditMode(!editMode)}
             className={editMode ? 'edit-active' : ''}
@@ -284,7 +280,7 @@ function MusicGraph() {
             {editMode ? 'Exit Edit Mode' : 'Edit Playlists'}
           </button>
           <div className="drop-hint">
-            💡 Drag the currently playing song here to add it to the graph
+            💡 Drag songs and playlists here to add them to the graph
           </div>
         </div>
       </div>
@@ -307,27 +303,6 @@ function MusicGraph() {
             {/* Graph area background */}
             <rect x="100" y="100" width="1000" height="620" fill="#2a2a2a" stroke="#404040" strokeWidth="2" />
             
-            {/* Delete zone */}
-            <rect 
-              x="100" 
-              y="720" 
-              width="1000" 
-              height="50" 
-              fill={deleteZoneActive ? "#8B0000" : "#3a1a1a"}
-              stroke={deleteZoneActive ? "#ff4444" : "#555"}
-              strokeWidth="2"
-              opacity="0.8"
-            />
-            <text
-              x="600"
-              y="745"
-              textAnchor="middle"
-              fill={deleteZoneActive ? "#fff" : "#888"}
-              fontSize="14"
-              fontWeight="bold"
-            >
-              🗑️ Drop here to delete
-            </text>
             
             {/* Grid lines */}
             {createGridLines()}
@@ -505,6 +480,16 @@ function MusicGraph() {
             </div>
           ) : (
             <p className="no-selection">No object selected</p>
+          )}
+          
+          {/* Delete Zone - only show when object is selected */}
+          {selectedObject && (
+            <div 
+              ref={deleteZoneRef}
+              className={`delete-zone ${deleteZoneActive ? 'active' : ''}`}
+            >
+              🗑️ Drag here to delete
+            </div>
           )}
         </div>
       </div>
