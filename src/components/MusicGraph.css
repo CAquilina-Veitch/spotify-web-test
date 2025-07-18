@@ -151,6 +151,25 @@
   box-shadow: 0 0 10px rgba(255, 68, 68, 0.3);
 }
 
+.add-to-playlists-btn {
+  width: 100%;
+  margin-top: 15px;
+  padding: 12px;
+  background-color: #1db954;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.add-to-playlists-btn:hover {
+  background-color: #1ed760;
+  transform: scale(1.05);
+}
+
 /* Drag interaction styles */
 .music-scatter-plot circle:hover {
   filter: brightness(1.2);

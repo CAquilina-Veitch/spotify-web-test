@@ -10,6 +10,8 @@ function MusicGraph() {
   const [editMode, setEditMode] = useState(false);
   const [dragOver, setDragOver] = useState(false);
   const [deleteZoneActive, setDeleteZoneActive] = useState(false);
+  const [circleRadius, setCircleRadius] = useState(2); // Default 2 units radius
+  const [affectedPlaylists, setAffectedPlaylists] = useState([]);
   const dragStartRef = useRef({ x: 0, y: 0 });
   const nextIdRef = useRef(1);
 
@@ -232,6 +234,61 @@ function MusicGraph() {
     }
   }, [dragging, handleMouseMove, handleMouseUp]);
 
+  // Handle wheel events for radius adjustment
+  const handleWheel = useCallback((e) => {
+    if (!selectedObject || selectedObject.type !== 'song') return;
+    
+    // Check if mouse is over the selected song
+    const rect = svgRef.current.getBoundingClientRect();
+    const scaleX = 1200 / rect.width;
+    const scaleY = 800 / rect.height;
+    
+    const mouseX = (e.clientX - rect.left) * scaleX;
+    const mouseY = (e.clientY - rect.top) * scaleY;
+    
+    const distance = Math.sqrt(
+      Math.pow(mouseX - selectedObject.x, 2) + 
+      Math.pow(mouseY - selectedObject.y, 2)
+    );
+    
+    // Only adjust radius if mouse is over the selected song (within 50px)
+    if (distance <= 50) {
+      e.preventDefault();
+      const delta = e.deltaY > 0 ? -0.2 : 0.2; // Scroll down = smaller, up = bigger
+      setCircleRadius(prev => Math.max(0.5, Math.min(8, prev + delta))); // Limit 0.5-8 units
+    }
+  }, [selectedObject]);
+
+  // Add wheel event listener for radius adjustment
+  useEffect(() => {
+    const svgElement = svgRef.current;
+    if (svgElement && selectedObject && selectedObject.type === 'song') {
+      svgElement.addEventListener('wheel', handleWheel, { passive: false });
+      return () => svgElement.removeEventListener('wheel', handleWheel);
+    }
+  }, [selectedObject, handleWheel]);
+
+  // Calculate affected playlists when selection or radius changes
+  useEffect(() => {
+    if (!selectedObject || selectedObject.type !== 'song') {
+      setAffectedPlaylists([]);
+      return;
+    }
+
+    const radiusInPixels = circleRadius * 100; // Convert to SVG pixels
+    const playlists = objects.filter(obj => obj.type === 'playlist');
+    
+    const playlistsInRange = playlists.filter(playlist => {
+      const distance = Math.sqrt(
+        Math.pow(playlist.x - selectedObject.x, 2) + 
+        Math.pow(playlist.y - selectedObject.y, 2)
+      );
+      return distance <= radiusInPixels;
+    });
+
+    setAffectedPlaylists(playlistsInRange);
+  }, [selectedObject, circleRadius, objects]);
+
   // Create grid lines for the graph
   const createGridLines = () => {
     const lines = [];
@@ -327,6 +384,37 @@ function MusicGraph() {
               </g>
             ))}
             
+            {/* Selection circle for songs */}
+            {selectedObject && selectedObject.type === 'song' && (
+              <circle
+                cx={selectedObject.x}
+                cy={selectedObject.y}
+                r={circleRadius * 100} // Convert units to pixels (1 unit = 100px)
+                fill="none"
+                stroke="#1db954"
+                strokeWidth="2"
+                strokeDasharray="10,5"
+                opacity="0.6"
+                style={{ pointerEvents: 'none' }}
+              />
+            )}
+
+            {/* Connection lines to affected playlists */}
+            {selectedObject && selectedObject.type === 'song' && affectedPlaylists.map(playlist => (
+              <line
+                key={`connection-${playlist.id}`}
+                x1={selectedObject.x}
+                y1={selectedObject.y}
+                x2={playlist.x}
+                y2={playlist.y}
+                stroke="#1db954"
+                strokeWidth="2"
+                strokeDasharray="5,5"
+                opacity="0.7"
+                style={{ pointerEvents: 'none' }}
+              />
+            ))}
+
             {/* Render all objects */}
             {objects.map(obj => {
               if (obj.type === 'song') {
@@ -476,6 +564,19 @@ function MusicGraph() {
                   <p><strong>Happiness:</strong> {selectedObject.happiness}</p>
                   <p><strong>Intensity:</strong> {selectedObject.intensity}</p>
                 </>
+              )}
+              
+              {/* Add to Playlists button - only show for songs with affected playlists */}
+              {selectedObject.type === 'song' && affectedPlaylists.length > 0 && (
+                <button 
+                  className="add-to-playlists-btn"
+                  onClick={() => {
+                    // TODO: Implement actual playlist addition
+                    console.log(`Adding "${selectedObject.name}" to ${affectedPlaylists.length} playlists:`, affectedPlaylists.map(p => p.name));
+                  }}
+                >
+                  Add to {affectedPlaylists.length} Playlist{affectedPlaylists.length !== 1 ? 's' : ''}
+                </button>
               )}
             </div>
           ) : (
