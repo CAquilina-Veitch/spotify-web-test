@@ -4,7 +4,7 @@
   padding: 20px;
   margin: 20px auto;
   width: 95%;
-  max-width: 1400px;
+  max-width: 1600px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
@@ -17,12 +17,6 @@
   color: white;
   margin: 0 0 10px 0;
   font-size: 28px;
-}
-
-.graph-header p {
-  color: #b3b3b3;
-  margin: 0 0 15px 0;
-  font-size: 16px;
 }
 
 .graph-controls {
@@ -53,32 +47,26 @@
   cursor: not-allowed;
 }
 
-
-.current-values {
-  color: #1db954;
-  font-weight: bold;
-  font-size: 14px;
-  background-color: rgba(29, 185, 84, 0.1);
-  padding: 5px 10px;
-  border-radius: 15px;
+.graph-controls button.edit-active {
+  background-color: #e74c3c;
 }
 
-.message {
-  color: #1db954;
-  font-weight: bold;
-  font-size: 14px;
-  margin-top: 10px;
-  padding: 8px 16px;
-  background-color: rgba(29, 185, 84, 0.1);
-  border-radius: 20px;
-  display: inline-block;
+.graph-controls button.edit-active:hover {
+  background-color: #c0392b;
+}
+
+.graph-layout {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .graph-container {
+  flex: 0 1 auto;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
 }
 
 .music-scatter-plot {
@@ -90,12 +78,46 @@
   height: auto;
 }
 
-/* Drag interaction styles */
-.music-scatter-plot circle {
-  /* No transition for instant movement */
+.right-panel {
+  flex: 0 0 250px;
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
+.right-panel h3 {
+  color: #1db954;
+  margin: 0 0 15px 0;
+  font-size: 20px;
+}
+
+.object-details {
+  color: #b3b3b3;
+}
+
+.object-details p {
+  margin: 8px 0;
+  font-size: 14px;
+}
+
+.object-details strong {
+  color: white;
+  margin-right: 8px;
+}
+
+.no-selection {
+  color: #666;
+  font-style: italic;
+  font-size: 14px;
+}
+
+/* Drag interaction styles */
 .music-scatter-plot circle:hover {
+  filter: brightness(1.2);
+}
+
+.music-scatter-plot rect:hover {
   filter: brightness(1.2);
 }
 
@@ -105,6 +127,19 @@
 }
 
 /* Mobile responsive */
+@media (max-width: 1400px) {
+  .graph-layout {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .right-panel {
+    width: 100%;
+    max-width: 600px;
+    flex: 0 0 auto;
+  }
+}
+
 @media (max-width: 768px) {
   .music-graph {
     margin: 20px 10px;
@@ -116,17 +151,9 @@
     font-size: 24px;
   }
 
-  .graph-header p {
-    font-size: 14px;
-  }
-
   .graph-controls {
     flex-direction: column;
     gap: 10px;
-  }
-
-  .current-values {
-    font-size: 12px;
   }
 
   .music-scatter-plot {
@@ -134,7 +161,6 @@
     height: 400px;
   }
 
-  /* Make playlist zones larger on mobile */
   .music-scatter-plot text {
     font-size: 12px;
   }
@@ -149,18 +175,9 @@
     font-size: 20px;
   }
 
-  .graph-header p {
-    font-size: 12px;
-  }
-
   .graph-controls button {
     padding: 8px 16px;
     font-size: 12px;
-  }
-
-  .current-values {
-    font-size: 11px;
-    padding: 4px 8px;
   }
 
   .music-scatter-plot {
@@ -169,12 +186,5 @@
 
   .music-scatter-plot text {
     font-size: 10px;
-  }
-}
-
-/* Touch devices - larger touch targets */
-@media (hover: none) {
-  .music-scatter-plot circle {
-    r: 40; /* Larger touch target */
   }
 }

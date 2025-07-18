@@ -2,12 +2,8 @@ import { useState, useEffect } from 'react'
 import './App.css'
 import Callback from './components/Callback'
 import NowPlaying from './components/NowPlaying'
-import Playlists from './components/Playlists'
-import Search from './components/Search'
 import MusicGraph from './components/MusicGraph'
 import './components/NowPlaying.css'
-import './components/Playlists.css'
-import './components/Search.css'
 import './components/MusicGraph.css'
 import { authenticateSpotify, getStoredAccessToken, logout, getAccessToken } from './utils/spotify'
 
@@ -83,10 +79,8 @@ function App() {
                 Logout
               </button>
             </div>
-            <MusicGraph />
             <NowPlaying />
-            <Search />
-            <Playlists />
+            <MusicGraph />
           </div>
         )}
       </header>
