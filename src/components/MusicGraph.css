@@ -144,6 +144,24 @@
   pointer-events: none;
 }
 
+/* Prevent drag ghost images and visual trails */
+.music-scatter-plot image,
+.music-scatter-plot circle,
+.music-scatter-plot rect {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+}
+
+.music-scatter-plot {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 /* Mobile responsive */
 @media (max-width: 1400px) {
   .graph-layout {

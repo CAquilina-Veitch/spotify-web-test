@@ -20,7 +20,11 @@ function MusicGraph() {
       setObjects(parsedObjects);
       // Update nextId to avoid conflicts
       if (parsedObjects.length > 0) {
-        const maxId = Math.max(...parsedObjects.map(obj => parseInt(obj.id)));
+        const maxId = Math.max(...parsedObjects.map(obj => {
+          // Extract numeric part from IDs like "song-1", "playlist-2"
+          const match = obj.id.match(/\d+$/);
+          return match ? parseInt(match[0]) : 0;
+        }));
         nextIdRef.current = maxId + 1;
       }
     }
