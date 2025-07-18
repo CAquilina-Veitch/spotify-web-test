@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
+import { addTrackToPlaylist } from '../utils/spotify';
 
 function MusicGraph() {
   const svgRef = useRef(null);
@@ -11,6 +12,8 @@ function MusicGraph() {
   const [dragOver, setDragOver] = useState(false);
   const [deleteZoneActive, setDeleteZoneActive] = useState(false);
   const [circleRadius, setCircleRadius] = useState(2); // Default 2 units radius
+  const [notification, setNotification] = useState(null);
+  const [isAddingToPlaylists, setIsAddingToPlaylists] = useState(false);
   const dragStartRef = useRef({ x: 0, y: 0 });
   const nextIdRef = useRef(1);
 
@@ -120,6 +123,26 @@ function MusicGraph() {
     dragStartRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
   };
 
+  // Handle touch start on object (mobile support)
+  const handleTouchStart = (e, object) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    // Only allow dragging songs always, playlists only in edit mode
+    if (object.type === 'playlist' && !editMode) {
+      handleObjectClick(object);
+      return;
+    }
+    
+    setDragging(true);
+    setDraggedObject(object);
+    handleObjectClick(object);
+    
+    const rect = svgRef.current.getBoundingClientRect();
+    const touch = e.touches[0];
+    dragStartRef.current = { x: touch.clientX - rect.left, y: touch.clientY - rect.top };
+  };
+
   // Check if mouse is over the delete zone in right panel
   const isInDeleteZone = (clientX, clientY) => {
     if (!deleteZoneRef.current) return false;
@@ -128,12 +151,12 @@ function MusicGraph() {
            clientY >= rect.top && clientY <= rect.bottom;
   };
 
-  // Handle mouse move during drag
-  const handleMouseMove = useCallback((e) => {
+  // Handle mouse/touch move during drag
+  const handleMove = useCallback((clientX, clientY) => {
     if (!dragging || !draggedObject || !svgRef.current) return;
     
     // Check if over delete zone
-    const inDeleteZone = isInDeleteZone(e.clientX, e.clientY);
+    const inDeleteZone = isInDeleteZone(clientX, clientY);
     setDeleteZoneActive(inDeleteZone);
     
     // Only update position if not over delete zone
@@ -142,8 +165,8 @@ function MusicGraph() {
       const scaleX = 1200 / rect.width;
       const scaleY = 800 / rect.height;
       
-      const x = (e.clientX - rect.left) * scaleX;
-      const y = (e.clientY - rect.top) * scaleY;
+      const x = (clientX - rect.left) * scaleX;
+      const y = (clientY - rect.top) * scaleY;
       
       // Constrain to graph area
       const constrainedX = Math.max(140, Math.min(1060, x));
@@ -160,8 +183,36 @@ function MusicGraph() {
     }
   }, [dragging, draggedObject]);
 
+  // Handle mouse move during drag
+  const handleMouseMove = useCallback((e) => {
+    handleMove(e.clientX, e.clientY);
+  }, [handleMove]);
+
+  // Handle touch move during drag (mobile support)
+  const handleTouchMove = useCallback((e) => {
+    if (e.touches && e.touches[0]) {
+      e.preventDefault(); // Prevent scrolling
+      handleMove(e.touches[0].clientX, e.touches[0].clientY);
+    }
+  }, [handleMove]);
+
   // Handle mouse up - end drag
   const handleMouseUp = useCallback(() => {
+    if (dragging && draggedObject && deleteZoneActive) {
+      // Delete the object if dropped in delete zone
+      setObjects(prevObjects => 
+        prevObjects.filter(obj => obj.id !== draggedObject.id)
+      );
+      setSelectedObject(null);
+    }
+    
+    setDragging(false);
+    setDraggedObject(null);
+    setDeleteZoneActive(false);
+  }, [dragging, draggedObject, deleteZoneActive]);
+
+  // Handle touch end - end drag (mobile support)
+  const handleTouchEnd = useCallback(() => {
     if (dragging && draggedObject && deleteZoneActive) {
       // Delete the object if dropped in delete zone
       setObjects(prevObjects => 
@@ -221,17 +272,25 @@ function MusicGraph() {
     }
   };
 
-  // Add global mouse event listeners when dragging
+  // Add global mouse and touch event listeners when dragging
   useEffect(() => {
     if (dragging) {
+      // Mouse events
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mouseup', handleMouseUp);
+      
+      // Touch events (mobile support)
+      document.addEventListener('touchmove', handleTouchMove, { passive: false });
+      document.addEventListener('touchend', handleTouchEnd);
+      
       return () => {
         document.removeEventListener('mousemove', handleMouseMove);
         document.removeEventListener('mouseup', handleMouseUp);
+        document.removeEventListener('touchmove', handleTouchMove);
+        document.removeEventListener('touchend', handleTouchEnd);
       };
     }
-  }, [dragging, handleMouseMove, handleMouseUp]);
+  }, [dragging, handleMouseMove, handleMouseUp, handleTouchMove, handleTouchEnd]);
 
   // Handle wheel events for radius adjustment
   const handleWheel = useCallback((e) => {
@@ -267,6 +326,45 @@ function MusicGraph() {
     }
   }, [selectedObject, handleWheel]);
 
+  // Show notification and auto-hide after 5 seconds
+  const showNotification = useCallback((message, type = 'info') => {
+    setNotification({ message, type });
+    setTimeout(() => setNotification(null), 5000);
+  }, []);
+
+  // Add track to playlists
+  const handleAddToPlaylists = async (selectedObject, playlistsInRange) => {
+    if (!selectedObject || !selectedObject.uri || playlistsInRange.length === 0) return;
+    
+    setIsAddingToPlaylists(true);
+    
+    try {
+      const results = await Promise.allSettled(
+        playlistsInRange.map(async (playlist) => {
+          if (!playlist.playlistId) {
+            throw new Error(`Invalid playlist: ${playlist.name}`);
+          }
+          return addTrackToPlaylist(playlist.playlistId, selectedObject.uri);
+        })
+      );
+      
+      const successful = results.filter(r => r.status === 'fulfilled').length;
+      const failed = results.filter(r => r.status === 'rejected').length;
+      
+      if (successful > 0 && failed === 0) {
+        showNotification(`✅ Added "${selectedObject.name}" to ${successful} playlist${successful !== 1 ? 's' : ''}!`, 'success');
+      } else if (successful > 0 && failed > 0) {
+        showNotification(`⚠️ Added "${selectedObject.name}" to ${successful} playlist${successful !== 1 ? 's' : ''}, but ${failed} failed.`, 'warning');
+      } else {
+        showNotification(`❌ Failed to add "${selectedObject.name}" to any playlists.`, 'error');
+      }
+    } catch (error) {
+      console.error('Error adding to playlists:', error);
+      showNotification(`❌ Error: ${error.message}`, 'error');
+    } finally {
+      setIsAddingToPlaylists(false);
+    }
+  };
 
   // Create grid lines for the graph
   const createGridLines = () => {
@@ -445,6 +543,7 @@ function MusicGraph() {
                         clipPath={`url(#song-clip-${obj.id})`}
                         style={{ cursor: 'grab' }}
                         onMouseDown={(e) => handleMouseDown(e, obj)}
+                        onTouchStart={(e) => handleTouchStart(e, obj)}
                       />
                     ) : (
                       <circle
@@ -454,6 +553,7 @@ function MusicGraph() {
                         fill="#1db954"
                         style={{ cursor: 'grab' }}
                         onMouseDown={(e) => handleMouseDown(e, obj)}
+                        onTouchStart={(e) => handleTouchStart(e, obj)}
                       />
                     )}
                     {/* Selection border */}
@@ -503,6 +603,7 @@ function MusicGraph() {
                         opacity={editMode ? 1 : 0.6}
                         style={{ cursor: editMode ? 'grab' : 'pointer' }}
                         onMouseDown={(e) => handleMouseDown(e, obj)}
+                        onTouchStart={(e) => handleTouchStart(e, obj)}
                       />
                     ) : (
                       <rect
@@ -515,6 +616,7 @@ function MusicGraph() {
                         opacity={editMode ? 1 : 0.6}
                         style={{ cursor: editMode ? 'grab' : 'pointer' }}
                         onMouseDown={(e) => handleMouseDown(e, obj)}
+                        onTouchStart={(e) => handleTouchStart(e, obj)}
                       />
                     )}
                     {/* Selection border */}
@@ -600,12 +702,17 @@ function MusicGraph() {
                 return (
                   <button 
                     className="add-to-playlists-btn"
-                    onClick={() => {
-                      // TODO: Implement actual playlist addition
-                      console.log(`Adding "${selectedObject.name}" to ${playlistsInRange.length} playlists:`, playlistsInRange.map(p => p && p.name ? p.name : 'Unknown'));
-                    }}
+                    onClick={() => handleAddToPlaylists(selectedObject, playlistsInRange)}
+                    disabled={isAddingToPlaylists}
                   >
-                    Add to {playlistsInRange.length} Playlist{playlistsInRange.length !== 1 ? 's' : ''}
+                    {isAddingToPlaylists ? (
+                      <>
+                        <span className="spinner"></span>
+                        Adding...
+                      </>
+                    ) : (
+                      `Add to ${playlistsInRange.length} Playlist${playlistsInRange.length !== 1 ? 's' : ''}`
+                    )}
                   </button>
                 );
               })()}
@@ -625,6 +732,13 @@ function MusicGraph() {
           )}
         </div>
       </div>
+      
+      {/* Notification Toast */}
+      {notification && (
+        <div className={`notification ${notification.type}`}>
+          {notification.message}
+        </div>
+      )}
     </div>
   );
 }
