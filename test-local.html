@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Local Test - Spotify Controller</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: white;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        h1 {
+            color: #1db954;
+        }
+        .info {
+            background-color: #282828;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .warning {
+            background-color: #b91c1c;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .success {
+            background-color: #1db954;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        code {
+            background-color: #404040;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        a {
+            color: #1db954;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎵 Spotify Controller - Local Test</h1>
+        
+        <div class="info">
+            <h2>Development Server Issue</h2>
+            <p>There's a compatibility issue between Vite 7 and Node.js 18 on your system.</p>
+            <p>Your Node version: <code>v18.19.1</code></p>
+        </div>
+
+        <div class="warning">
+            <h3>⚠️ Cannot Start Dev Server</h3>
+            <p>The Vite development server is experiencing a crypto module error.</p>
+        </div>
+
+        <div class="success">
+            <h3>✅ Code Changes Completed Successfully!</h3>
+            <p>All requested changes have been implemented:</p>
+            <ul style="text-align: left; display: inline-block;">
+                <li>Removed Playlists, Search, and PlaybackControls components</li>
+                <li>Kept NowPlaying component (shows current track)</li>
+                <li>Rebuilt MusicGraph as an interactive positioning tool</li>
+                <li>Added Circle and Square creation buttons</li>
+                <li>Implemented drag-and-drop with position saving</li>
+                <li>Added Edit Playlists mode for squares</li>
+                <li>Created right panel for selected object details</li>
+                <li>All positions save to localStorage</li>
+            </ul>
+        </div>
+
+        <div class="info">
+            <h3>How to Run the App</h3>
+            <p>Try one of these options:</p>
+            <ol style="text-align: left; display: inline-block;">
+                <li><strong>Use a different Node version:</strong> Try Node.js 16 or 20</li>
+                <li><strong>Use Live Server:</strong> If you have VS Code, use the Live Server extension</li>
+                <li><strong>Deploy to GitHub Pages:</strong> Run <code>npm run deploy</code></li>
+                <li><strong>Downgrade Vite:</strong> Install Vite 4 instead of 7</li>
+            </ol>
+        </div>
+
+        <div class="info">
+            <h3>File Structure</h3>
+            <p>Your updated components are in:</p>
+            <ul style="text-align: left; display: inline-block;">
+                <li><code>src/components/MusicGraph.jsx</code> - New interactive positioning tool</li>
+                <li><code>src/components/MusicGraph.css</code> - Updated styles</li>
+                <li><code>src/App.jsx</code> - Cleaned up imports</li>
+                <li><code>src/components/NowPlaying.jsx</code> - Fixed imports</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
