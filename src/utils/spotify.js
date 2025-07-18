@@ -247,6 +247,15 @@ export function mapAudioFeaturesToGraph(audioFeatures) {
 // Add track to playlist
 export async function addTrackToPlaylist(playlistId, trackUri) {
   try {
+    // Extract track ID from URI (e.g., "spotify:track:abc123" -> "abc123")
+    const trackId = trackUri.split(':').pop();
+    
+    // Check if track is already in playlist before adding
+    const isAlreadyInPlaylist = await isTrackInPlaylist(playlistId, trackId);
+    if (isAlreadyInPlaylist) {
+      throw new Error('Track is already in this playlist');
+    }
+    
     const response = await makeSpotifyRequest(`/playlists/${playlistId}/tracks`, {
       method: 'POST',
       body: JSON.stringify({

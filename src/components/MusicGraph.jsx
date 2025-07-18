@@ -328,33 +328,33 @@ function MusicGraph() {
   }, [selectedObject, handleWheel]);
 
   // Check which playlists contain the selected track
-  useEffect(() => {
-    const checkPlaylistsContainingTrack = async () => {
-      if (!selectedObject || selectedObject.type !== 'song' || !selectedObject.trackId) {
+  const checkPlaylistsContainingTrack = useCallback(async () => {
+    if (!selectedObject || selectedObject.type !== 'song' || !selectedObject.trackId) {
+      setPlaylistsContainingTrack([]);
+      return;
+    }
+
+    try {
+      const allPlaylistIds = objects
+        .filter(obj => obj.type === 'playlist' && obj.playlistId)
+        .map(obj => obj.playlistId);
+
+      if (allPlaylistIds.length === 0) {
         setPlaylistsContainingTrack([]);
         return;
       }
 
-      try {
-        const allPlaylistIds = objects
-          .filter(obj => obj.type === 'playlist' && obj.playlistId)
-          .map(obj => obj.playlistId);
-
-        if (allPlaylistIds.length === 0) {
-          setPlaylistsContainingTrack([]);
-          return;
-        }
-
-        const containingPlaylistIds = await getPlaylistsContainingTrack(allPlaylistIds, selectedObject.trackId);
-        setPlaylistsContainingTrack(containingPlaylistIds);
-      } catch (error) {
-        console.error('Error checking playlists:', error);
-        setPlaylistsContainingTrack([]);
-      }
-    };
-
-    checkPlaylistsContainingTrack();
+      const containingPlaylistIds = await getPlaylistsContainingTrack(allPlaylistIds, selectedObject.trackId);
+      setPlaylistsContainingTrack(containingPlaylistIds);
+    } catch (error) {
+      console.error('Error checking playlists:', error);
+      setPlaylistsContainingTrack([]);
+    }
   }, [selectedObject, objects]);
+
+  useEffect(() => {
+    checkPlaylistsContainingTrack();
+  }, [checkPlaylistsContainingTrack]);
 
   // Show notification and auto-hide after 5 seconds
   const showNotification = useCallback((message, type = 'info') => {
@@ -414,6 +414,8 @@ function MusicGraph() {
       showNotification(`❌ Error: ${error.message}`, 'error');
     } finally {
       setIsAddingToPlaylists(false);
+      // Force refresh of playlists containing track state
+      checkPlaylistsContainingTrack();
     }
   };
 
@@ -590,10 +592,10 @@ function MusicGraph() {
                   y1={currentSelectedObject.y}
                   x2={playlist.x}
                   y2={playlist.y}
-                  stroke="#f44336"
-                  strokeWidth="2"
-                  strokeDasharray="3,3"
-                  opacity="0.8"
+                  stroke="#ff3333"
+                  strokeWidth="4"
+                  strokeDasharray="8,4"
+                  opacity="0.9"
                   style={{ pointerEvents: 'none' }}
                 />
               ));
@@ -733,7 +735,7 @@ function MusicGraph() {
 
         {/* Right Panel */}
         <div className="right-panel">
-          <h3>Selected Object</h3>
+          <h3>{selectedObject.name}</h3>
           {selectedObject ? (
             <div className="object-details">
               {selectedObject.type === 'song' ? (

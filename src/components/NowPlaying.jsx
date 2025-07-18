@@ -7,17 +7,22 @@ function NowPlaying({ onTrackDragStart, onTrackDragEnd }) {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isDragging, setIsDragging] = useState(false);
+  const [isPolling, setIsPolling] = useState(false);
 
   useEffect(() => {
-    fetchCurrentTrack();
+    fetchCurrentTrack(false); // Initial fetch - show errors
     // Poll for updates every 5 seconds
-    const interval = setInterval(fetchCurrentTrack, 5000);
+    const interval = setInterval(() => fetchCurrentTrack(true), 5000); // Background polls - suppress errors
     return () => clearInterval(interval);
   }, []);
 
-  const fetchCurrentTrack = async () => {
+  const fetchCurrentTrack = async (isBackgroundPoll = false) => {
     try {
-      setError(null);
+      if (!isBackgroundPoll) {
+        setError(null);
+      }
+      setIsPolling(isBackgroundPoll);
+      
       const response = await makeSpotifyRequest('/me/player/currently-playing');
       
       if (response.status === 204) {
@@ -36,9 +41,19 @@ function NowPlaying({ onTrackDragStart, onTrackDragEnd }) {
       setCurrentTrack(data);
       setIsPlaying(data.is_playing);
       setLoading(false);
+      
+      // Clear error on successful fetch
+      if (error) {
+        setError(null);
+      }
     } catch (error) {
-      setError(error.message);
+      // Only show errors for user-initiated fetches, not background polls
+      if (!isBackgroundPoll) {
+        setError(error.message);
+      }
       setLoading(false);
+    } finally {
+      setIsPolling(false);
     }
   };
 
@@ -96,7 +111,7 @@ function NowPlaying({ onTrackDragStart, onTrackDragEnd }) {
     return (
       <div className="now-playing error">
         <p>Error: {error}</p>
-        <button onClick={fetchCurrentTrack}>Retry</button>
+        <button onClick={() => fetchCurrentTrack(false)}>Retry</button>
       </div>
     );
   }
