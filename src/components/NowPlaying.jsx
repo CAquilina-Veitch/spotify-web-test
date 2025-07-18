@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
 import { makeSpotifyRequest } from '../utils/spotify';
-import PlaybackControls from './PlaybackControls';
-import './PlaybackControls.css';
 
 function NowPlaying() {
   const [currentTrack, setCurrentTrack] = useState(null);
@@ -43,11 +41,6 @@ function NowPlaying() {
     }
   };
 
-  const handlePlayStateChange = (newPlayState) => {
-    setIsPlaying(newPlayState);
-    // Refresh track info after a short delay
-    setTimeout(fetchCurrentTrack, 500);
-  };
 
   const formatTime = (ms) => {
     const minutes = Math.floor(ms / 60000);
@@ -126,10 +119,6 @@ function NowPlaying() {
         </div>
       </div>
       
-      <PlaybackControls 
-        isPlaying={isPlaying} 
-        onPlayStateChange={handlePlayStateChange}
-      />
     </div>
   );
 }
