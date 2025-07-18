@@ -15,6 +15,7 @@ function MusicGraph() {
   const [notification, setNotification] = useState(null);
   const [isAddingToPlaylists, setIsAddingToPlaylists] = useState(false);
   const [playlistsContainingTrack, setPlaylistsContainingTrack] = useState([]);
+  const [checkingPlaylists, setCheckingPlaylists] = useState(false);
   const dragStartRef = useRef({ x: 0, y: 0 });
   const nextIdRef = useRef(1);
 
@@ -103,6 +104,12 @@ function MusicGraph() {
   // Handle object click
   const handleObjectClick = (object) => {
     setSelectedObject(object);
+    
+    // Immediately check for playlist containment when selecting a song
+    if (object && object.type === 'song') {
+      // Trigger immediate check for red lines
+      setTimeout(() => checkPlaylistsContainingTrack(), 0);
+    }
   };
 
   // Handle mouse down on object
@@ -331,9 +338,12 @@ function MusicGraph() {
   const checkPlaylistsContainingTrack = useCallback(async () => {
     if (!selectedObject || selectedObject.type !== 'song' || !selectedObject.trackId) {
       setPlaylistsContainingTrack([]);
+      setCheckingPlaylists(false);
       return;
     }
 
+    setCheckingPlaylists(true);
+    
     try {
       const allPlaylistIds = objects
         .filter(obj => obj.type === 'playlist' && obj.playlistId)
@@ -341,6 +351,7 @@ function MusicGraph() {
 
       if (allPlaylistIds.length === 0) {
         setPlaylistsContainingTrack([]);
+        setCheckingPlaylists(false);
         return;
       }
 
@@ -349,6 +360,8 @@ function MusicGraph() {
     } catch (error) {
       console.error('Error checking playlists:', error);
       setPlaylistsContainingTrack([]);
+    } finally {
+      setCheckingPlaylists(false);
     }
   }, [selectedObject, objects]);
 
@@ -572,16 +585,17 @@ function MusicGraph() {
               ));
             })()}
 
-            {/* Red lines to playlists that already contain the selected track */}
+            {/* Red lines to ALL playlists that already contain the selected track - independent of circle range */}
             {(() => {
               const currentSelectedObject = selectedObject ? objects.find(obj => obj.id === selectedObject.id) : null;
               
+              // Only show for selected songs, regardless of circle or range
               if (!currentSelectedObject || currentSelectedObject.type !== 'song' || !objects || objects.length === 0) return null;
               
-              const playlists = objects.filter(obj => obj && obj.type === 'playlist');
+              const allPlaylists = objects.filter(obj => obj && obj.type === 'playlist');
               
-              // Filter playlists that already contain this track
-              const playlistsContainingThisTrack = playlists.filter(playlist => 
+              // Show red lines to ALL playlists that contain this track (no distance restrictions)
+              const playlistsContainingThisTrack = allPlaylists.filter(playlist => 
                 playlist.playlistId && playlistsContainingTrack.includes(playlist.playlistId)
               );
               
@@ -745,6 +759,12 @@ function MusicGraph() {
                   <p><strong>Artist:</strong> {selectedObject.artist}</p>
                   <p><strong>Happiness:</strong> {selectedObject.happiness}</p>
                   <p><strong>Intensity:</strong> {selectedObject.intensity}</p>
+                  {checkingPlaylists && (
+                    <p><em>🔍 Checking playlist relationships...</em></p>
+                  )}
+                  {!checkingPlaylists && playlistsContainingTrack.length > 0 && (
+                    <p><strong>🔴 Already in {playlistsContainingTrack.length} playlist{playlistsContainingTrack.length !== 1 ? 's' : ''}</strong></p>
+                  )}
                 </>
               ) : (
                 <>
