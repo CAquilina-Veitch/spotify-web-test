@@ -384,36 +384,46 @@ function MusicGraph() {
               </g>
             ))}
             
-            {/* Selection circle for songs */}
-            {selectedObject && selectedObject.type === 'song' && (
-              <circle
-                cx={selectedObject.x}
-                cy={selectedObject.y}
-                r={circleRadius * 100} // Convert units to pixels (1 unit = 100px)
-                fill="none"
-                stroke="#1db954"
-                strokeWidth="2"
-                strokeDasharray="10,5"
-                opacity="0.6"
-                style={{ pointerEvents: 'none' }}
-              />
-            )}
+            {/* Selection circle for songs - use live object position */}
+            {(() => {
+              // Get current selected object with live position from objects array
+              const currentSelectedObject = selectedObject ? objects.find(obj => obj.id === selectedObject.id) : null;
+              
+              return currentSelectedObject && currentSelectedObject.type === 'song' && (
+                <circle
+                  cx={currentSelectedObject.x}
+                  cy={currentSelectedObject.y}
+                  r={circleRadius * 100} // Convert units to pixels (1 unit = 100px)
+                  fill="none"
+                  stroke="#1db954"
+                  strokeWidth="2"
+                  strokeDasharray="10,5"
+                  opacity="0.6"
+                  style={{ pointerEvents: 'none' }}
+                />
+              );
+            })()}
 
-            {/* Connection lines to affected playlists */}
-            {selectedObject && selectedObject.type === 'song' && affectedPlaylists.map(playlist => (
-              <line
-                key={`connection-${playlist.id}`}
-                x1={selectedObject.x}
-                y1={selectedObject.y}
-                x2={playlist.x}
-                y2={playlist.y}
-                stroke="#1db954"
-                strokeWidth="2"
-                strokeDasharray="5,5"
-                opacity="0.7"
-                style={{ pointerEvents: 'none' }}
-              />
-            ))}
+            {/* Connection lines to affected playlists - use live object position */}
+            {(() => {
+              // Get current selected object with live position from objects array
+              const currentSelectedObject = selectedObject ? objects.find(obj => obj.id === selectedObject.id) : null;
+              
+              return currentSelectedObject && currentSelectedObject.type === 'song' && affectedPlaylists.map(playlist => (
+                <line
+                  key={`connection-${playlist.id}`}
+                  x1={currentSelectedObject.x}
+                  y1={currentSelectedObject.y}
+                  x2={playlist.x}
+                  y2={playlist.y}
+                  stroke="#1db954"
+                  strokeWidth="2"
+                  strokeDasharray="5,5"
+                  opacity="0.7"
+                  style={{ pointerEvents: 'none' }}
+                />
+              ));
+            })()}
 
             {/* Render all objects */}
             {objects.map(obj => {
