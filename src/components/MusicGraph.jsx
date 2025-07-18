@@ -7,6 +7,7 @@ function MusicGraph() {
   const [dragging, setDragging] = useState(false);
   const [draggedObject, setDraggedObject] = useState(null);
   const [editMode, setEditMode] = useState(false);
+  const [dragOver, setDragOver] = useState(false);
   const dragStartRef = useRef({ x: 0, y: 0 });
   const nextIdRef = useRef(1);
 
@@ -43,30 +44,36 @@ function MusicGraph() {
     return { x, y };
   };
 
-  // Add a new circle
-  const addCircle = () => {
-    const newCircle = {
-      id: `circle-${nextIdRef.current++}`,
-      type: 'circle',
-      x: 600,
-      y: 435,
-      ...svgToValues(600, 435)
+  // Add a new song from drop
+  const addSongFromDrop = (songData, x, y) => {
+    const newSong = {
+      id: `song-${nextIdRef.current++}`,
+      type: 'song',
+      trackId: songData.id,
+      name: songData.name,
+      artist: songData.artist,
+      image: songData.image,
+      uri: songData.uri,
+      x: x,
+      y: y,
+      ...svgToValues(x, y)
     };
-    setObjects([...objects, newCircle]);
-    setSelectedObject(newCircle);
+    setObjects([...objects, newSong]);
+    setSelectedObject(newSong);
   };
 
-  // Add a new square
-  const addSquare = () => {
-    const newSquare = {
-      id: `square-${nextIdRef.current++}`,
-      type: 'square',
+  // Add a new playlist square
+  const addPlaylist = () => {
+    const newPlaylist = {
+      id: `playlist-${nextIdRef.current++}`,
+      type: 'playlist',
+      name: `Playlist ${nextIdRef.current - 1}`,
       x: 600,
       y: 435,
       ...svgToValues(600, 435)
     };
-    setObjects([...objects, newSquare]);
-    setSelectedObject(newSquare);
+    setObjects([...objects, newPlaylist]);
+    setSelectedObject(newPlaylist);
   };
 
   // Handle object click
@@ -79,8 +86,8 @@ function MusicGraph() {
     e.preventDefault();
     e.stopPropagation();
     
-    // Only allow dragging circles or squares in edit mode
-    if (object.type === 'square' && !editMode) {
+    // Only allow dragging songs always, playlists only in edit mode
+    if (object.type === 'playlist' && !editMode) {
       handleObjectClick(object);
       return;
     }
@@ -123,6 +130,45 @@ function MusicGraph() {
     setDragging(false);
     setDraggedObject(null);
   }, []);
+
+  // Handle drag and drop events
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'copy';
+    setDragOver(true);
+  };
+
+  const handleDragLeave = (e) => {
+    // Only set dragOver to false if we're actually leaving the SVG area
+    if (!svgRef.current?.contains(e.relatedTarget)) {
+      setDragOver(false);
+    }
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setDragOver(false);
+    
+    try {
+      const songData = JSON.parse(e.dataTransfer.getData('application/json'));
+      
+      // Get drop position relative to SVG
+      const rect = svgRef.current.getBoundingClientRect();
+      const scaleX = 1200 / rect.width;
+      const scaleY = 800 / rect.height;
+      
+      const x = (e.clientX - rect.left) * scaleX;
+      const y = (e.clientY - rect.top) * scaleY;
+      
+      // Constrain to graph area
+      const constrainedX = Math.max(140, Math.min(1060, x));
+      const constrainedY = Math.max(140, Math.min(730, y));
+      
+      addSongFromDrop(songData, constrainedX, constrainedY);
+    } catch (error) {
+      console.error('Failed to parse dropped song data:', error);
+    }
+  };
 
   // Add global mouse event listeners when dragging
   useEffect(() => {
@@ -177,14 +223,16 @@ function MusicGraph() {
       <div className="graph-header">
         <h2>🎵 Interactive Positioning Tool</h2>
         <div className="graph-controls">
-          <button onClick={addCircle}>Add Circle</button>
-          <button onClick={addSquare}>Add Square</button>
+          <button onClick={addPlaylist}>Add Playlist</button>
           <button 
             onClick={() => setEditMode(!editMode)}
             className={editMode ? 'edit-active' : ''}
           >
             {editMode ? 'Exit Edit Mode' : 'Edit Playlists'}
           </button>
+          <div className="drop-hint">
+            💡 Drag the currently playing song here to add it to the graph
+          </div>
         </div>
       </div>
 
@@ -192,10 +240,13 @@ function MusicGraph() {
         <div className="graph-container">
           <svg 
             ref={svgRef}
-            className="music-scatter-plot"
+            className={`music-scatter-plot ${dragOver ? 'drag-over' : ''}`}
             width="1200" 
             height="800" 
             viewBox="0 0 1200 800"
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
           >
             {/* Background */}
             <rect width="1200" height="800" fill="#1a1a1a" />
@@ -228,22 +279,49 @@ function MusicGraph() {
             
             {/* Render all objects */}
             {objects.map(obj => {
-              if (obj.type === 'circle') {
+              if (obj.type === 'song') {
                 return (
                   <g key={obj.id}>
+                    {/* Song with album artwork */}
+                    <defs>
+                      <clipPath id={`song-clip-${obj.id}`}>
+                        <circle cx={obj.x} cy={obj.y} r="30" />
+                      </clipPath>
+                    </defs>
+                    {obj.image ? (
+                      <image
+                        x={obj.x - 30}
+                        y={obj.y - 30}
+                        width="60"
+                        height="60"
+                        href={obj.image}
+                        clipPath={`url(#song-clip-${obj.id})`}
+                        style={{ cursor: 'grab' }}
+                        onMouseDown={(e) => handleMouseDown(e, obj)}
+                      />
+                    ) : (
+                      <circle
+                        cx={obj.x}
+                        cy={obj.y}
+                        r="30"
+                        fill="#1db954"
+                        style={{ cursor: 'grab' }}
+                        onMouseDown={(e) => handleMouseDown(e, obj)}
+                      />
+                    )}
+                    {/* Selection border */}
                     <circle
                       cx={obj.x}
                       cy={obj.y}
                       r="30"
-                      fill="#1db954"
+                      fill="none"
                       stroke={selectedObject?.id === obj.id ? "#fff" : "none"}
                       strokeWidth="3"
-                      style={{ cursor: 'grab' }}
-                      onMouseDown={(e) => handleMouseDown(e, obj)}
+                      style={{ pointerEvents: 'none' }}
                     />
                   </g>
                 );
-              } else if (obj.type === 'square') {
+              } else if (obj.type === 'playlist') {
                 return (
                   <g key={obj.id}>
                     <rect
@@ -272,10 +350,22 @@ function MusicGraph() {
           <h3>Selected Object</h3>
           {selectedObject ? (
             <div className="object-details">
-              <p><strong>Type:</strong> {selectedObject.type === 'circle' ? 'Circle' : 'Square'}</p>
-              <p><strong>ID:</strong> {selectedObject.id}</p>
-              <p><strong>Happiness:</strong> {selectedObject.happiness}</p>
-              <p><strong>Intensity:</strong> {selectedObject.intensity}</p>
+              {selectedObject.type === 'song' ? (
+                <>
+                  <p><strong>Type:</strong> Song</p>
+                  <p><strong>Track:</strong> {selectedObject.name}</p>
+                  <p><strong>Artist:</strong> {selectedObject.artist}</p>
+                  <p><strong>Happiness:</strong> {selectedObject.happiness}</p>
+                  <p><strong>Intensity:</strong> {selectedObject.intensity}</p>
+                </>
+              ) : (
+                <>
+                  <p><strong>Type:</strong> Playlist</p>
+                  <p><strong>Name:</strong> {selectedObject.name}</p>
+                  <p><strong>Happiness:</strong> {selectedObject.happiness}</p>
+                  <p><strong>Intensity:</strong> {selectedObject.intensity}</p>
+                </>
+              )}
             </div>
           ) : (
             <p className="no-selection">No object selected</p>

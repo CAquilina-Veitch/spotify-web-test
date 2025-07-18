@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { makeSpotifyRequest } from '../utils/spotify';
 
-function NowPlaying() {
+function NowPlaying({ onTrackDragStart, onTrackDragEnd }) {
   const [currentTrack, setCurrentTrack] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
     fetchCurrentTrack();
@@ -53,6 +54,35 @@ function NowPlaying() {
     return (currentTrack.progress_ms / currentTrack.item.duration_ms) * 100;
   };
 
+  const handleDragStart = (e) => {
+    if (!currentTrack || !currentTrack.item) return;
+    
+    setIsDragging(true);
+    
+    // Create song data to transfer
+    const songData = {
+      id: currentTrack.item.id,
+      name: currentTrack.item.name,
+      artist: currentTrack.item.artists.map(a => a.name).join(', '),
+      image: currentTrack.item.album.images[0]?.url,
+      uri: currentTrack.item.uri
+    };
+    
+    e.dataTransfer.setData('application/json', JSON.stringify(songData));
+    e.dataTransfer.effectAllowed = 'copy';
+    
+    if (onTrackDragStart) {
+      onTrackDragStart(songData);
+    }
+  };
+
+  const handleDragEnd = (e) => {
+    setIsDragging(false);
+    if (onTrackDragEnd) {
+      onTrackDragEnd();
+    }
+  };
+
   if (loading) {
     return (
       <div className="now-playing loading">
@@ -91,7 +121,10 @@ function NowPlaying() {
           <img 
             src={albumArt} 
             alt={`${track.album.name} album cover`}
-            className="album-art"
+            className={`album-art ${isDragging ? 'dragging' : ''}`}
+            draggable={true}
+            onDragStart={handleDragStart}
+            onDragEnd={handleDragEnd}
           />
         )}
         <div className="track-details">

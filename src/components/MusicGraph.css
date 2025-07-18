@@ -55,6 +55,17 @@
   background-color: #c0392b;
 }
 
+.drop-hint {
+  color: #666;
+  font-size: 12px;
+  font-style: italic;
+  margin-left: 20px;
+  background-color: rgba(29, 185, 84, 0.1);
+  padding: 8px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(29, 185, 84, 0.2);
+}
+
 .graph-layout {
   display: flex;
   gap: 20px;
@@ -76,6 +87,13 @@
   width: 100%;
   max-width: 1200px;
   height: auto;
+  transition: all 0.3s ease;
+}
+
+.music-scatter-plot.drag-over {
+  background-color: #1e2a1e;
+  box-shadow: 0 0 20px rgba(29, 185, 84, 0.3);
+  border: 2px solid rgba(29, 185, 84, 0.5);
 }
 
 .right-panel {

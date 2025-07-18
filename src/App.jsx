@@ -3,13 +3,16 @@ import './App.css'
 import Callback from './components/Callback'
 import NowPlaying from './components/NowPlaying'
 import MusicGraph from './components/MusicGraph'
+import PlaylistPanel from './components/PlaylistPanel'
 import './components/NowPlaying.css'
 import './components/MusicGraph.css'
+import './components/PlaylistPanel.css'
 import { authenticateSpotify, getStoredAccessToken, logout, getAccessToken } from './utils/spotify'
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [draggedTrack, setDraggedTrack] = useState(null)
 
   useEffect(() => {
     const checkAuthentication = async () => {
@@ -48,6 +51,14 @@ function App() {
     setIsAuthenticated(false)
   }
 
+  const handleTrackDragStart = (trackData) => {
+    setDraggedTrack(trackData)
+  }
+
+  const handleTrackDragEnd = () => {
+    setDraggedTrack(null)
+  }
+
   // Simple router for callback
   const path = window.location.pathname
   if (path.includes('/callback')) {
@@ -79,8 +90,14 @@ function App() {
                 Logout
               </button>
             </div>
-            <NowPlaying />
-            <MusicGraph />
+            <NowPlaying 
+              onTrackDragStart={handleTrackDragStart}
+              onTrackDragEnd={handleTrackDragEnd}
+            />
+            <div className="main-layout">
+              <PlaylistPanel />
+              <MusicGraph />
+            </div>
           </div>
         )}
       </header>
