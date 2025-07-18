@@ -92,9 +92,9 @@ function PlaylistPanel() {
               const playlistData = {
                 id: playlist.id,
                 name: playlist.name,
-                image: playlist.images[0]?.url || null,
-                trackCount: playlist.tracks.total,
-                description: playlist.description
+                image: playlist.images && playlist.images[0] ? playlist.images[0].url : null,
+                trackCount: playlist.tracks ? playlist.tracks.total : 0,
+                description: playlist.description || ''
               };
               e.dataTransfer.setData('application/json', JSON.stringify(playlistData));
               e.dataTransfer.effectAllowed = 'copy';
@@ -108,7 +108,7 @@ function PlaylistPanel() {
                 onDragStart={handleDragStart}
               >
                 <div className="playlist-image-container">
-                  {playlist.images[0] ? (
+                  {playlist.images && playlist.images[0] ? (
                     <img 
                       src={playlist.images[0].url} 
                       alt={playlist.name}
@@ -121,7 +121,7 @@ function PlaylistPanel() {
                 <div className="playlist-info">
                   <div className="playlist-name">{playlist.name}</div>
                   <div className="playlist-details">
-                    {playlist.tracks.total} tracks
+                    {playlist.tracks ? playlist.tracks.total : 0} tracks
                   </div>
                 </div>
               </div>
