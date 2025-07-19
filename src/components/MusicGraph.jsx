@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { addTrackToPlaylist, getPlaylistsContainingTrack } from '../utils/spotify';
 
-function MusicGraph() {
+function MusicGraph({ mobileDragData, setMobileDragData }) {
   const svgRef = useRef(null);
   const deleteZoneRef = useRef(null);
   const [objects, setObjects] = useState([]);
@@ -57,7 +57,7 @@ function MusicGraph() {
   };
 
   // Add a new song from drop
-  const addSongFromDrop = (songData, x, y) => {
+  const addSongFromDrop = useCallback((songData, x, y) => {
     // Check if song already exists
     const existingSong = objects.find(obj => obj.type === 'song' && obj.trackId === songData.id);
     if (existingSong) {
@@ -80,10 +80,10 @@ function MusicGraph() {
     };
     setObjects([...objects, newSong]);
     setSelectedObject(newSong);
-  };
+  }, [objects]);
 
   // Add a new playlist from drop
-  const addPlaylistFromDrop = (playlistData, x, y) => {
+  const addPlaylistFromDrop = useCallback((playlistData, x, y) => {
     const newPlaylist = {
       id: `playlist-${nextIdRef.current++}`,
       type: 'playlist',
@@ -98,7 +98,7 @@ function MusicGraph() {
     };
     setObjects([...objects, newPlaylist]);
     setSelectedObject(newPlaylist);
-  };
+  }, [objects]);
 
 
   // Handle object click
@@ -300,6 +300,49 @@ function MusicGraph() {
     }
   }, [dragging, handleMouseMove, handleMouseUp, handleTouchMove, handleTouchEnd]);
 
+  // Handle mobile touch events for external drops
+  useEffect(() => {
+    const handleTouchEnd = (e) => {
+      if (!mobileDragData || !svgRef.current) return;
+      
+      // Get the touch position
+      const touch = e.changedTouches[0];
+      
+      // Check if the touch ended over the SVG element
+      const element = document.elementFromPoint(touch.clientX, touch.clientY);
+      if (!svgRef.current.contains(element)) {
+        return;
+      }
+      
+      // Get drop position relative to SVG
+      const rect = svgRef.current.getBoundingClientRect();
+      const scaleX = 1200 / rect.width;
+      const scaleY = 800 / rect.height;
+      
+      const x = (touch.clientX - rect.left) * scaleX;
+      const y = (touch.clientY - rect.top) * scaleY;
+      
+      // Constrain to graph area
+      const constrainedX = Math.max(140, Math.min(1060, x));
+      const constrainedY = Math.max(140, Math.min(680, y));
+      
+      // Determine if it's a song or playlist based on the data structure
+      if (mobileDragData.artist !== undefined) {
+        // It's a song (has artist property)
+        addSongFromDrop(mobileDragData, constrainedX, constrainedY);
+      } else if (mobileDragData.trackCount !== undefined) {
+        // It's a playlist (has trackCount property)
+        addPlaylistFromDrop(mobileDragData, constrainedX, constrainedY);
+      }
+      
+      // Clear the mobile drag data
+      setMobileDragData(null);
+    };
+    
+    document.addEventListener('touchend', handleTouchEnd);
+    return () => document.removeEventListener('touchend', handleTouchEnd);
+  }, [mobileDragData, setMobileDragData, addSongFromDrop, addPlaylistFromDrop]);
+
   // Handle wheel events for radius adjustment
   const handleWheel = useCallback((e) => {
     if (!selectedObject || selectedObject.type !== 'song') return;
@@ -363,11 +406,19 @@ function MusicGraph() {
     } finally {
       setCheckingPlaylists(false);
     }
-  }, [selectedObject, objects]);
+  }, [selectedObject?.trackId, objects.filter(obj => obj.type === 'playlist').length]);
 
   useEffect(() => {
-    checkPlaylistsContainingTrack();
-  }, [checkPlaylistsContainingTrack]);
+    // Only check when we have a selected song and the check isn't already in progress
+    if (selectedObject?.type === 'song' && selectedObject?.trackId && !checkingPlaylists) {
+      // Add a small delay to debounce rapid updates
+      const timeoutId = setTimeout(() => {
+        checkPlaylistsContainingTrack();
+      }, 100);
+      
+      return () => clearTimeout(timeoutId);
+    }
+  }, [selectedObject?.trackId, checkPlaylistsContainingTrack, checkingPlaylists]);
 
   // Show notification and auto-hide after 5 seconds
   const showNotification = useCallback((message, type = 'info') => {

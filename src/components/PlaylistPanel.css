@@ -68,6 +68,11 @@
   cursor: grabbing;
 }
 
+.playlist-item.dragging {
+  opacity: 0.5;
+  cursor: grabbing;
+}
+
 .playlist-image-container {
   flex: 0 0 50px;
   margin-right: 12px;

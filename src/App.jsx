@@ -13,6 +13,8 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [loading, setLoading] = useState(true)
   const [draggedTrack, setDraggedTrack] = useState(null)
+  const [mobileDragData, setMobileDragData] = useState(null)
+  const [mobileDragPreview, setMobileDragPreview] = useState(null)
 
   useEffect(() => {
     const checkAuthentication = async () => {
@@ -93,14 +95,51 @@ function App() {
             <NowPlaying 
               onTrackDragStart={handleTrackDragStart}
               onTrackDragEnd={handleTrackDragEnd}
+              mobileDragData={mobileDragData}
+              setMobileDragData={setMobileDragData}
+              setMobileDragPreview={setMobileDragPreview}
             />
             <div className="main-layout">
-              <PlaylistPanel />
-              <MusicGraph />
+              <PlaylistPanel 
+                mobileDragData={mobileDragData}
+                setMobileDragData={setMobileDragData}
+                setMobileDragPreview={setMobileDragPreview}
+              />
+              <MusicGraph 
+                mobileDragData={mobileDragData}
+                setMobileDragData={setMobileDragData}
+              />
             </div>
           </div>
         )}
       </header>
+      {/* Mobile drag preview */}
+      {mobileDragPreview && (
+        <div 
+          className="mobile-drag-preview"
+          style={{
+            position: 'fixed',
+            left: mobileDragPreview.x - 40,
+            top: mobileDragPreview.y - 40,
+            width: '80px',
+            height: '80px',
+            pointerEvents: 'none',
+            zIndex: 9999,
+            opacity: 0.8
+          }}
+        >
+          <img 
+            src={mobileDragPreview.image} 
+            alt="Dragging"
+            style={{
+              width: '100%',
+              height: '100%',
+              borderRadius: mobileDragPreview.type === 'song' ? '50%' : '8px',
+              boxShadow: '0 4px 8px rgba(0,0,0,0.3)'
+            }}
+          />
+        </div>
+      )}
     </div>
   )
 }

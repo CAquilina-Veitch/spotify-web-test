@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { makeSpotifyRequest } from '../utils/spotify';
 
-function NowPlaying({ onTrackDragStart, onTrackDragEnd }) {
+function NowPlaying({ onTrackDragStart, onTrackDragEnd, mobileDragData, setMobileDragData, setMobileDragPreview }) {
   const [currentTrack, setCurrentTrack] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [error, setError] = useState(null);
@@ -98,6 +98,50 @@ function NowPlaying({ onTrackDragStart, onTrackDragEnd }) {
     }
   };
 
+  // Touch event handlers for mobile
+  const handleTouchStart = (e) => {
+    if (!currentTrack || !currentTrack.item) return;
+    
+    const touch = e.touches[0];
+    
+    // Create song data to transfer
+    const songData = {
+      id: currentTrack.item.id,
+      name: currentTrack.item.name,
+      artist: currentTrack.item.artists.map(a => a.name).join(', '),
+      image: currentTrack.item.album.images[0]?.url,
+      trackUri: currentTrack.item.uri,
+      trackId: currentTrack.item.id
+    };
+    
+    setMobileDragData(songData);
+    setMobileDragPreview({
+      x: touch.clientX,
+      y: touch.clientY,
+      image: currentTrack.item.album.images[0]?.url,
+      type: 'song'
+    });
+    
+    setIsDragging(true);
+  };
+  
+  const handleTouchMove = (e) => {
+    if (!mobileDragData) return;
+    
+    const touch = e.touches[0];
+    setMobileDragPreview(prev => prev ? {
+      ...prev,
+      x: touch.clientX,
+      y: touch.clientY
+    } : null);
+  };
+  
+  const handleTouchEnd = (e) => {
+    setIsDragging(false);
+    setMobileDragPreview(null);
+    // Keep mobileDragData for the drop target to use
+  };
+
   if (loading) {
     return (
       <div className="now-playing loading">
@@ -140,6 +184,9 @@ function NowPlaying({ onTrackDragStart, onTrackDragEnd }) {
             draggable={true}
             onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
           />
         )}
         <div className="track-details">

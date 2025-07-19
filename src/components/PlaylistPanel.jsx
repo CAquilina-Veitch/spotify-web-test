@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { makeSpotifyRequest } from '../utils/spotify';
 
-function PlaylistPanel() {
+function PlaylistPanel({ mobileDragData, setMobileDragData, setMobileDragPreview }) {
   const [playlists, setPlaylists] = useState([]);
   const [filteredPlaylists, setFilteredPlaylists] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchFilter, setSearchFilter] = useState('');
+  const [draggingPlaylist, setDraggingPlaylist] = useState(null);
 
   useEffect(() => {
     fetchPlaylists();
@@ -88,24 +89,67 @@ function PlaylistPanel() {
           </div>
         ) : (
           filteredPlaylists.map((playlist) => {
+            const playlistData = {
+              id: playlist.id,
+              name: playlist.name,
+              image: playlist.images && playlist.images[0] ? playlist.images[0].url : null,
+              trackCount: playlist.tracks ? playlist.tracks.total : 0,
+              description: playlist.description || '',
+              playlistId: playlist.id
+            };
+
             const handleDragStart = (e) => {
-              const playlistData = {
-                id: playlist.id,
-                name: playlist.name,
-                image: playlist.images && playlist.images[0] ? playlist.images[0].url : null,
-                trackCount: playlist.tracks ? playlist.tracks.total : 0,
-                description: playlist.description || ''
-              };
               e.dataTransfer.setData('application/json', JSON.stringify(playlistData));
               e.dataTransfer.effectAllowed = 'copy';
+              setDraggingPlaylist(playlist.id);
+            };
+            
+            const handleDragEnd = () => {
+              setDraggingPlaylist(null);
+            };
+            
+            // Touch event handlers for mobile
+            const handleTouchStart = (e) => {
+              const touch = e.touches[0];
+              
+              setMobileDragData(playlistData);
+              setMobileDragPreview({
+                x: touch.clientX,
+                y: touch.clientY,
+                image: playlistData.image,
+                type: 'playlist'
+              });
+              
+              setDraggingPlaylist(playlist.id);
+            };
+            
+            const handleTouchMove = (e) => {
+              if (!mobileDragData) return;
+              
+              const touch = e.touches[0];
+              setMobileDragPreview(prev => prev ? {
+                ...prev,
+                x: touch.clientX,
+                y: touch.clientY
+              } : null);
+            };
+            
+            const handleTouchEnd = (e) => {
+              setDraggingPlaylist(null);
+              setMobileDragPreview(null);
+              // Keep mobileDragData for the drop target to use
             };
 
             return (
               <div 
                 key={playlist.id} 
-                className="playlist-item"
+                className={`playlist-item ${draggingPlaylist === playlist.id ? 'dragging' : ''}`}
                 draggable={true}
                 onDragStart={handleDragStart}
+                onDragEnd={handleDragEnd}
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
               >
                 <div className="playlist-image-container">
                   {playlist.images && playlist.images[0] ? (
