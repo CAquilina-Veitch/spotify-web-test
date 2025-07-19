@@ -16,6 +16,8 @@ function MusicGraph({ mobileDragData, setMobileDragData }) {
   const [isAddingToPlaylists, setIsAddingToPlaylists] = useState(false);
   const [playlistsContainingTrack, setPlaylistsContainingTrack] = useState([]);
   const [checkingPlaylists, setCheckingPlaylists] = useState(false);
+  const [playlistIds, setPlaylistIds] = useState([]);
+  const [lastCheckedTrackId, setLastCheckedTrackId] = useState(null);
   const dragStartRef = useRef({ x: 0, y: 0 });
   const nextIdRef = useRef(1);
 
@@ -41,6 +43,18 @@ function MusicGraph({ mobileDragData, setMobileDragData }) {
   useEffect(() => {
     localStorage.setItem('interactiveObjects', JSON.stringify(objects));
   }, [objects]);
+
+  // Track playlist IDs separately for stable dependencies
+  useEffect(() => {
+    const currentPlaylistIds = objects
+      .filter(obj => obj.type === 'playlist' && obj.playlistId)
+      .map(obj => obj.playlistId);
+    
+    // Only update if the list actually changed
+    if (JSON.stringify(currentPlaylistIds.sort()) !== JSON.stringify(playlistIds.sort())) {
+      setPlaylistIds(currentPlaylistIds);
+    }
+  }, [objects, playlistIds]);
 
   // Convert SVG coordinates to happiness/intensity values
   const svgToValues = (x, y) => {
@@ -102,15 +116,12 @@ function MusicGraph({ mobileDragData, setMobileDragData }) {
 
 
   // Handle object click
-  const handleObjectClick = (object) => {
-    setSelectedObject(object);
-    
-    // Immediately check for playlist containment when selecting a song
-    if (object && object.type === 'song') {
-      // Trigger immediate check for red lines
-      setTimeout(() => checkPlaylistsContainingTrack(), 0);
+  const handleObjectClick = useCallback((object) => {
+    // Only update if selecting a different object to prevent unnecessary re-renders
+    if (!selectedObject || selectedObject.id !== object?.id) {
+      setSelectedObject(object);
     }
-  };
+  }, [selectedObject]);
 
   // Handle mouse down on object
   const handleMouseDown = (e, object) => {
@@ -385,20 +396,22 @@ function MusicGraph({ mobileDragData, setMobileDragData }) {
       return;
     }
 
+    // Skip if we already checked this track recently
+    if (selectedObject.trackId === lastCheckedTrackId && !checkingPlaylists) {
+      return;
+    }
+
     setCheckingPlaylists(true);
+    setLastCheckedTrackId(selectedObject.trackId);
     
     try {
-      const allPlaylistIds = objects
-        .filter(obj => obj.type === 'playlist' && obj.playlistId)
-        .map(obj => obj.playlistId);
-
-      if (allPlaylistIds.length === 0) {
+      if (playlistIds.length === 0) {
         setPlaylistsContainingTrack([]);
         setCheckingPlaylists(false);
         return;
       }
 
-      const containingPlaylistIds = await getPlaylistsContainingTrack(allPlaylistIds, selectedObject.trackId);
+      const containingPlaylistIds = await getPlaylistsContainingTrack(playlistIds, selectedObject.trackId);
       setPlaylistsContainingTrack(containingPlaylistIds);
     } catch (error) {
       console.error('Error checking playlists:', error);
@@ -406,19 +419,37 @@ function MusicGraph({ mobileDragData, setMobileDragData }) {
     } finally {
       setCheckingPlaylists(false);
     }
-  }, [selectedObject?.trackId, objects.filter(obj => obj.type === 'playlist').length]);
+  }, [selectedObject?.trackId, playlistIds, lastCheckedTrackId, checkingPlaylists]);
 
   useEffect(() => {
-    // Only check when we have a selected song and the check isn't already in progress
-    if (selectedObject?.type === 'song' && selectedObject?.trackId && !checkingPlaylists) {
-      // Add a small delay to debounce rapid updates
-      const timeoutId = setTimeout(() => {
-        checkPlaylistsContainingTrack();
-      }, 100);
+    // Only check when:
+    // 1. We have a selected song
+    // 2. It's a different track than the last one checked
+    // 3. We're not already checking
+    // 4. We have playlists to check against
+    if (selectedObject?.type === 'song' && 
+        selectedObject?.trackId && 
+        selectedObject.trackId !== lastCheckedTrackId && 
+        !checkingPlaylists &&
+        playlistIds.length > 0) {
       
-      return () => clearTimeout(timeoutId);
+      checkPlaylistsContainingTrack();
     }
-  }, [selectedObject?.trackId, checkPlaylistsContainingTrack, checkingPlaylists]);
+    
+    // Clear red lines when deselecting or selecting non-song
+    if (!selectedObject || selectedObject.type !== 'song') {
+      setPlaylistsContainingTrack([]);
+      setLastCheckedTrackId(null);
+    }
+  }, [selectedObject?.trackId, selectedObject?.type, lastCheckedTrackId, checkingPlaylists, playlistIds.length, checkPlaylistsContainingTrack]);
+
+  // Handle background click to deselect
+  const handleBackgroundClick = useCallback((e) => {
+    // Only deselect if clicking on the background (not during drag)
+    if (!dragging && e.target.tagName === 'rect') {
+      setSelectedObject(null);
+    }
+  }, [dragging]);
 
   // Show notification and auto-hide after 5 seconds
   const showNotification = useCallback((message, type = 'info') => {
@@ -547,6 +578,7 @@ function MusicGraph({ mobileDragData, setMobileDragData }) {
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
+            onClick={handleBackgroundClick}
           >
             {/* Background */}
             <rect width="1200" height="800" fill="#1a1a1a" />
