@@ -14,10 +14,6 @@ function MusicGraph({ mobileDragData, setMobileDragData }) {
   const [circleRadius, setCircleRadius] = useState(2); // Default 2 units radius
   const [notification, setNotification] = useState(null);
   const [isAddingToPlaylists, setIsAddingToPlaylists] = useState(false);
-  const [playlistsContainingTrack, setPlaylistsContainingTrack] = useState([]);
-  const [checkingPlaylists, setCheckingPlaylists] = useState(false);
-  const [playlistIds, setPlaylistIds] = useState([]);
-  const [lastCheckedTrackId, setLastCheckedTrackId] = useState(null);
   const dragStartRef = useRef({ x: 0, y: 0 });
   const nextIdRef = useRef(1);
 
@@ -44,17 +40,6 @@ function MusicGraph({ mobileDragData, setMobileDragData }) {
     localStorage.setItem('interactiveObjects', JSON.stringify(objects));
   }, [objects]);
 
-  // Track playlist IDs separately for stable dependencies
-  useEffect(() => {
-    const currentPlaylistIds = objects
-      .filter(obj => obj.type === 'playlist' && obj.playlistId)
-      .map(obj => obj.playlistId);
-    
-    // Only update if the list actually changed
-    if (JSON.stringify(currentPlaylistIds.sort()) !== JSON.stringify(playlistIds.sort())) {
-      setPlaylistIds(currentPlaylistIds);
-    }
-  }, [objects, playlistIds]);
 
   // Convert SVG coordinates to happiness/intensity values
   const svgToValues = (x, y) => {
@@ -71,7 +56,7 @@ function MusicGraph({ mobileDragData, setMobileDragData }) {
   };
 
   // Add a new song from drop
-  const addSongFromDrop = useCallback((songData, x, y) => {
+  const addSongFromDrop = useCallback(async (songData, x, y) => {
     // Check if song already exists
     const existingSong = objects.find(obj => obj.type === 'song' && obj.trackId === songData.id);
     if (existingSong) {
@@ -90,8 +75,22 @@ function MusicGraph({ mobileDragData, setMobileDragData }) {
       uri: songData.uri,
       x: x,
       y: y,
+      connectedPlaylistIds: [],
       ...svgToValues(x, y)
     };
+
+    // Check which existing playlists contain this track
+    const existingPlaylists = objects.filter(obj => obj.type === 'playlist' && obj.playlistId);
+    if (existingPlaylists.length > 0) {
+      try {
+        const playlistIds = existingPlaylists.map(p => p.playlistId);
+        const containingPlaylistIds = await getPlaylistsContainingTrack(playlistIds, songData.id);
+        newSong.connectedPlaylistIds = containingPlaylistIds;
+      } catch (error) {
+        console.error('Error checking playlist connections for new song:', error);
+      }
+    }
+
     setObjects([...objects, newSong]);
     setSelectedObject(newSong);
   }, [objects]);
@@ -388,60 +387,6 @@ function MusicGraph({ mobileDragData, setMobileDragData }) {
     }
   }, [selectedObject, handleWheel]);
 
-  // Check which playlists contain the selected track
-  const checkPlaylistsContainingTrack = useCallback(async () => {
-    if (!selectedObject || selectedObject.type !== 'song' || !selectedObject.trackId) {
-      setPlaylistsContainingTrack([]);
-      setCheckingPlaylists(false);
-      return;
-    }
-
-    // Skip if we already checked this track recently
-    if (selectedObject.trackId === lastCheckedTrackId && !checkingPlaylists) {
-      return;
-    }
-
-    setCheckingPlaylists(true);
-    setLastCheckedTrackId(selectedObject.trackId);
-    
-    try {
-      if (playlistIds.length === 0) {
-        setPlaylistsContainingTrack([]);
-        setCheckingPlaylists(false);
-        return;
-      }
-
-      const containingPlaylistIds = await getPlaylistsContainingTrack(playlistIds, selectedObject.trackId);
-      setPlaylistsContainingTrack(containingPlaylistIds);
-    } catch (error) {
-      console.error('Error checking playlists:', error);
-      setPlaylistsContainingTrack([]);
-    } finally {
-      setCheckingPlaylists(false);
-    }
-  }, [selectedObject?.trackId, playlistIds, lastCheckedTrackId, checkingPlaylists]);
-
-  useEffect(() => {
-    // Only check when:
-    // 1. We have a selected song
-    // 2. It's a different track than the last one checked
-    // 3. We're not already checking
-    // 4. We have playlists to check against
-    if (selectedObject?.type === 'song' && 
-        selectedObject?.trackId && 
-        selectedObject.trackId !== lastCheckedTrackId && 
-        !checkingPlaylists &&
-        playlistIds.length > 0) {
-      
-      checkPlaylistsContainingTrack();
-    }
-    
-    // Clear red lines when deselecting or selecting non-song
-    if (!selectedObject || selectedObject.type !== 'song') {
-      setPlaylistsContainingTrack([]);
-      setLastCheckedTrackId(null);
-    }
-  }, [selectedObject?.trackId, selectedObject?.type, lastCheckedTrackId, checkingPlaylists, playlistIds.length, checkPlaylistsContainingTrack]);
 
   // Handle background click to deselect
   const handleBackgroundClick = useCallback((e) => {
@@ -463,7 +408,7 @@ function MusicGraph({ mobileDragData, setMobileDragData }) {
     
     // Filter out playlists that already contain the track
     const playlistsToAddTo = playlistsInRange.filter(playlist => 
-      !playlistsContainingTrack.includes(playlist.playlistId)
+      !selectedObject.connectedPlaylistIds || !selectedObject.connectedPlaylistIds.includes(playlist.playlistId)
     );
     
     const alreadyInCount = playlistsInRange.length - playlistsToAddTo.length;
@@ -488,6 +433,23 @@ function MusicGraph({ mobileDragData, setMobileDragData }) {
       const successful = results.filter(r => r.status === 'fulfilled').length;
       const failed = results.filter(r => r.status === 'rejected').length;
       
+      // Update the song's connectedPlaylistIds with successfully added playlists
+      if (successful > 0) {
+        const successfulPlaylists = playlistsToAddTo.slice(0, successful); // Assume first N were successful
+        const newConnectedPlaylistIds = [
+          ...(selectedObject.connectedPlaylistIds || []),
+          ...successfulPlaylists.map(p => p.playlistId)
+        ];
+        
+        setObjects(prevObjects => 
+          prevObjects.map(obj => 
+            obj.id === selectedObject.id 
+              ? { ...obj, connectedPlaylistIds: newConnectedPlaylistIds }
+              : obj
+          )
+        );
+      }
+
       let message = '';
       if (successful > 0 && failed === 0) {
         message = `✅ Added "${selectedObject.name}" to ${successful} playlist${successful !== 1 ? 's' : ''}!`;
@@ -509,8 +471,6 @@ function MusicGraph({ mobileDragData, setMobileDragData }) {
       showNotification(`❌ Error: ${error.message}`, 'error');
     } finally {
       setIsAddingToPlaylists(false);
-      // Force refresh of playlists containing track state
-      checkPlaylistsContainingTrack();
     }
   };
 
@@ -677,26 +637,37 @@ function MusicGraph({ mobileDragData, setMobileDragData }) {
               
               const allPlaylists = objects.filter(obj => obj && obj.type === 'playlist');
               
-              // Show red lines to ALL playlists that contain this track (no distance restrictions)
-              const playlistsContainingThisTrack = allPlaylists.filter(playlist => 
-                playlist.playlistId && playlistsContainingTrack.includes(playlist.playlistId)
-              );
-              
-              return playlistsContainingThisTrack.map(playlist => (
-                <line
-                  key={`existing-${playlist.id}`}
-                  x1={currentSelectedObject.x}
-                  y1={currentSelectedObject.y}
-                  x2={playlist.x}
-                  y2={playlist.y}
-                  stroke="#ff3333"
-                  strokeWidth="4"
-                  strokeDasharray="8,4"
-                  opacity="0.9"
-                  style={{ pointerEvents: 'none' }}
-                />
-              ));
+              // Red lines are now rendered globally above
+              return null;
             })()}
+
+            {/* Render semi-transparent connection lines for all songs */}
+            {objects
+              .filter(obj => obj.type === 'song' && obj.connectedPlaylistIds && obj.connectedPlaylistIds.length > 0)
+              .map(song => {
+                const connectedPlaylists = objects.filter(obj => 
+                  obj.type === 'playlist' && 
+                  obj.playlistId && 
+                  song.connectedPlaylistIds.includes(obj.playlistId)
+                );
+                
+                return connectedPlaylists.map(playlist => (
+                  <line
+                    key={`connection-${song.id}-${playlist.id}`}
+                    x1={song.x}
+                    y1={song.y}
+                    x2={playlist.x}
+                    y2={playlist.y}
+                    stroke="#ff3333"
+                    strokeWidth={selectedObject && selectedObject.id === song.id ? "3" : "1"}
+                    strokeDasharray="4,2"
+                    opacity={selectedObject && selectedObject.id === song.id ? "1.0" : "0.3"}
+                    style={{ pointerEvents: 'none' }}
+                  />
+                ));
+              })
+              .flat()
+            }
 
             {/* Render all objects */}
             {objects.map(obj => {
@@ -842,11 +813,8 @@ function MusicGraph({ mobileDragData, setMobileDragData }) {
                   <p><strong>Artist:</strong> {selectedObject.artist}</p>
                   <p><strong>Happiness:</strong> {selectedObject.happiness}</p>
                   <p><strong>Intensity:</strong> {selectedObject.intensity}</p>
-                  {checkingPlaylists && (
-                    <p><em>🔍 Checking playlist relationships...</em></p>
-                  )}
-                  {!checkingPlaylists && playlistsContainingTrack.length > 0 && (
-                    <p><strong>🔴 Already in {playlistsContainingTrack.length} playlist{playlistsContainingTrack.length !== 1 ? 's' : ''}</strong></p>
+                  {selectedObject.connectedPlaylistIds && selectedObject.connectedPlaylistIds.length > 0 && (
+                    <p><strong>🔴 Connected to {selectedObject.connectedPlaylistIds.length} playlist{selectedObject.connectedPlaylistIds.length !== 1 ? 's' : ''}</strong></p>
                   )}
                 </>
               ) : (
@@ -884,7 +852,7 @@ function MusicGraph({ mobileDragData, setMobileDragData }) {
                 
                 // Filter out playlists that already contain the track
                 const playlistsToAddTo = playlistsInRange.filter(playlist => 
-                  !playlistsContainingTrack.includes(playlist.playlistId)
+                  !currentSelectedObject.connectedPlaylistIds || !currentSelectedObject.connectedPlaylistIds.includes(playlist.playlistId)
                 );
                 
                 if (playlistsToAddTo.length === 0) return null;
