@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { getCompleteQueue, getAudioFeatures } from '../utils/spotify';
+import { getCompleteQueue, getAudioFeatures, makeSpotifyRequest } from '../utils/spotify';
 import './LiveQueue.css';
 
 function LiveQueue({ onTrackDragStart, onTrackDragEnd, mobileDragData, setMobileDragData, setMobileDragPreview }) {
@@ -12,7 +12,12 @@ function LiveQueue({ onTrackDragStart, onTrackDragEnd, mobileDragData, setMobile
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [searching, setSearching] = useState(false);
+  const [showSearchResults, setShowSearchResults] = useState(false);
   const refreshInterval = useRef(null);
+  const searchTimeout = useRef(null);
   const audioFeaturesCache = useRef(new Map());
 
   // Fetch queue data
@@ -26,6 +31,53 @@ function LiveQueue({ onTrackDragStart, onTrackDragEnd, mobileDragData, setMobile
       setError('Failed to load queue');
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Search for tracks with debouncing
+  const searchTracks = async (query) => {
+    if (!query.trim()) {
+      setSearchResults([]);
+      setShowSearchResults(false);
+      return;
+    }
+
+    setSearching(true);
+    try {
+      const response = await makeSpotifyRequest(`/search?q=${encodeURIComponent(query)}&type=track&limit=6`);
+      const data = await response.json();
+      setSearchResults(data.tracks.items);
+      setShowSearchResults(true);
+    } catch (error) {
+      console.error('Search error:', error);
+      setSearchResults([]);
+    } finally {
+      setSearching(false);
+    }
+  };
+
+  // Handle search input with debouncing
+  const handleSearchInput = (value) => {
+    setSearchQuery(value);
+    
+    // Clear existing timeout
+    if (searchTimeout.current) {
+      clearTimeout(searchTimeout.current);
+    }
+
+    // Set new timeout for debounced search
+    searchTimeout.current = setTimeout(() => {
+      searchTracks(value);
+    }, 500);
+  };
+
+  // Clear search
+  const clearSearch = () => {
+    setSearchQuery('');
+    setSearchResults([]);
+    setShowSearchResults(false);
+    if (searchTimeout.current) {
+      clearTimeout(searchTimeout.current);
     }
   };
 
@@ -224,6 +276,33 @@ function LiveQueue({ onTrackDragStart, onTrackDragEnd, mobileDragData, setMobile
     allTracks.push(null);
   }
 
+  // Render search result icon
+  const renderSearchResult = (track, index) => {
+    const imageUrl = track.album?.images?.[2]?.url || track.album?.images?.[0]?.url;
+
+    return (
+      <div
+        key={track.id}
+        className="search-result-track"
+        draggable
+        onDragStart={(e) => handleDragStart(e, track, 'search')}
+        onDragEnd={handleDragEnd}
+        onTouchStart={(e) => handleTouchStart(e, track, 'search')}
+        title={`${track.name} - ${track.artists?.map(a => a.name).join(', ') || 'Unknown'}`}
+      >
+        {imageUrl ? (
+          <img 
+            src={imageUrl} 
+            alt={track.name}
+            className="track-image"
+          />
+        ) : (
+          <div className="track-placeholder">♪</div>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div className="live-queue">
       <div className="queue-header">
@@ -231,6 +310,39 @@ function LiveQueue({ onTrackDragStart, onTrackDragEnd, mobileDragData, setMobile
         <div className="queue-status">
           {queueData.is_playing ? '▶' : '⏸'}
         </div>
+      </div>
+
+      {/* Search Section */}
+      <div className="search-section">
+        <div className="search-bar">
+          <input
+            type="text"
+            placeholder="Search songs..."
+            value={searchQuery}
+            onChange={(e) => handleSearchInput(e.target.value)}
+            className="search-input"
+          />
+          {searchQuery && (
+            <button onClick={clearSearch} className="clear-search">
+              ×
+            </button>
+          )}
+        </div>
+
+        {/* Search Results */}
+        {showSearchResults && (
+          <div className={`search-results ${searching ? 'loading' : ''}`}>
+            {searching ? (
+              <div className="search-loading">Searching...</div>
+            ) : searchResults.length > 0 ? (
+              <div className="search-results-grid">
+                {searchResults.map((track, index) => renderSearchResult(track, index))}
+              </div>
+            ) : (
+              <div className="no-results">No songs found</div>
+            )}
+          </div>
+        )}
       </div>
       
       <div className="queue-tracks">
