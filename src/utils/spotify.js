@@ -48,6 +48,11 @@ export async function authenticateSpotify() {
   // Store code verifier in localStorage
   localStorage.setItem('code_verifier', codeVerifier);
   
+  // Preserve current URL hash (for queue sharing) during OAuth flow
+  if (window.location.hash) {
+    sessionStorage.setItem('spotify_return_hash', window.location.hash);
+  }
+  
   // Build authorization URL
   const params = new URLSearchParams({
     client_id: CLIENT_ID,

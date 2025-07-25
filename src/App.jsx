@@ -46,6 +46,13 @@ function App() {
           sessionStorage.removeItem('spotify_auth_code')
           setIsAuthenticated(true)
           
+          // Restore hash that was preserved during OAuth flow
+          const returnHash = sessionStorage.getItem('spotify_return_hash')
+          if (returnHash) {
+            window.location.hash = returnHash
+            sessionStorage.removeItem('spotify_return_hash')
+          }
+          
           // Check if this is a queue share URL after auth
           if (isShareUrl()) {
             setShowQueueImport(true)
