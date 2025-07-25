@@ -564,6 +564,101 @@ export async function addMultipleToQueue(trackUris, onProgress) {
   return results;
 }
 
+// Get user's current queue
+export async function getUserQueue() {
+  try {
+    const response = await makeSpotifyRequest('/me/player/queue');
+    
+    if (response.status === 204) {
+      return { currently_playing: null, queue: [] };
+    }
+    
+    if (!response.ok) {
+      throw new Error('Failed to get user queue');
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Error getting user queue:', error);
+    return { currently_playing: null, queue: [] };
+  }
+}
+
+// Get recently played tracks
+export async function getRecentlyPlayed(limit = 3) {
+  try {
+    const response = await makeSpotifyRequest(`/me/player/recently-played?limit=${limit}`);
+    
+    if (!response.ok) {
+      throw new Error('Failed to get recently played tracks');
+    }
+    
+    const data = await response.json();
+    return data.items || [];
+  } catch (error) {
+    console.error('Error getting recently played tracks:', error);
+    return [];
+  }
+}
+
+// Get current playback state
+export async function getCurrentPlayback() {
+  try {
+    const response = await makeSpotifyRequest('/me/player');
+    
+    if (response.status === 204) {
+      return null;
+    }
+    
+    if (!response.ok) {
+      throw new Error('Failed to get current playback');
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Error getting current playback:', error);
+    return null;
+  }
+}
+
+// Get comprehensive queue data (recent + current + upcoming)
+export async function getCompleteQueue() {
+  try {
+    const [queueData, recentlyPlayed, currentPlayback] = await Promise.all([
+      getUserQueue(),
+      getRecentlyPlayed(3),
+      getCurrentPlayback()
+    ]);
+
+    // Build the complete 7-track queue
+    const recent = recentlyPlayed.map(item => ({
+      ...item.track,
+      played_at: item.played_at,
+      is_recent: true
+    }));
+
+    const current = currentPlayback?.item || queueData.currently_playing;
+    const upcoming = queueData.queue.slice(0, 3);
+
+    return {
+      recent: recent.slice(-3), // Last 3 played
+      current: current ? { ...current, is_current: true } : null,
+      upcoming: upcoming.slice(0, 3), // Next 3 in queue
+      is_playing: currentPlayback?.is_playing || false,
+      progress_ms: currentPlayback?.progress_ms || 0
+    };
+  } catch (error) {
+    console.error('Error getting complete queue:', error);
+    return {
+      recent: [],
+      current: null,
+      upcoming: [],
+      is_playing: false,
+      progress_ms: 0
+    };
+  }
+}
+
 // Logout function
 export function logout() {
   localStorage.removeItem('access_token');

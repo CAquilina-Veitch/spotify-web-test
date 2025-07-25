@@ -6,11 +6,13 @@ import MusicGraph from './components/MusicGraph'
 import PlaylistPanel from './components/PlaylistPanel'
 import QueueBuilder from './components/QueueBuilder'
 import QueueImport from './components/QueueImport'
+import LiveQueue from './components/LiveQueue'
 import './components/NowPlaying.css'
 import './components/MusicGraph.css'
 import './components/PlaylistPanel.css'
 import './components/QueueBuilder.css'
 import './components/QueueImport.css'
+import './components/LiveQueue.css'
 import { authenticateSpotify, getStoredAccessToken, logout, getAccessToken } from './utils/spotify'
 import { isShareUrl } from './utils/queueEncoding'
 
@@ -134,10 +136,19 @@ function App() {
                 setMobileDragData={setMobileDragData}
                 setMobileDragPreview={setMobileDragPreview}
               />
-              <MusicGraph 
-                mobileDragData={mobileDragData}
-                setMobileDragData={setMobileDragData}
-              />
+              <div className="center-section">
+                <LiveQueue 
+                  onTrackDragStart={handleTrackDragStart}
+                  onTrackDragEnd={handleTrackDragEnd}
+                  mobileDragData={mobileDragData}
+                  setMobileDragData={setMobileDragData}
+                  setMobileDragPreview={setMobileDragPreview}
+                />
+                <MusicGraph 
+                  mobileDragData={mobileDragData}
+                  setMobileDragData={setMobileDragData}
+                />
+              </div>
             </div>
           </div>
         )}
