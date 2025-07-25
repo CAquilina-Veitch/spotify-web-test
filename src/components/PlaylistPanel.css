@@ -57,6 +57,7 @@
   border-radius: 8px;
   cursor: grab;
   transition: all 0.2s;
+  position: relative;
 }
 
 .playlist-item:hover {
@@ -178,4 +179,28 @@
 
 .playlists-list::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+/* Playlist play button */
+.playlist-play-button {
+  background: none;
+  border: none;
+  color: #b3b3b3;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.2s;
+  opacity: 0;
+  margin-left: auto;
+}
+
+.playlist-item:hover .playlist-play-button {
+  opacity: 1;
+}
+
+.playlist-play-button:hover {
+  color: #1db954;
+  background-color: rgba(29, 185, 84, 0.1);
+  transform: scale(1.1);
 }

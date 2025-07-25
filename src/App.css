@@ -95,6 +95,28 @@
   font-size: 24px;
 }
 
+.header-buttons {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.queue-builder-button {
+  background-color: #1db954;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+.queue-builder-button:hover {
+  background-color: #1ed760;
+}
+
 .logout-button {
   background-color: transparent;
   border: 2px solid #1db954;

@@ -151,6 +151,67 @@
   transition: width 0.3s ease;
 }
 
+.progress-bar:hover {
+  height: 6px;
+  cursor: pointer;
+}
+
+.progress-bar:hover .progress-fill {
+  background-color: #1ed760;
+}
+
+/* Playback controls */
+.playback-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.control-button {
+  background: none;
+  border: none;
+  color: #b3b3b3;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.2s;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.control-button:hover {
+  color: white;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.control-button.play-pause {
+  font-size: 24px;
+  width: 48px;
+  height: 48px;
+  background-color: #1db954;
+  color: black;
+}
+
+.control-button.play-pause:hover {
+  background-color: #1ed760;
+  transform: scale(1.05);
+}
+
+.control-button.active {
+  color: #1db954;
+}
+
+.control-button.shuffle.active,
+.control-button.repeat.active {
+  color: #1db954;
+}
+
 /* Mobile responsive */
 @media (max-width: 768px) {
   .now-playing {

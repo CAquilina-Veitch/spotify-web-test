@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { makeSpotifyRequest } from '../utils/spotify';
+import { makeSpotifyRequest, togglePlayback, skipToNext, skipToPrevious, seekToPosition, setShuffle, setRepeat } from '../utils/spotify';
 
 function NowPlaying({ onTrackDragStart, onTrackDragEnd, mobileDragData, setMobileDragData, setMobileDragPreview }) {
   const [currentTrack, setCurrentTrack] = useState(null);
@@ -8,6 +8,8 @@ function NowPlaying({ onTrackDragStart, onTrackDragEnd, mobileDragData, setMobil
   const [loading, setLoading] = useState(true);
   const [isDragging, setIsDragging] = useState(false);
   const [isPolling, setIsPolling] = useState(false);
+  const [shuffleState, setShuffleState] = useState(false);
+  const [repeatState, setRepeatState] = useState('off');
 
   useEffect(() => {
     fetchCurrentTrack(false); // Initial fetch - show errors
@@ -40,6 +42,8 @@ function NowPlaying({ onTrackDragStart, onTrackDragEnd, mobileDragData, setMobil
       const data = await response.json();
       setCurrentTrack(data);
       setIsPlaying(data.is_playing);
+      setShuffleState(data.shuffle_state || false);
+      setRepeatState(data.repeat_state || 'off');
       setLoading(false);
       
       // Clear error on successful fetch
@@ -142,6 +146,74 @@ function NowPlaying({ onTrackDragStart, onTrackDragEnd, mobileDragData, setMobil
     // Keep mobileDragData for the drop target to use
   };
 
+  const handlePlayPause = async () => {
+    try {
+      const newState = await togglePlayback();
+      setIsPlaying(newState);
+    } catch (error) {
+      console.error('Error toggling playback:', error);
+    }
+  };
+
+  const handleSkipNext = async () => {
+    try {
+      await skipToNext();
+      // Refresh current track after a short delay
+      setTimeout(() => fetchCurrentTrack(false), 300);
+    } catch (error) {
+      console.error('Error skipping to next:', error);
+    }
+  };
+
+  const handleSkipPrevious = async () => {
+    try {
+      await skipToPrevious();
+      // Refresh current track after a short delay
+      setTimeout(() => fetchCurrentTrack(false), 300);
+    } catch (error) {
+      console.error('Error skipping to previous:', error);
+    }
+  };
+
+  const handleProgressClick = (e) => {
+    if (!currentTrack || !currentTrack.item) return;
+    
+    const progressBar = e.currentTarget;
+    const clickX = e.nativeEvent.offsetX;
+    const barWidth = progressBar.offsetWidth;
+    const percentage = clickX / barWidth;
+    const newPosition = Math.floor(percentage * currentTrack.item.duration_ms);
+    
+    seekToPosition(newPosition);
+  };
+
+  const handleShuffleToggle = async () => {
+    try {
+      const newState = !shuffleState;
+      await setShuffle(newState);
+      setShuffleState(newState);
+    } catch (error) {
+      console.error('Error toggling shuffle:', error);
+    }
+  };
+
+  const handleRepeatToggle = async () => {
+    try {
+      let newState;
+      if (repeatState === 'off') {
+        newState = 'context';
+      } else if (repeatState === 'context') {
+        newState = 'track';
+      } else {
+        newState = 'off';
+      }
+      await setRepeat(newState);
+      setRepeatState(newState);
+    } catch (error) {
+      console.error('Error toggling repeat:', error);
+    }
+  };
+
   if (loading) {
     return (
       <div className="now-playing loading">
@@ -201,12 +273,54 @@ function NowPlaying({ onTrackDragStart, onTrackDragEnd, mobileDragData, setMobil
         </div>
       </div>
       
+      <div className="playback-controls">
+        <button 
+          className={`control-button shuffle ${shuffleState ? 'active' : ''}`}
+          onClick={handleShuffleToggle}
+          title="Toggle shuffle"
+        >
+          🔀
+        </button>
+        <button 
+          className="control-button"
+          onClick={handleSkipPrevious}
+          title="Previous track"
+        >
+          ⏮️
+        </button>
+        <button 
+          className="control-button play-pause"
+          onClick={handlePlayPause}
+          title={isPlaying ? 'Pause' : 'Play'}
+        >
+          {isPlaying ? '⏸️' : '▶️'}
+        </button>
+        <button 
+          className="control-button"
+          onClick={handleSkipNext}
+          title="Next track"
+        >
+          ⏭️
+        </button>
+        <button 
+          className={`control-button repeat ${repeatState !== 'off' ? 'active' : ''}`}
+          onClick={handleRepeatToggle}
+          title={`Repeat: ${repeatState}`}
+        >
+          {repeatState === 'track' ? '🔂' : '🔁'}
+        </button>
+      </div>
+      
       <div className="progress-section">
         <div className="progress-info">
           <span className="current-time">{formatTime(currentTrack.progress_ms)}</span>
           <span className="total-time">{formatTime(track.duration_ms)}</span>
         </div>
-        <div className="progress-bar">
+        <div 
+          className="progress-bar"
+          onClick={handleProgressClick}
+          style={{ cursor: 'pointer' }}
+        >
           <div 
             className="progress-fill" 
             style={{ width: `${getProgressPercentage()}%` }}

@@ -4,10 +4,15 @@ import Callback from './components/Callback'
 import NowPlaying from './components/NowPlaying'
 import MusicGraph from './components/MusicGraph'
 import PlaylistPanel from './components/PlaylistPanel'
+import QueueBuilder from './components/QueueBuilder'
+import QueueImport from './components/QueueImport'
 import './components/NowPlaying.css'
 import './components/MusicGraph.css'
 import './components/PlaylistPanel.css'
+import './components/QueueBuilder.css'
+import './components/QueueImport.css'
 import { authenticateSpotify, getStoredAccessToken, logout, getAccessToken } from './utils/spotify'
+import { isShareUrl } from './utils/queueEncoding'
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -15,6 +20,8 @@ function App() {
   const [draggedTrack, setDraggedTrack] = useState(null)
   const [mobileDragData, setMobileDragData] = useState(null)
   const [mobileDragPreview, setMobileDragPreview] = useState(null)
+  const [showQueueBuilder, setShowQueueBuilder] = useState(false)
+  const [showQueueImport, setShowQueueImport] = useState(false)
 
   useEffect(() => {
     const checkAuthentication = async () => {
@@ -23,6 +30,11 @@ function App() {
       if (token) {
         setIsAuthenticated(true)
         setLoading(false)
+        
+        // Check if this is a queue share URL
+        if (isShareUrl()) {
+          setShowQueueImport(true)
+        }
         return
       }
 
@@ -33,6 +45,11 @@ function App() {
           await getAccessToken(authCode)
           sessionStorage.removeItem('spotify_auth_code')
           setIsAuthenticated(true)
+          
+          // Check if this is a queue share URL after auth
+          if (isShareUrl()) {
+            setShowQueueImport(true)
+          }
         } catch (error) {
           console.error('Error exchanging auth code:', error)
         }
@@ -88,9 +105,14 @@ function App() {
           <div className="authenticated-content">
             <div className="header-controls">
               <h2>Welcome back!</h2>
-              <button className="logout-button" onClick={handleLogout}>
-                Logout
-              </button>
+              <div className="header-buttons">
+                <button className="queue-builder-button" onClick={() => setShowQueueBuilder(true)}>
+                  Build Queue
+                </button>
+                <button className="logout-button" onClick={handleLogout}>
+                  Logout
+                </button>
+              </div>
             </div>
             <NowPlaying 
               onTrackDragStart={handleTrackDragStart}
@@ -139,6 +161,26 @@ function App() {
             }}
           />
         </div>
+      )}
+      
+      {/* Queue Builder Modal */}
+      {showQueueBuilder && (
+        <QueueBuilder onClose={() => setShowQueueBuilder(false)} />
+      )}
+      
+      {/* Queue Import Modal */}
+      {showQueueImport && (
+        <QueueImport 
+          onClose={() => {
+            setShowQueueImport(false)
+            // Clear the hash from URL
+            window.location.hash = ''
+          }}
+          onSuccess={() => {
+            // Optionally show a success message
+            window.location.hash = ''
+          }}
+        />
       )}
     </div>
   )

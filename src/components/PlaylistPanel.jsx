@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { makeSpotifyRequest } from '../utils/spotify';
+import { makeSpotifyRequest, playPlaylist } from '../utils/spotify';
 
 function PlaylistPanel({ mobileDragData, setMobileDragData, setMobileDragPreview }) {
   const [playlists, setPlaylists] = useState([]);
@@ -8,6 +8,7 @@ function PlaylistPanel({ mobileDragData, setMobileDragData, setMobileDragPreview
   const [error, setError] = useState(null);
   const [searchFilter, setSearchFilter] = useState('');
   const [draggingPlaylist, setDraggingPlaylist] = useState(null);
+  const [draggedOverPlaylist, setDraggedOverPlaylist] = useState(null);
 
   useEffect(() => {
     fetchPlaylists();
@@ -31,12 +32,69 @@ function PlaylistPanel({ mobileDragData, setMobileDragData, setMobileDragPreview
       }
 
       const data = await response.json();
-      setPlaylists(data.items);
+      
+      // Get saved playlist order from localStorage
+      const savedOrder = localStorage.getItem('spotify_playlist_order');
+      let orderedPlaylists = data.items;
+      
+      if (savedOrder) {
+        try {
+          const orderMap = JSON.parse(savedOrder);
+          // Sort playlists based on saved order
+          orderedPlaylists = [...data.items].sort((a, b) => {
+            const orderA = orderMap[a.id] !== undefined ? orderMap[a.id] : 999;
+            const orderB = orderMap[b.id] !== undefined ? orderMap[b.id] : 999;
+            return orderA - orderB;
+          });
+        } catch (e) {
+          console.error('Error parsing saved playlist order:', e);
+        }
+      }
+      
+      setPlaylists(orderedPlaylists);
       setLoading(false);
     } catch (error) {
       setError(error.message);
       setLoading(false);
     }
+  };
+
+  const savePlaylistOrder = (orderedPlaylists) => {
+    const orderMap = {};
+    orderedPlaylists.forEach((playlist, index) => {
+      orderMap[playlist.id] = index;
+    });
+    localStorage.setItem('spotify_playlist_order', JSON.stringify(orderMap));
+  };
+
+  const handlePlaylistDragOver = (e, targetPlaylistId) => {
+    e.preventDefault();
+    setDraggedOverPlaylist(targetPlaylistId);
+  };
+
+  const handlePlaylistDrop = (e, targetPlaylistId) => {
+    e.preventDefault();
+    
+    if (draggingPlaylist && draggingPlaylist !== targetPlaylistId) {
+      const draggedIndex = playlists.findIndex(p => p.id === draggingPlaylist);
+      const targetIndex = playlists.findIndex(p => p.id === targetPlaylistId);
+      
+      if (draggedIndex !== -1 && targetIndex !== -1) {
+        const newPlaylists = [...playlists];
+        const [draggedPlaylist] = newPlaylists.splice(draggedIndex, 1);
+        newPlaylists.splice(targetIndex, 0, draggedPlaylist);
+        
+        setPlaylists(newPlaylists);
+        savePlaylistOrder(newPlaylists);
+      }
+    }
+    
+    setDraggedOverPlaylist(null);
+  };
+
+  const resetPlaylistOrder = () => {
+    localStorage.removeItem('spotify_playlist_order');
+    fetchPlaylists();
   };
 
   if (loading) {
@@ -70,7 +128,16 @@ function PlaylistPanel({ mobileDragData, setMobileDragData, setMobileDragPreview
   return (
     <div className="playlist-panel">
       <div className="panel-header">
-        <h3>📁 Your Playlists</h3>
+        <div className="header-row">
+          <h3>📁 Your Playlists</h3>
+          <button 
+            className="reset-order-button"
+            onClick={resetPlaylistOrder}
+            title="Reset playlist order"
+          >
+            ↻
+          </button>
+        </div>
         <div className="search-container">
           <input
             type="text"
@@ -140,13 +207,25 @@ function PlaylistPanel({ mobileDragData, setMobileDragData, setMobileDragPreview
               // Keep mobileDragData for the drop target to use
             };
 
+            const handlePlayPlaylist = async (e) => {
+              e.stopPropagation();
+              try {
+                await playPlaylist(playlist.id);
+              } catch (error) {
+                console.error('Error playing playlist:', error);
+              }
+            };
+
             return (
               <div 
                 key={playlist.id} 
-                className={`playlist-item ${draggingPlaylist === playlist.id ? 'dragging' : ''}`}
+                className={`playlist-item ${draggingPlaylist === playlist.id ? 'dragging' : ''} ${draggedOverPlaylist === playlist.id ? 'drag-over' : ''}`}
                 draggable={true}
                 onDragStart={handleDragStart}
                 onDragEnd={handleDragEnd}
+                onDragOver={(e) => handlePlaylistDragOver(e, playlist.id)}
+                onDragLeave={() => setDraggedOverPlaylist(null)}
+                onDrop={(e) => handlePlaylistDrop(e, playlist.id)}
                 onTouchStart={handleTouchStart}
                 onTouchMove={handleTouchMove}
                 onTouchEnd={handleTouchEnd}
@@ -168,6 +247,13 @@ function PlaylistPanel({ mobileDragData, setMobileDragData, setMobileDragPreview
                     {playlist.tracks ? playlist.tracks.total : 0} tracks
                   </div>
                 </div>
+                <button 
+                  className="playlist-play-button"
+                  onClick={handlePlayPlaylist}
+                  title="Play playlist"
+                >
+                  ▶️
+                </button>
               </div>
             );
           })

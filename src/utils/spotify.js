@@ -374,6 +374,191 @@ export async function getPlaylistsContainingTrack(playlistIds, trackId) {
   }
 }
 
+// Playback control functions
+export async function togglePlayback() {
+  try {
+    // First get current playback state
+    const stateResponse = await makeSpotifyRequest('/me/player');
+    
+    if (stateResponse.status === 204) {
+      throw new Error('No active device found');
+    }
+    
+    const state = await stateResponse.json();
+    const isPlaying = state.is_playing;
+    
+    // Toggle play/pause
+    const endpoint = isPlaying ? '/me/player/pause' : '/me/player/play';
+    const response = await makeSpotifyRequest(endpoint, {
+      method: 'PUT'
+    });
+    
+    if (!response.ok && response.status !== 204) {
+      throw new Error(`Failed to ${isPlaying ? 'pause' : 'play'} playback`);
+    }
+    
+    return !isPlaying;
+  } catch (error) {
+    console.error('Error toggling playback:', error);
+    throw error;
+  }
+}
+
+export async function skipToNext() {
+  try {
+    const response = await makeSpotifyRequest('/me/player/next', {
+      method: 'POST'
+    });
+    
+    if (!response.ok && response.status !== 204) {
+      throw new Error('Failed to skip to next track');
+    }
+  } catch (error) {
+    console.error('Error skipping to next:', error);
+    throw error;
+  }
+}
+
+export async function skipToPrevious() {
+  try {
+    const response = await makeSpotifyRequest('/me/player/previous', {
+      method: 'POST'
+    });
+    
+    if (!response.ok && response.status !== 204) {
+      throw new Error('Failed to skip to previous track');
+    }
+  } catch (error) {
+    console.error('Error skipping to previous:', error);
+    throw error;
+  }
+}
+
+export async function seekToPosition(position_ms) {
+  try {
+    const response = await makeSpotifyRequest(`/me/player/seek?position_ms=${position_ms}`, {
+      method: 'PUT'
+    });
+    
+    if (!response.ok && response.status !== 204) {
+      throw new Error('Failed to seek to position');
+    }
+  } catch (error) {
+    console.error('Error seeking to position:', error);
+    throw error;
+  }
+}
+
+export async function playPlaylist(playlistId, offset = 0) {
+  try {
+    const response = await makeSpotifyRequest('/me/player/play', {
+      method: 'PUT',
+      body: JSON.stringify({
+        context_uri: `spotify:playlist:${playlistId}`,
+        offset: {
+          position: offset
+        }
+      })
+    });
+    
+    if (!response.ok && response.status !== 204) {
+      throw new Error('Failed to play playlist');
+    }
+  } catch (error) {
+    console.error('Error playing playlist:', error);
+    throw error;
+  }
+}
+
+export async function setVolume(volumePercent) {
+  try {
+    const response = await makeSpotifyRequest(`/me/player/volume?volume_percent=${volumePercent}`, {
+      method: 'PUT'
+    });
+    
+    if (!response.ok && response.status !== 204) {
+      throw new Error('Failed to set volume');
+    }
+  } catch (error) {
+    console.error('Error setting volume:', error);
+    throw error;
+  }
+}
+
+export async function setShuffle(state) {
+  try {
+    const response = await makeSpotifyRequest(`/me/player/shuffle?state=${state}`, {
+      method: 'PUT'
+    });
+    
+    if (!response.ok && response.status !== 204) {
+      throw new Error('Failed to set shuffle state');
+    }
+  } catch (error) {
+    console.error('Error setting shuffle:', error);
+    throw error;
+  }
+}
+
+export async function setRepeat(state) {
+  try {
+    // state can be 'track', 'context', or 'off'
+    const response = await makeSpotifyRequest(`/me/player/repeat?state=${state}`, {
+      method: 'PUT'
+    });
+    
+    if (!response.ok && response.status !== 204) {
+      throw new Error('Failed to set repeat state');
+    }
+  } catch (error) {
+    console.error('Error setting repeat:', error);
+    throw error;
+  }
+}
+
+// Add track to queue
+export async function addToQueue(trackUri) {
+  try {
+    const response = await makeSpotifyRequest(`/me/player/queue?uri=${encodeURIComponent(trackUri)}`, {
+      method: 'POST'
+    });
+    
+    if (!response.ok && response.status !== 204) {
+      throw new Error('Failed to add track to queue');
+    }
+    
+    return true;
+  } catch (error) {
+    console.error('Error adding track to queue:', error);
+    throw error;
+  }
+}
+
+// Add multiple tracks to queue with delay to avoid rate limits
+export async function addMultipleToQueue(trackUris, onProgress) {
+  const results = [];
+  
+  for (let i = 0; i < trackUris.length; i++) {
+    try {
+      await addToQueue(trackUris[i]);
+      results.push({ success: true, uri: trackUris[i] });
+      
+      if (onProgress) {
+        onProgress(i + 1, trackUris.length);
+      }
+      
+      // Add delay between requests to avoid rate limiting
+      if (i < trackUris.length - 1) {
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
+    } catch (error) {
+      results.push({ success: false, uri: trackUris[i], error: error.message });
+    }
+  }
+  
+  return results;
+}
+
 // Logout function
 export function logout() {
   localStorage.removeItem('access_token');
