@@ -513,7 +513,8 @@ function MusicGraph({ mobileDragData, setMobileDragData }) {
   return (
     <div className="music-graph">
       <div className="graph-header">
-        <h2>🎵 Interactive Positioning Tool</h2>
+        <h2>🎵 SONG GRAPH</h2>
+	<p> Drag any song or playlist icon from anywhere on this page to here! And then position the song by how</p>
         <div className="graph-controls">
           <button 
             onClick={() => setEditMode(!editMode)}
@@ -533,28 +534,28 @@ function MusicGraph({ mobileDragData, setMobileDragData }) {
             ref={svgRef}
             className={`music-scatter-plot ${dragOver ? 'drag-over' : ''}`}
             width="1200" 
-            height="800" 
-            viewBox="0 0 1200 800"
+            height="1200" 
+            viewBox="0 0 1200 1200"
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
             onClick={handleBackgroundClick}
           >
             {/* Background */}
-            <rect width="1200" height="800" fill="#1a1a1a" />
+            <rect width="1200" height="1200" fill="#1a1a1a" />
             
             {/* Graph area background */}
-            <rect x="100" y="100" width="1000" height="620" fill="#2a2a2a" stroke="#404040" strokeWidth="2" />
+            <rect x="100" y="100" width="1000" height="1000" fill="#2a2a2a" stroke="#404040" strokeWidth="2" />
             
             
             {/* Grid lines */}
             {createGridLines()}
             
             {/* Axis labels */}
-            <text x="600" y="710" textAnchor="middle" fill="#b3b3b3" fontSize="16" fontWeight="bold">
+            <text x="600" y="810" textAnchor="middle" fill="#b3b3b3" fontSize="16" fontWeight="bold">
               Happiness →
             </text>
-            <text x="50" y="410" textAnchor="middle" fill="#b3b3b3" fontSize="16" fontWeight="bold" transform="rotate(-90 50 410)">
+            <text x="50" y="510" textAnchor="middle" fill="#b3b3b3" fontSize="16" fontWeight="bold" transform="rotate(-90 50 410)">
               Intensity →
             </text>
             
@@ -564,7 +565,7 @@ function MusicGraph({ mobileDragData, setMobileDragData }) {
                 <text x={100 + i * 100} y="95" textAnchor="middle" fill="#b3b3b3" fontSize="12">
                   {i}
                 </text>
-                <text x="85" y={720 - i * 62 + 5} textAnchor="middle" fill="#b3b3b3" fontSize="12">
+                <text x="85" y={720 - i * 90 + 5} textAnchor="middle" fill="#b3b3b3" fontSize="12">
                   {i}
                 </text>
               </g>
@@ -814,7 +815,7 @@ function MusicGraph({ mobileDragData, setMobileDragData }) {
                   <p><strong>Happiness:</strong> {selectedObject.happiness}</p>
                   <p><strong>Intensity:</strong> {selectedObject.intensity}</p>
                   {selectedObject.connectedPlaylistIds && selectedObject.connectedPlaylistIds.length > 0 && (
-                    <p><strong>🔴 Connected to {selectedObject.connectedPlaylistIds.length} playlist{selectedObject.connectedPlaylistIds.length !== 1 ? 's' : ''}</strong></p>
+                    <p><strong> Is already inside {selectedObject.connectedPlaylistIds.length} playlist{selectedObject.connectedPlaylistIds.length !== 1 ? 's' : ''}</strong></p>
                   )}
                 </>
               ) : (
@@ -885,7 +886,7 @@ function MusicGraph({ mobileDragData, setMobileDragData }) {
               ref={deleteZoneRef}
               className={`delete-zone ${deleteZoneActive ? 'active' : ''}`}
             >
-              🗑️ Drag here to delete
+              🗑️ Drag here to remove from the graph!
             </div>
           )}
         </div>

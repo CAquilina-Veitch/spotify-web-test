@@ -96,7 +96,7 @@ function App() {
   if (loading) {
     return (
       <div className="App">
-        <div className="loading">Loading...</div>
+        <div className="loading">Loading ☺ </div>
       </div>
     )
   }
@@ -104,11 +104,11 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>🎵 Spotify Controller</h1>
-        <p>Control your Spotify playback from anywhere</p>
+        <h1>🎵 Codyfy 🎵</h1>
+        <p> My freaking spotify functions </p>
         {!isAuthenticated ? (
           <button className="login-button" onClick={handleLogin}>
-            Login with Spotify
+            Login!
           </button>
         ) : (
           <div className="authenticated-content">

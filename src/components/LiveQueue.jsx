@@ -306,7 +306,7 @@ function LiveQueue({ onTrackDragStart, onTrackDragEnd, mobileDragData, setMobile
   return (
     <div className="live-queue">
       <div className="queue-header">
-        <h3>Queue</h3>
+        <h3>Current Queue</h3>
         <div className="queue-status">
           {queueData.is_playing ? '▶' : '⏸'}
         </div>
@@ -317,7 +317,7 @@ function LiveQueue({ onTrackDragStart, onTrackDragEnd, mobileDragData, setMobile
         <div className="search-bar">
           <input
             type="text"
-            placeholder="Search songs..."
+            placeholder="Search!"
             value={searchQuery}
             onChange={(e) => handleSearchInput(e.target.value)}
             className="search-input"
@@ -331,7 +331,7 @@ function LiveQueue({ onTrackDragStart, onTrackDragEnd, mobileDragData, setMobile
 
         {/* Search Results */}
         {showSearchResults && (
-          <div className={`search-results ${searching ? 'loading' : ''}`}>
+          <div className={`search-results ${searching ? 'lookin' : ''}`}>
             {searching ? (
               <div className="search-loading">Searching...</div>
             ) : searchResults.length > 0 ? (

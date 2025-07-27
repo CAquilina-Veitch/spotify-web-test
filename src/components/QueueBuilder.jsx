@@ -89,8 +89,8 @@ function QueueBuilder({ onClose }) {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'My Spotify Queue',
-          text: `Check out my ${queue.length} song queue!`,
+          title: 'Codyfy Queue',
+          text: `Pls listen to these ${queue.length} songs ☺`,
           url: shareUrl
         });
       } catch (error) {
@@ -150,7 +150,7 @@ function QueueBuilder({ onClose }) {
                 onKeyPress={(e) => e.key === 'Enter' && searchTracks()}
               />
               <button onClick={searchTracks} disabled={searching}>
-                {searching ? 'Searching...' : 'Search'}
+                {searching ? 'Lookin' : 'Search'}
               </button>
             </div>
 
@@ -184,7 +184,7 @@ function QueueBuilder({ onClose }) {
                 <div className={`url-warning ${!urlStats.isWithinLimit ? 'warning' : ''}`}>
                   {urlStats.isWithinLimit 
                     ? `✓ URL length OK (${urlStats.totalUrlLength} chars)`
-                    : `⚠ URL may be too long (${urlStats.totalUrlLength} chars)`
+                    : `⚠ URL may be too long :( (${urlStats.totalUrlLength} chars)`
                   }
                 </div>
               )}
@@ -238,7 +238,7 @@ function QueueBuilder({ onClose }) {
             <div className="share-content">
               <h3>Share Your Queue</h3>
               <p>Anyone with this link can import your {queue.length} songs to their Spotify queue!</p>
-              
+              <p>Oops i lied i thought that was true but i have to set their email because spotify suuuucks</p>
               <div className="share-url">
                 <input 
                   type="text" 

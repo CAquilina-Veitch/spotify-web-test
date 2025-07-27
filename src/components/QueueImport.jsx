@@ -163,7 +163,7 @@ function QueueImport({ onClose, onSuccess }) {
               </p>
               {results.some(r => !r.success) && (
                 <p className="error-note">
-                  Some songs couldn't be added. This might be due to regional restrictions or temporary issues.
+                  Oops i cant solve this bug but if you unpause ur music then click itl work!! :P
                 </p>
               )}
             </div>

@@ -43,7 +43,7 @@ function Callback() {
 
   return (
     <div className="callback-container">
-      <h1>🎵 Spotify Controller</h1>
+      <h1> Callback </h1>
       {error ? (
         <div className="error">
           <p>{error}</p>
