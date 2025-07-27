@@ -90,7 +90,17 @@ export async function getAccessToken(code) {
   });
 
   if (!response.ok) {
-    throw new Error('Failed to get access token');
+    // Try to get error details
+    try {
+      const errorData = await response.json();
+      if (errorData.error === 'invalid_client') {
+        // Don't show alert here since it's already shown in Callback component
+        throw new Error('Invalid client - user not authorized');
+      }
+      throw new Error(errorData.error_description || 'Failed to get access token');
+    } catch {
+      throw new Error('Failed to get access token');
+    }
   }
 
   const data = await response.json();
@@ -197,6 +207,17 @@ export async function makeSpotifyRequest(endpoint, options = {}) {
       });
     } catch {
       throw new Error('Authentication required');
+    }
+  }
+
+  // Handle 403 Forbidden - user not authorized
+  if (response.status === 403) {
+    // Check if response is HTML (error page) instead of JSON
+    const contentType = response.headers.get('content-type');
+    if (contentType && !contentType.includes('application/json')) {
+      // Show the unauthorized message
+      alert('Account not authorised, please send me the email associated with your spotify! 🐬');
+      throw new Error('Account not authorized. Please contact the app owner to request access.');
     }
   }
 

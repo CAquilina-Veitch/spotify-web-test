@@ -1,0 +1,2026 @@
+Error with Permissions-Policy header: Unrecognized feature: 'browsing-topics'.
+Error with Permissions-Policy header: Unrecognized feature: 'run-ad-auction'.
+Error with Permissions-Policy header: Origin trial controlled feature not enabled: 'join-ad-interest-group'.
+Error with Permissions-Policy header: Unrecognized feature: 'private-state-token-redemption'.
+Error with Permissions-Policy header: Unrecognized feature: 'private-state-token-issuance'.
+Error with Permissions-Policy header: Unrecognized feature: 'private-aggregation'.
+Error with Permissions-Policy header: Unrecognized feature: 'attribution-reporting'.
+icon-192x192.png:1  GET https://caquilina-veitch.github.io/icon-192x192.png 404 (Not Found)
+spotify-web-test/:1 Error while trying to use the following icon from the Manifest: https://caquilina-veitch.github.io/icon-192x192.png (Download error or resource isn't a valid image)
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/queue 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+om @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49 Error getting user queue: Error: Failed to get user queue
+    at om (index-CotaoImx.js:49:41474)
+    at async Promise.all (spotify-web-test/index 0)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+om @ index-CotaoImx.js:49
+await in om
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+hm @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49 Error getting current playback: Error: Failed to get current playback
+    at hm (index-CotaoImx.js:49:41990)
+    at async Promise.all (spotify-web-test/index 2)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+hm @ index-CotaoImx.js:49
+await in hm
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/recently-played?limit=3 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+dm @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49 Error getting recently played tracks: Error: Failed to get recently played tracks
+    at dm (index-CotaoImx.js:49:41730)
+    at async Promise.all (spotify-web-test/index 1)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+dm @ index-CotaoImx.js:49
+await in dm
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/playlists?limit=50 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+Rt @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/currently-playing 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+Z @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/currently-playing 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+Z @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+setInterval
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/queue 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+om @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49 Error getting user queue: Error: Failed to get user queue
+    at om (index-CotaoImx.js:49:41474)
+    at async Promise.all (spotify-web-test/index 0)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+om @ index-CotaoImx.js:49
+await in om
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+hm @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49 Error getting current playback: Error: Failed to get current playback
+    at hm (index-CotaoImx.js:49:41990)
+    at async Promise.all (spotify-web-test/index 2)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+hm @ index-CotaoImx.js:49
+await in hm
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/recently-played?limit=3 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+dm @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49 Error getting recently played tracks: Error: Failed to get recently played tracks
+    at dm (index-CotaoImx.js:49:41730)
+    at async Promise.all (spotify-web-test/index 1)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+dm @ index-CotaoImx.js:49
+await in dm
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/queue 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+om @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49 Error getting user queue: Error: Failed to get user queue
+    at om (index-CotaoImx.js:49:41474)
+    at async Promise.all (spotify-web-test/index 0)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+om @ index-CotaoImx.js:49
+await in om
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/currently-playing 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+Z @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+setInterval
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+hm @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49 Error getting current playback: Error: Failed to get current playback
+    at hm (index-CotaoImx.js:49:41990)
+    at async Promise.all (spotify-web-test/index 2)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+hm @ index-CotaoImx.js:49
+await in hm
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/recently-played?limit=3 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+dm @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49 Error getting recently played tracks: Error: Failed to get recently played tracks
+    at dm (index-CotaoImx.js:49:41730)
+    at async Promise.all (spotify-web-test/index 1)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+dm @ index-CotaoImx.js:49
+await in dm
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/queue 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+om @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49 Error getting user queue: Error: Failed to get user queue
+    at om (index-CotaoImx.js:49:41474)
+    at async Promise.all (spotify-web-test/index 0)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+om @ index-CotaoImx.js:49
+await in om
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/currently-playing 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+Z @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+setInterval
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+hm @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49 Error getting current playback: Error: Failed to get current playback
+    at hm (index-CotaoImx.js:49:41990)
+    at async Promise.all (spotify-web-test/index 2)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+hm @ index-CotaoImx.js:49
+await in hm
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/recently-played?limit=3 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+dm @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49 Error getting recently played tracks: Error: Failed to get recently played tracks
+    at dm (index-CotaoImx.js:49:41730)
+    at async Promise.all (spotify-web-test/index 1)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+dm @ index-CotaoImx.js:49
+await in dm
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/currently-playing 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+Z @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+setInterval
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/currently-playing 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+Z @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+setInterval
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/currently-playing 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+Z @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+setInterval
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/currently-playing 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+Z @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+setInterval
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/currently-playing 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+Z @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+setInterval
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/currently-playing 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+Z @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+setInterval
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/queue 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+om @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting user queue: Error: Failed to get user queue
+    at om (index-CotaoImx.js:49:41474)
+    at async Promise.all (spotify-web-test/index 0)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+om @ index-CotaoImx.js:49
+await in om
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/recently-played?limit=3 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+dm @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting recently played tracks: Error: Failed to get recently played tracks
+    at dm (index-CotaoImx.js:49:41730)
+    at async Promise.all (spotify-web-test/index 1)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+dm @ index-CotaoImx.js:49
+await in dm
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+hm @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting current playback: Error: Failed to get current playback
+    at hm (index-CotaoImx.js:49:41990)
+    at async Promise.all (spotify-web-test/index 2)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+hm @ index-CotaoImx.js:49
+await in hm
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/currently-playing 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+Z @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+setInterval
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+hm @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting current playback: Error: Failed to get current playback
+    at hm (index-CotaoImx.js:49:41990)
+    at async Promise.all (spotify-web-test/index 2)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+hm @ index-CotaoImx.js:49
+await in hm
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/queue 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+om @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting user queue: Error: Failed to get user queue
+    at om (index-CotaoImx.js:49:41474)
+    at async Promise.all (spotify-web-test/index 0)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+om @ index-CotaoImx.js:49
+await in om
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/recently-played?limit=3 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+dm @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting recently played tracks: Error: Failed to get recently played tracks
+    at dm (index-CotaoImx.js:49:41730)
+    at async Promise.all (spotify-web-test/index 1)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+dm @ index-CotaoImx.js:49
+await in dm
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/currently-playing 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+Z @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+setInterval
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/queue 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+om @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting user queue: Error: Failed to get user queue
+    at om (index-CotaoImx.js:49:41474)
+    at async Promise.all (spotify-web-test/index 0)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+om @ index-CotaoImx.js:49
+await in om
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/recently-played?limit=3 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+dm @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting recently played tracks: Error: Failed to get recently played tracks
+    at dm (index-CotaoImx.js:49:41730)
+    at async Promise.all (spotify-web-test/index 1)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+dm @ index-CotaoImx.js:49
+await in dm
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+hm @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting current playback: Error: Failed to get current playback
+    at hm (index-CotaoImx.js:49:41990)
+    at async Promise.all (spotify-web-test/index 2)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+hm @ index-CotaoImx.js:49
+await in hm
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/currently-playing 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+Z @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+setInterval
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/queue 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+om @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting user queue: Error: Failed to get user queue
+    at om (index-CotaoImx.js:49:41474)
+    at async Promise.all (spotify-web-test/index 0)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+om @ index-CotaoImx.js:49
+await in om
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+hm @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting current playback: Error: Failed to get current playback
+    at hm (index-CotaoImx.js:49:41990)
+    at async Promise.all (spotify-web-test/index 2)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+hm @ index-CotaoImx.js:49
+await in hm
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/recently-played?limit=3 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+dm @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting recently played tracks: Error: Failed to get recently played tracks
+    at dm (index-CotaoImx.js:49:41730)
+    at async Promise.all (spotify-web-test/index 1)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+dm @ index-CotaoImx.js:49
+await in dm
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/currently-playing 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+Z @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+setInterval
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/queue 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+om @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting user queue: Error: Failed to get user queue
+    at om (index-CotaoImx.js:49:41474)
+    at async Promise.all (spotify-web-test/index 0)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+om @ index-CotaoImx.js:49
+await in om
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+hm @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting current playback: Error: Failed to get current playback
+    at hm (index-CotaoImx.js:49:41990)
+    at async Promise.all (spotify-web-test/index 2)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+hm @ index-CotaoImx.js:49
+await in hm
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/recently-played?limit=3 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+dm @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting recently played tracks: Error: Failed to get recently played tracks
+    at dm (index-CotaoImx.js:49:41730)
+    at async Promise.all (spotify-web-test/index 1)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+dm @ index-CotaoImx.js:49
+await in dm
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/currently-playing 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+Z @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+setInterval
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/queue 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+om @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting user queue: Error: Failed to get user queue
+    at om (index-CotaoImx.js:49:41474)
+    at async Promise.all (spotify-web-test/index 0)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+om @ index-CotaoImx.js:49
+await in om
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+hm @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting current playback: Error: Failed to get current playback
+    at hm (index-CotaoImx.js:49:41990)
+    at async Promise.all (spotify-web-test/index 2)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+hm @ index-CotaoImx.js:49
+await in hm
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/recently-played?limit=3 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+dm @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting recently played tracks: Error: Failed to get recently played tracks
+    at dm (index-CotaoImx.js:49:41730)
+    at async Promise.all (spotify-web-test/index 1)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+dm @ index-CotaoImx.js:49
+await in dm
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/currently-playing 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+Z @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+setInterval
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/recently-played?limit=3 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+dm @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting recently played tracks: Error: Failed to get recently played tracks
+    at dm (index-CotaoImx.js:49:41730)
+    at async Promise.all (spotify-web-test/index 1)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+dm @ index-CotaoImx.js:49
+await in dm
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/queue 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+om @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting user queue: Error: Failed to get user queue
+    at om (index-CotaoImx.js:49:41474)
+    at async Promise.all (spotify-web-test/index 0)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+om @ index-CotaoImx.js:49
+await in om
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+hm @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting current playback: Error: Failed to get current playback
+    at hm (index-CotaoImx.js:49:41990)
+    at async Promise.all (spotify-web-test/index 2)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+hm @ index-CotaoImx.js:49
+await in hm
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/search?q=midnight%20oil&type=track&limit=10 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+Tt @ index-CotaoImx.js:108
+onKeyPress @ index-CotaoImx.js:108
+No @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Os @ index-CotaoImx.js:48
+Yi @ index-CotaoImx.js:48
+Wi @ index-CotaoImx.js:49
+Ry @ index-CotaoImx.js:49
+index-CotaoImx.js:108 Search error: SyntaxError: Unexpected token 'C', "Check sett"... is not valid JSON
+Tt @ index-CotaoImx.js:108
+await in Tt
+onKeyPress @ index-CotaoImx.js:108
+No @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Os @ index-CotaoImx.js:48
+Yi @ index-CotaoImx.js:48
+Wi @ index-CotaoImx.js:49
+Ry @ index-CotaoImx.js:49
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/currently-playing 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+Z @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+setInterval
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/search?q=midnight%20oil&type=track&limit=10 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+Tt @ index-CotaoImx.js:108
+No @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Os @ index-CotaoImx.js:48
+Yi @ index-CotaoImx.js:48
+Wi @ index-CotaoImx.js:49
+Ry @ index-CotaoImx.js:49
+index-CotaoImx.js:108 Search error: SyntaxError: Unexpected token 'C', "Check sett"... is not valid JSON
+Tt @ index-CotaoImx.js:108
+await in Tt
+No @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Os @ index-CotaoImx.js:48
+Yi @ index-CotaoImx.js:48
+Wi @ index-CotaoImx.js:49
+Ry @ index-CotaoImx.js:49
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/queue 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+om @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting user queue: Error: Failed to get user queue
+    at om (index-CotaoImx.js:49:41474)
+    at async Promise.all (spotify-web-test/index 0)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+om @ index-CotaoImx.js:49
+await in om
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/recently-played?limit=3 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+dm @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting recently played tracks: Error: Failed to get recently played tracks
+    at dm (index-CotaoImx.js:49:41730)
+    at async Promise.all (spotify-web-test/index 1)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+dm @ index-CotaoImx.js:49
+await in dm
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+hm @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting current playback: Error: Failed to get current playback
+    at hm (index-CotaoImx.js:49:41990)
+    at async Promise.all (spotify-web-test/index 2)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+hm @ index-CotaoImx.js:49
+await in hm
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/currently-playing 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+Z @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+setInterval
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+hm @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting current playback: Error: Failed to get current playback
+    at hm (index-CotaoImx.js:49:41990)
+    at async Promise.all (spotify-web-test/index 2)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+hm @ index-CotaoImx.js:49
+await in hm
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/queue 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+om @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting user queue: Error: Failed to get user queue
+    at om (index-CotaoImx.js:49:41474)
+    at async Promise.all (spotify-web-test/index 0)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+om @ index-CotaoImx.js:49
+await in om
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/recently-played?limit=3 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+dm @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting recently played tracks: Error: Failed to get recently played tracks
+    at dm (index-CotaoImx.js:49:41730)
+    at async Promise.all (spotify-web-test/index 1)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+dm @ index-CotaoImx.js:49
+await in dm
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/currently-playing 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+Z @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+setInterval
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+hm @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting current playback: Error: Failed to get current playback
+    at hm (index-CotaoImx.js:49:41990)
+    at async Promise.all (spotify-web-test/index 2)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+hm @ index-CotaoImx.js:49
+await in hm
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/queue 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+om @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting user queue: Error: Failed to get user queue
+    at om (index-CotaoImx.js:49:41474)
+    at async Promise.all (spotify-web-test/index 0)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+om @ index-CotaoImx.js:49
+await in om
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/recently-played?limit=3 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+dm @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting recently played tracks: Error: Failed to get recently played tracks
+    at dm (index-CotaoImx.js:49:41730)
+    at async Promise.all (spotify-web-test/index 1)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+dm @ index-CotaoImx.js:49
+await in dm
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/currently-playing 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+Z @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+setInterval
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+hm @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting current playback: Error: Failed to get current playback
+    at hm (index-CotaoImx.js:49:41990)
+    at async Promise.all (spotify-web-test/index 2)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+hm @ index-CotaoImx.js:49
+await in hm
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/queue 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+om @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting user queue: Error: Failed to get user queue
+    at om (index-CotaoImx.js:49:41474)
+    at async Promise.all (spotify-web-test/index 0)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+om @ index-CotaoImx.js:49
+await in om
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/recently-played?limit=3 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+dm @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting recently played tracks: Error: Failed to get recently played tracks
+    at dm (index-CotaoImx.js:49:41730)
+    at async Promise.all (spotify-web-test/index 1)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+dm @ index-CotaoImx.js:49
+await in dm
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/currently-playing 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+Z @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+setInterval
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+hm @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting current playback: Error: Failed to get current playback
+    at hm (index-CotaoImx.js:49:41990)
+    at async Promise.all (spotify-web-test/index 2)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+hm @ index-CotaoImx.js:49
+await in hm
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/recently-played?limit=3 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+dm @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting recently played tracks: Error: Failed to get recently played tracks
+    at dm (index-CotaoImx.js:49:41730)
+    at async Promise.all (spotify-web-test/index 1)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+dm @ index-CotaoImx.js:49
+await in dm
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/queue 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+om @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting user queue: Error: Failed to get user queue
+    at om (index-CotaoImx.js:49:41474)
+    at async Promise.all (spotify-web-test/index 0)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+om @ index-CotaoImx.js:49
+await in om
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+setInterval
+E @ index-CotaoImx.js:108
+k @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/currently-playing 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+Z @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+setInterval
+(anonymous) @ index-CotaoImx.js:108
+rn @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+wl @ index-CotaoImx.js:48
+$r @ index-CotaoImx.js:48
+vo @ index-CotaoImx.js:48
+(anonymous) @ index-CotaoImx.js:48
+Nt @ index-CotaoImx.js:25

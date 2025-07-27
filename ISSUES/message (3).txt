@@ -1,0 +1,41 @@
+Error with Permissions-Policy header: Unrecognized feature: 'browsing-topics'.
+Error with Permissions-Policy header: Unrecognized feature: 'run-ad-auction'.
+Error with Permissions-Policy header: Origin trial controlled feature not enabled: 'join-ad-interest-group'.
+Error with Permissions-Policy header: Unrecognized feature: 'private-state-token-redemption'.
+Error with Permissions-Policy header: Unrecognized feature: 'private-state-token-issuance'.
+Error with Permissions-Policy header: Unrecognized feature: 'private-aggregation'.
+Error with Permissions-Policy header: Unrecognized feature: 'attribution-reporting'.
+indexReact.43e2fea362959455061c.js:1  POST https://o22381.ingest.sentry.io/api/6134292/envelope/?sentry_key=c19c7bd004d24e9cbd19e190a2946df2&sentry_version=7 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ indexReact.43e2fea362959455061c.js:1
+e @ indexReact.43e2fea362959455061c.js:1
+(anonymous) @ indexReact.43e2fea362959455061c.js:1
+add @ indexReact.43e2fea362959455061c.js:1
+(anonymous) @ indexReact.43e2fea362959455061c.js:1
+(anonymous) @ indexReact.43e2fea362959455061c.js:1
+(anonymous) @ indexReact.43e2fea362959455061c.js:1
+(anonymous) @ indexReact.43e2fea362959455061c.js:1
+(anonymous) @ indexReact.43e2fea362959455061c.js:1
+(anonymous) @ indexReact.43e2fea362959455061c.js:1
+(anonymous) @ indexReact.43e2fea362959455061c.js:1
+Tr @ indexReact.43e2fea362959455061c.js:1
+(anonymous) @ indexReact.43e2fea362959455061c.js:1
+(anonymous) @ indexReact.43e2fea362959455061c.js:1
+(anonymous) @ indexReact.43e2fea362959455061c.js:1
+(anonymous) @ indexReact.43e2fea362959455061c.js:1
+(anonymous) @ indexReact.43e2fea362959455061c.js:1
+tp_libraries_min.js:1 Teleparty: Injecting Libraries
+spotify_content_bundled.js:6 Message Controller
+spotify_content_bundled.js:6 Video Event Listener
+spotify_content_bundled.js:6 injecting replace script
+spotify_content_bundled.js:6 Teleparty Browse Loaded 1564004612
+spotify_content_bundled.js:6 Setting Page COntrols
+spotify_content_bundled.js:6 Chat forwarder
+spotify_content_bundled.js:6 Video forwarder
+spotify_content_bundled.js:6 Requesting ping
+spotify_content_bundled.js:6 Spotify Content Script
+spotify_content_bundled.js:6 Initialized content script
+spotify_content_bundled.js:6 Got background script
+indexReact.43e2fea362959455061c.js:1 Loaded Replace Script
+indexReact.43e2fea362959455061c.js:1 Loaded GTM Script
+indexReact.43e2fea362959455061c.js:1 SPOTIFY INJECTED SCRIPT
+indexReact.43e2fea362959455061c.js:1 Loaded Replace Script

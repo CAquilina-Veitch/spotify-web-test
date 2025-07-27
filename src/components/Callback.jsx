@@ -11,7 +11,15 @@ function Callback() {
     const error = urlParams.get('error');
 
     if (error) {
-      setError(`Authentication failed: ${error}`);
+      // Check if this is an authorization error
+      if (error === 'invalid_client') {
+        // Show the friendly unauthorized message
+        alert('Account not authorised, please send me the email associated with your spotify! 🐬');
+        // Still set the error for display
+        setError('Account not authorized. Please contact the app owner to request access.');
+      } else {
+        setError(`Authentication failed: ${error}`);
+      }
       return;
     }
 

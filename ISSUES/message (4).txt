@@ -1,0 +1,120 @@
+icon-192x192.png:1  Failed to load resource: the server responded with a status of 404 ()
+spotify-web-test/#share?q=NFJHV0hmUWVKZnRkNVhyUDhKVWdGaiwzd1RneVdqcUlVNHRnMjVUN3FxbTls:1 Error while trying to use the following icon from the Manifest: https://caquilina-veitch.github.io/icon-192x192.png (Download error or resource isn't a valid image)
+api.spotify.com/v1/me/playlists?limit=50:1  Failed to load resource: the server responded with a status of 403 ()
+api.spotify.com/v1/me/player/queue:1  Failed to load resource: the server responded with a status of 403 ()
+index-CotaoImx.js:49 Error getting user queue: Error: Failed to get user queue
+    at om (index-CotaoImx.js:49:41474)
+    at async Promise.all (spotify-web-test/index 0)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+om @ index-CotaoImx.js:49
+api.spotify.com/v1/me/player/currently-playing:1  Failed to load resource: the server responded with a status of 403 ()
+api.spotify.com/v1/me/player/recently-played?limit=3:1  Failed to load resource: the server responded with a status of 403 ()
+index-CotaoImx.js:49 Error getting recently played tracks: Error: Failed to get recently played tracks
+    at dm (index-CotaoImx.js:49:41730)
+    at async Promise.all (spotify-web-test/index 1)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+dm @ index-CotaoImx.js:49
+api.spotify.com/v1/me/player:1  Failed to load resource: the server responded with a status of 403 ()
+index-CotaoImx.js:49 Error getting current playback: Error: Failed to get current playback
+    at hm (index-CotaoImx.js:49:41990)
+    at async Promise.all (spotify-web-test/index 2)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+hm @ index-CotaoImx.js:49
+api.spotify.com/v1/tracks?ids=4RGWHfQeJftd5XrP8JUgFj,3wTgyWjqIU4tg25T7qqm9l:1  Failed to load resource: the server responded with a status of 403 ()
+index-CotaoImx.js:108 Error loading queue: SyntaxError: Unexpected token 'C', "Check sett"... is not valid JSON
+rt @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/currently-playing 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+Z @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/queue 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+om @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting user queue: Error: Failed to get user queue
+    at om (index-CotaoImx.js:49:41474)
+    at async Promise.all (spotify-web-test/index 0)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+om @ index-CotaoImx.js:49
+await in om
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+hm @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting current playback: Error: Failed to get current playback
+    at hm (index-CotaoImx.js:49:41990)
+    at async Promise.all (spotify-web-test/index 2)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+hm @ index-CotaoImx.js:49
+await in hm
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/recently-played?limit=3 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+dm @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting recently played tracks: Error: Failed to get recently played tracks
+    at dm (index-CotaoImx.js:49:41730)
+    at async Promise.all (spotify-web-test/index 1)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+dm @ index-CotaoImx.js:49
+await in dm
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/recently-played?limit=3 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+dm @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting recently played tracks: Error: Failed to get recently played tracks
+    at dm (index-CotaoImx.js:49:41730)
+    at async Promise.all (spotify-web-test/index 1)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+dm @ index-CotaoImx.js:49
+await in dm
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/queue 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+om @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting user queue: Error: Failed to get user queue
+    at om (index-CotaoImx.js:49:41474)
+    at async Promise.all (spotify-web-test/index 0)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+om @ index-CotaoImx.js:49
+await in om
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+hm @ index-CotaoImx.js:49
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+index-CotaoImx.js:49 Error getting current playback: Error: Failed to get current playback
+    at hm (index-CotaoImx.js:49:41990)
+    at async Promise.all (spotify-web-test/index 2)
+    at async ym (index-CotaoImx.js:49:42166)
+    at async j (index-CotaoImx.js:108:30815)
+hm @ index-CotaoImx.js:49
+await in hm
+ym @ index-CotaoImx.js:49
+j @ index-CotaoImx.js:108
+index-CotaoImx.js:49  GET https://api.spotify.com/v1/me/player/currently-playing 403 (Forbidden)
+Jt @ index-CotaoImx.js:49
+Z @ index-CotaoImx.js:108
+(anonymous) @ index-CotaoImx.js:108
